@@ -42,6 +42,7 @@ from arknights_schedule_generator.production import (
     score_breakdown_for,
 )
 from arknights_schedule_generator.recommender import (
+    DEFAULT_LAYOUTS,
     aggregate_anomaly_candidates,
     aggregate_diagnostic_insertion_coverage,
     best_candidate,
@@ -68,6 +69,10 @@ from arknights_schedule_generator.skill_rules import (
 
 
 class ProductionModelTest(unittest.TestCase):
+    def test_default_layouts_exclude_invalid_324(self) -> None:
+        self.assertNotIn("324", DEFAULT_LAYOUTS)
+        self.assertIn("153", DEFAULT_LAYOUTS)
+
     def test_score_breakdown_does_not_penalize_pure_gold_inventory(self) -> None:
         breakdown = score_breakdown_for(ProductionVector(pureGoldDelta=-100.0))
 

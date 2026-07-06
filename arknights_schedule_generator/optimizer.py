@@ -49,6 +49,11 @@ JOINT_PRODUCTION_CANDIDATE_LIMIT = 64
 COMBO_CANDIDATE_TOP_LIMIT = 14
 COMBO_CANDIDATE_POOL_LIMIT = 32
 OPTIMIZER_MODEL_VERSION = 20
+LAYOUT_ROOM_COUNT_LIMITS = {
+    "TRADING": 5,
+    "MANUFACTURE": 5,
+    "POWER": 3,
+}
 
 
 @dataclass(frozen=True)
@@ -112,6 +117,15 @@ def parse_layout(raw: str) -> Layout:
     trading, manufacture, power = (int(digit) for digit in digits)
     if trading + manufacture + power != 9:
         raise ValueError("贸易站、制造站、发电站数量之和应为 9。")
+    if (
+        trading > LAYOUT_ROOM_COUNT_LIMITS["TRADING"]
+        or manufacture > LAYOUT_ROOM_COUNT_LIMITS["MANUFACTURE"]
+        or power > LAYOUT_ROOM_COUNT_LIMITS["POWER"]
+    ):
+        raise ValueError(
+            f"Invalid base layout {raw}: Trading Posts <= 5, "
+            "Factories <= 5, and Power Plants <= 3."
+        )
     return Layout(raw=raw, trading=trading, manufacture=manufacture, power=power)
 
 

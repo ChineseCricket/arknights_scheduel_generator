@@ -47,7 +47,7 @@ from .production import (
 from .schedule_import import load_yituliu_schedule
 
 
-DEFAULT_LAYOUTS = ("243", "252", "342", "324", "333", "153")
+DEFAULT_LAYOUTS = ("243", "252", "342", "333", "153")
 DEFAULT_MODES = ("normal", "balanced-orundum", "max-orundum")
 
 

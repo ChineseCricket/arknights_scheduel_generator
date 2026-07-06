@@ -34,6 +34,11 @@ from arknights_schedule_generator.production import ProductionReport, Production
 
 
 class OptimizerTest(unittest.TestCase):
+    def test_parse_layout_rejects_room_counts_above_game_limits(self) -> None:
+        self.assertEqual(parse_layout("153").label, "153")
+        with self.assertRaisesRegex(ValueError, "Power Plants <= 3"):
+            parse_layout("324")
+
     def test_lmd_trade_room_score_ignores_pure_gold_consumption(self) -> None:
         spec = RoomSpec("trading_1", "TRADING", "O_GOLD", 3)
         lower_lmd_lower_gold_use = ProductionVector(lmdGross=10000.0, pureGoldDelta=-2.0)

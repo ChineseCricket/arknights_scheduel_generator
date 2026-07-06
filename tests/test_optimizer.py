@@ -14,6 +14,7 @@ from arknights_schedule_generator.models import (
     UpgradeRequirement,
 )
 from arknights_schedule_generator.optimizer import (
+    COMBO_CANDIDATE_POOL_LIMIT,
     RoomCombo,
     RoomSpec,
     ScheduleOptimizer,
@@ -316,6 +317,64 @@ class OptimizerTest(unittest.TestCase):
             for skill in room.operators
         ]
         self.assertTrue(any(skill.operator_name == "能天使" for skill in selected))
+
+    def test_local_replacements_run_for_balanced_orundum_mode(self) -> None:
+        with TemporaryDirectory() as temp_dir:
+            data_dir = Path(temp_dir)
+            write_minimal_data(data_dir)
+            game_data = GameData.load(data_dir)
+
+            roster = [
+                RosterOperator("能天使", True, 6, 1, 0),
+                RosterOperator("德克萨斯", True, 5, 1, 2),
+                RosterOperator("空", True, 5, 1, 0),
+                RosterOperator("史都华德", True, 3, 30, 0),
+                RosterOperator("夜刀", True, 2, 30, 0),
+                RosterOperator("Lancet-2", True, 1, 30, 0),
+                RosterOperator("Castle-3", True, 1, 30, 0),
+                RosterOperator("巡林者", True, 2, 30, 0),
+                RosterOperator("杜林", True, 2, 30, 0),
+                RosterOperator("安德切尔", True, 3, 30, 0),
+                RosterOperator("米格鲁", True, 3, 30, 0),
+                RosterOperator("克洛丝", True, 3, 30, 0),
+                RosterOperator("芬", True, 3, 30, 0),
+                RosterOperator("翎羽", True, 3, 30, 0),
+                RosterOperator("香草", True, 3, 30, 0),
+                RosterOperator("玫兰莎", True, 3, 30, 0),
+            ]
+            optimizer = ScheduleOptimizer(game_data, roster, allow_upgrades=True, upgrade_cost_weight=0)
+            seen_modes: list[str] = []
+
+            def fake_local_replacements(
+                layout,
+                shifts,
+                simulator,
+                *,
+                mode: str,
+                current_report: ProductionReport,
+            ):
+                del layout, simulator
+                seen_modes.append(mode)
+                return shifts, {
+                    "source": "test_probe",
+                    "acceptedCount": 0,
+                    "remainingPositiveCount": 0,
+                    "positiveNeighborhoods": [],
+                    "objectiveConflictAudit": {
+                        "lmdPositiveRejectedCount": 0,
+                        "lmdPositiveRejected": [],
+                    },
+                }, current_report
+
+            optimizer._improve_shifts_with_local_replacements = fake_local_replacements  # type: ignore[method-assign]
+
+            result = optimizer.optimize(parse_layout("333"), mode="balanced-orundum", shift_count=2)
+
+        self.assertEqual(seen_modes, ["balanced_orundum"])
+        self.assertEqual(
+            result.diagnostic_insertion_search["localOptimalityAudit"]["source"],
+            "test_probe",
+        )
 
     def test_optimizer_supports_mixed_shift_durations(self) -> None:
         with TemporaryDirectory() as temp_dir:
@@ -851,6 +910,65 @@ class OptimizerTest(unittest.TestCase):
         self.assertIn("Miss.Christine", names)
         self.assertIn("食铁兽", names)
         self.assertIn("弑君者", names)
+
+    def test_combo_pool_keeps_deeper_protected_candidates_with_small_budget(self) -> None:
+        high_unprotected = [
+            optimizer_skill(f"HighFactory{index}", "MANUFACTURE", f"high_factory_{index}", 200 - index)
+            for index in range(14)
+        ]
+        protected = [
+            optimizer_skill(
+                f"ProtectedFactory{index}",
+                "MANUFACTURE",
+                f"protected_factory_{index}",
+                100 - index,
+                description="当与其他协同干员在同一个制造站时，生产力额外提升。",
+            )
+            for index in range(18)
+        ]
+        optimizer = optimizer_with_skills([*high_unprotected, *protected])
+
+        pool = optimizer._combo_candidate_pool("MANUFACTURE", "F_GOLD", set())
+
+        names = {candidate.skill.operator_name for candidate in pool}
+        self.assertLessEqual(len(pool), COMBO_CANDIDATE_POOL_LIMIT)
+        self.assertIn("ProtectedFactory17", names)
+
+    def test_combo_pool_prioritizes_best_variant_for_protected_operator(self) -> None:
+        high_unprotected = [
+            optimizer_skill(f"HighFactory{index}", "MANUFACTURE", f"high_factory_{index}", 200 - index)
+            for index in range(14)
+        ]
+        protected_fillers = [
+            optimizer_skill(
+                f"ProtectedFactory{index}",
+                "MANUFACTURE",
+                f"protected_factory_{index}",
+                100 - index,
+                description="当与其他协同干员在同一个制造站时，生产力额外提升。",
+            )
+            for index in range(17)
+        ]
+        optimizer = optimizer_with_skills(
+            [
+                *high_unprotected,
+                *protected_fillers,
+                optimizer_skill("VariantFactory", "MANUFACTURE", "variant_best", 19),
+                optimizer_skill(
+                    "VariantFactory",
+                    "MANUFACTURE",
+                    "variant_combo_seed",
+                    1,
+                    description="进驻制造站时，仓库容量额外提升。",
+                ),
+            ]
+        )
+
+        pool = optimizer._combo_candidate_pool("MANUFACTURE", "F_GOLD", set())
+
+        variants = {(candidate.skill.operator_name, candidate.skill.buff_id) for candidate in pool}
+        self.assertLessEqual(len(pool), COMBO_CANDIDATE_POOL_LIMIT)
+        self.assertIn(("VariantFactory", "variant_best"), variants)
 
     def test_manufacture_room_selection_uses_guide_lookup_score(self) -> None:
         skills = [

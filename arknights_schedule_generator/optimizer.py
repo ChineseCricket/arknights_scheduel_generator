@@ -46,7 +46,9 @@ ROOM_NAMES = {
 
 DIAGNOSTIC_INSERTION_GROUP_LIMIT = 64
 JOINT_PRODUCTION_CANDIDATE_LIMIT = 64
-OPTIMIZER_MODEL_VERSION = 19
+COMBO_CANDIDATE_TOP_LIMIT = 14
+COMBO_CANDIDATE_POOL_LIMIT = 32
+OPTIMIZER_MODEL_VERSION = 20
 
 
 @dataclass(frozen=True)
@@ -336,28 +338,13 @@ class ScheduleOptimizer:
                 "selectedTradingTargets": list(selected_trading),
                 "selectedManufactureTargets": list(selected_manufacture),
             }
-        if normalized_mode == "normal":
-            shifts, local_audit, production_report = self._improve_shifts_with_local_replacements(
-                layout,
-                shifts,
-                simulator,
-                mode=normalized_mode,
-                current_report=production_report,
-            )
-        else:
-            local_audit = {
-                "source": "single_operator_replacement_neighborhood",
-                "optimizerModelVersion": OPTIMIZER_MODEL_VERSION,
-                "status": "skipped_for_non_normal_mode",
-                "acceptedCount": 0,
-                "remainingPositiveCount": 0,
-                "positiveNeighborhoods": [],
-                "objectiveConflictAudit": {
-                    "policy": "Detailed LMD-vs-gold replacement auditing currently runs for normal mode only.",
-                    "lmdPositiveRejectedCount": 0,
-                    "lmdPositiveRejected": [],
-                },
-            }
+        shifts, local_audit, production_report = self._improve_shifts_with_local_replacements(
+            layout,
+            shifts,
+            simulator,
+            mode=normalized_mode,
+            current_report=production_report,
+        )
         insertion_search["localOptimalityAudit"] = local_audit
         shifts, production_report, pure_gold_policy = self._apply_pure_gold_drone_cycle_repeats(
             shifts,
@@ -1295,7 +1282,7 @@ class ScheduleOptimizer:
                 "remainingPositiveCount": len(remaining_positive),
                 "positiveNeighborhoods": remaining_positive[:20],
                 "objectiveConflictAudit": {
-                    "policy": "normal keeps the existing composite objective; Pure Gold inventory balance is handled by drones/report diagnostics and does not veto LMD-gross-positive Trading Post replacements.",
+                    "policy": "Local replacements use the active mode objective; Pure Gold inventory balance is handled by drones/report diagnostics and does not veto LMD-gross-positive Trading Post replacements.",
                     "lmdPositiveRejectedCount": len(deduped_conflicts),
                     "lmdPositiveRejected": deduped_conflicts[:120],
                 },
@@ -2795,29 +2782,22 @@ class ScheduleOptimizer:
             self._combo_candidate_pool_cache[cache_key] = tuple(result)
             return result
 
-        top_limit = 14
-        max_pool = 24
+        top_limit = COMBO_CANDIDATE_TOP_LIMIT
+        max_pool = COMBO_CANDIDATE_POOL_LIMIT
         top_candidates = unique_candidate_variants(candidates[:top_limit])
         protected_candidates = combo_closure_candidates(candidates, room_type, target)
 
         pool = unique_candidate_variants([*top_candidates, *protected_candidates])
         if len(pool) <= max_pool:
+            self._combo_candidate_pool_cache[cache_key] = tuple(pool)
             return pool
 
-        protected_keys = {
-            candidate_variant_key(candidate)
-            for candidate in protected_candidates
-        }
+        pool_keys = {candidate_variant_key(candidate) for candidate in pool}
         protected = [
-            candidate for candidate in pool if candidate_variant_key(candidate) in protected_keys
+            candidate
+            for candidate in protected_candidates
+            if candidate_variant_key(candidate) in pool_keys
         ]
-        protected.sort(
-            key=lambda item: (
-                combo_protection_priority(item.skill, room_type, target),
-                item.score,
-            ),
-            reverse=True,
-        )
         selected = list(top_candidates)
         selected_keys = {candidate_variant_key(candidate) for candidate in selected}
         for candidate in protected:
@@ -3057,16 +3037,27 @@ def combo_closure_candidates(
     target: str | None,
 ) -> list[Candidate]:
     protected_names: set[str] = set()
+    protected_name_priority: dict[str, int] = {}
     protected_tags: set[str] = set()
     roster_names = {candidate.skill.operator_name for candidate in candidates}
     protect_trade_specialists = False
 
+    def protect_name(name: str, priority: int) -> None:
+        protected_names.add(name)
+        protected_name_priority[name] = max(
+            protected_name_priority.get(name, 0),
+            priority,
+        )
+
     for candidate in candidates:
         skill = candidate.skill
         if should_protect_combo_seed(skill, room_type, target):
-            protected_names.add(skill.operator_name)
-            protected_names.update(linked_combo_candidate_names(skill))
-            protected_names.update(mentioned_operator_names(f"{skill.buff_name} {skill.description}", roster_names))
+            priority = combo_protection_priority(skill, room_type, target)
+            protect_name(skill.operator_name, priority)
+            for name in linked_combo_candidate_names(skill):
+                protect_name(name, priority)
+            for name in mentioned_operator_names(f"{skill.buff_name} {skill.description}", roster_names):
+                protect_name(name, priority)
             protected_tags.update(linked_combo_faction_tags(skill))
         if trade_special_role(skill):
             protect_trade_specialists = True
@@ -3074,12 +3065,15 @@ def combo_closure_candidates(
     if protected_tags:
         for candidate in candidates:
             if any(tag in candidate.skill.faction_tags for tag in protected_tags):
-                protected_names.add(candidate.skill.operator_name)
+                protect_name(candidate.skill.operator_name, 3)
 
     if protect_trade_specialists:
         for candidate in candidates:
             if trade_special_role(candidate.skill):
-                protected_names.add(candidate.skill.operator_name)
+                protect_name(
+                    candidate.skill.operator_name,
+                    combo_protection_priority(candidate.skill, room_type, target),
+                )
 
     best_by_name = best_candidates_by_name(candidates)
     protected = [
@@ -3094,7 +3088,10 @@ def combo_closure_candidates(
     return sorted(
         unique_candidate_variants(protected),
         key=lambda candidate: (
-            combo_protection_priority(candidate.skill, room_type, target),
+            max(
+                combo_protection_priority(candidate.skill, room_type, target),
+                protected_name_priority.get(candidate.skill.operator_name, 0),
+            ),
             candidate.score,
         ),
         reverse=True,

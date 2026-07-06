@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "arknights-schedule-generator"
+version = "0.1.0"
+description = "Arknights base schedule generator and scorer for Yituliu roster exports."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [
+    { name = "ChineseCricket" },
+]
+keywords = ["arknights", "schedule", "yituliu", "optimizer", "cli"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Intended Audience :: End Users/Desktop",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Games/Entertainment",
+]
+dependencies = [
+    "openpyxl>=3.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8",
+]
+
+[project.urls]
+Homepage = "https://github.com/ChineseCricket/arknights_scheduel_generator"
+Repository = "https://github.com/ChineseCricket/arknights_scheduel_generator"
+Issues = "https://github.com/ChineseCricket/arknights_scheduel_generator/issues"
+
+[project.scripts]
+ak-schedule = "arknights_schedule_generator.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["arknights_schedule_generator*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

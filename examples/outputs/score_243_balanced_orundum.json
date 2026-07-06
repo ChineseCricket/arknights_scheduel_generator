@@ -1,0 +1,4678 @@
+{
+  "schedule": "examples\\outputs\\schedule_243_balanced_orundum.json",
+  "layout": "243",
+  "mode": "balanced-orundum",
+  "score": 437.02,
+  "scoreBreakdown": {
+    "orundum": 580.8,
+    "office": 1.533,
+    "meeting": 1.733,
+    "lmdGross": 64.282,
+    "lmdNet": 0.0,
+    "exp": 75.52,
+    "shardBalance": -109.44,
+    "lmdNetBalance": -177.408,
+    "overflowPenalty": -0.0,
+    "fatiguePenalty": -0.0
+  },
+  "dailyExpected": {
+    "lmdGross": 42854.36,
+    "lmdNet": -35481.64,
+    "exp": 18880.0,
+    "orundum": 580.8,
+    "officeSpeed": 46.0,
+    "meetingSpeed": 52.0,
+    "pureGoldDelta": -1.881,
+    "shardDelta": -9.12,
+    "materialCosts": {
+      "30012": 97.92,
+      "4001": 78336.0
+    },
+    "overflowLoss": 0.0,
+    "fatigueRisk": 0.0,
+    "droneContribution": {
+      "lmdGross": 18845.863,
+      "pureGoldDelta": -34.804
+    },
+    "droneCount": 390.0,
+    "droneUsed": 390.0,
+    "droneGenerationBonusPercent": 62.5,
+    "droneTarget": {
+      "shift": "第1班",
+      "policy": "lmd-trade",
+      "roomId": "trading_1",
+      "roomType": "TRADING",
+      "target": "O_GOLD",
+      "droneCount": 99.0,
+      "durationHours": 4.95,
+      "operators": [
+        "可露希尔",
+        "能天使",
+        "蕾缪安"
+      ],
+      "contribution": {
+        "lmdGross": 4331.25,
+        "pureGoldDelta": -7.218750000000001
+      }
+    },
+    "droneTargets": [
+      {
+        "shift": "第1班",
+        "policy": "lmd-trade",
+        "roomId": "trading_1",
+        "roomType": "TRADING",
+        "target": "O_GOLD",
+        "droneCount": 99.0,
+        "durationHours": 4.95,
+        "operators": [
+          "可露希尔",
+          "能天使",
+          "蕾缪安"
+        ],
+        "contribution": {
+          "lmdGross": 4331.25,
+          "pureGoldDelta": -7.218750000000001
+        }
+      },
+      {
+        "shift": "第2班",
+        "policy": "lmd-trade",
+        "roomId": "trading_1",
+        "roomType": "TRADING",
+        "target": "O_GOLD",
+        "droneCount": 96.0,
+        "durationHours": 4.8,
+        "operators": [
+          "维娜·维多利亚",
+          "夜刀",
+          "摩根"
+        ],
+        "contribution": {
+          "lmdGross": 5091.6814159292035,
+          "pureGoldDelta": -10.183362831858409
+        }
+      },
+      {
+        "shift": "第3班",
+        "policy": "lmd-trade",
+        "roomId": "trading_1",
+        "roomType": "TRADING",
+        "target": "O_GOLD",
+        "droneCount": 99.0,
+        "durationHours": 4.95,
+        "operators": [
+          "可露希尔",
+          "能天使",
+          "蕾缪安"
+        ],
+        "contribution": {
+          "lmdGross": 4331.25,
+          "pureGoldDelta": -7.218750000000001
+        }
+      },
+      {
+        "shift": "第4班",
+        "policy": "lmd-trade",
+        "roomId": "trading_1",
+        "roomType": "TRADING",
+        "target": "O_GOLD",
+        "droneCount": 96.0,
+        "durationHours": 4.8,
+        "operators": [
+          "维娜·维多利亚",
+          "夜刀",
+          "摩根"
+        ],
+        "contribution": {
+          "lmdGross": 5091.6814159292035,
+          "pureGoldDelta": -10.183362831858409
+        }
+      }
+    ],
+    "cycleHours": 48.0,
+    "dailyScale": 0.5
+  },
+  "analysis": {
+    "warnings": [],
+    "conflicts": [],
+    "unsupportedSkillEffects": [
+      {
+        "operator": "可露希尔",
+        "buffId": "trade_ord_closure[000]",
+        "buffName": "特别订单",
+        "reason": "违约订单收益需要订单分布模型；当前仅标记，不直接改变产出。校准贸易档案可能会单独处理房间总产出。"
+      },
+      {
+        "operator": "可露希尔",
+        "buffId": "trade_ord_closure[000]",
+        "buffName": "特别订单",
+        "reason": "特别订单真实收益未在公开 building_data 中给出，按基础订单速度估算。"
+      },
+      {
+        "operator": "德克萨斯",
+        "buffId": "trade_ord_spd&cost_P[000]",
+        "buffName": "恩怨",
+        "reason": "同站条件未满足，未计入条件收益。"
+      },
+      {
+        "operator": "魔王",
+        "buffId": "control_mp_cost_double[000]",
+        "buffName": "魔王传承",
+        "reason": "控制中枢复杂条件效果尚未完全建模，未计入全局加成。"
+      }
+    ],
+    "assumptions": [
+      "Factory and Trading Post base production includes +1% per effective slot.",
+      "LMD Trading Post orders use guide probabilities by room level: L1 low, L2 low/medium, L3 low/medium/high.",
+      "Level 3 LMD order probabilities are default 30%/50%/20%, Tailoring alpha 15%/30%/55%, Tailoring beta 5%/10%/85%.",
+      "Yituliu 2026-06 special LMD Trading Post lookups are used for modeled Shamare/Tequila/Proviso, Croissant, and high-efficiency partner combinations.",
+      "Orundum orders are modeled as 2 Originium Shards -> 20 Orundum with a 2-hour order duration calibrated from Yituliu 2026-06 schedules.",
+      "Overflow is calculated per shift/collection interval.",
+      "Production is first summed across one complete shift cycle, then scaled to a 24-hour daily average.",
+      "Drone generation starts from 240 drones/day and applies weighted Power Plant drone-recovery skill bonuses from scheduled power rooms.",
+      "Auto drone usage targets a conservative Pure Gold daily delta of -2 within ±0.5, then spends remaining drone choices on the best output target."
+    ],
+    "calibrationProfile": "guide",
+    "sourceAssumptions": [
+      "GamePress 252 guide: 252 means 2 Trading Posts, 5 Factories, 2 Power Plants; common factory splits are 3 EXP/2 Gold or 2 EXP/3 Gold.",
+      "Arknights Wiki Trading Post: LMD orders use 2/3/4 Pure Gold order types with level-dependent odds and order durations.",
+      "ArkBuilding model: room type, slots, product type and baseProdEff=1+0.01*slots are modeled explicitly.",
+      "Drone policy: auto. Drone contribution is reported separately."
+    ],
+    "guideComparison": null,
+    "roomReports": [
+      {
+        "roomId": "trading_1",
+        "roomType": "TRADING",
+        "target": "O_GOLD",
+        "producedUnits": 0.5,
+        "cappedUnits": 0.5,
+        "capacity": null,
+        "baseSpeedPercent": 3.0,
+        "stationSlots": 3,
+        "roomLevel": 3,
+        "collectionIntervalHours": 12.0,
+        "vector": {
+          "lmdGross": 10920.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 0.0,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": -18.2,
+          "shardDelta": 0.0,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 72.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": {
+          "target": "O_GOLD",
+          "level": 3,
+          "calibrationMode": "guide_mechanism_estimate",
+          "mechanismId": "croissant_special_order",
+          "anchorOperator": "可露希尔",
+          "baseLmdPer24h": 12000.0,
+          "baseGoldPer24h": 20.0,
+          "intrinsicSpeedPercent": 20.0,
+          "partnerSpeedPercent": 55.0,
+          "scheduleEffectivePercent": 182.0,
+          "mechanismScheduleEffectivePercent": 175.0,
+          "controlSpeedPercent": 7.0,
+          "confidence": "guide_anchor_estimate",
+          "matchedAnchorRows": [
+            "croissant_l1",
+            "croissant_l2_plus_40",
+            "croissant_l2_plus_45",
+            "croissant_l3_plus_two_40",
+            "croissant_l3_plus_two_45"
+          ],
+          "source": "Yituliu 2026-06 trade lookup rows for Croissant special orders.",
+          "partnerContributions": [
+            {
+              "operatorName": "能天使",
+              "buffId": "trade_ord_spd[020]",
+              "buffName": "物流专家",
+              "parsedScore": 35.0,
+              "countedSpeedPercent": 35.0,
+              "counted": true,
+              "classification": "fixed_speed",
+              "reason": "Parsed fixed Trading Post speed is counted in partnerSpeedPercent.",
+              "hasUpgradeRequirement": false
+            },
+            {
+              "operatorName": "蕾缪安",
+              "buffId": "trade_ord_spd&multiPar[000]",
+              "buffName": "订单分发·α",
+              "parsedScore": 20.0,
+              "countedSpeedPercent": 20.0,
+              "counted": true,
+              "classification": "fixed_speed",
+              "reason": "Parsed fixed Trading Post speed is counted in partnerSpeedPercent.",
+              "hasUpgradeRequirement": false
+            }
+          ]
+        },
+        "manufactureProfile": null,
+        "assumptions": [
+          "Yituliu 2026-06 trade lookup rows for Croissant special orders.",
+          "Yituliu guide anchor rows are used to estimate this special Trading Post mechanism when no exact combo lookup matches.",
+          "望/权变 的控制中枢权变按当前静态模型外势=实地，触发贸易站 +7% 分支计入。"
+        ],
+        "unsupportedSkillEffects": [
+          {
+            "operator": "可露希尔",
+            "buffId": "trade_ord_closure[000]",
+            "buffName": "特别订单",
+            "reason": "违约订单收益需要订单分布模型；当前仅标记，不直接改变产出。校准贸易档案可能会单独处理房间总产出。"
+          },
+          {
+            "operator": "可露希尔",
+            "buffId": "trade_ord_closure[000]",
+            "buffName": "特别订单",
+            "reason": "特别订单真实收益未在公开 building_data 中给出，按基础订单速度估算。"
+          }
+        ],
+        "skillEffectAudit": [
+          {
+            "operator": "可露希尔",
+            "buffId": "trade_ord_closure[000]",
+            "buffName": "特别订单",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 10.0
+            }
+          },
+          {
+            "operator": "可露希尔",
+            "buffId": "trade_ord_closure[000]",
+            "buffName": "特别订单",
+            "status": "unsupported",
+            "scope": "TRADING",
+            "reason": "违约订单收益需要订单分布模型；当前仅标记，不直接改变产出。校准贸易档案可能会单独处理房间总产出。",
+            "confidence": "unmodeled"
+          },
+          {
+            "operator": "可露希尔",
+            "buffId": "trade_ord_closure[000]",
+            "buffName": "特别订单",
+            "status": "unsupported",
+            "scope": "TRADING",
+            "reason": "特别订单真实收益未在公开 building_data 中给出，按基础订单速度估算。",
+            "confidence": "unmodeled"
+          },
+          {
+            "operator": "能天使",
+            "buffId": "trade_ord_spd[020]",
+            "buffName": "物流专家",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 35.0
+            }
+          },
+          {
+            "operator": "蕾缪安",
+            "buffId": "trade_ord_spd&multiPar[000]",
+            "buffName": "订单分发·α",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 20.0
+            }
+          },
+          {
+            "operator": "望",
+            "buffId": "",
+            "buffName": "权变",
+            "status": "counted",
+            "scope": "control_global:trade_global",
+            "reason": "望/权变 的控制中枢权变按当前静态模型外势=实地，触发贸易站 +7% 分支计入。",
+            "confidence": "modeled_rule"
+          },
+          {
+            "operator": "可露希尔",
+            "buffId": "trade_ord_closure[000]",
+            "buffName": "特别订单",
+            "status": "source_calibrated",
+            "scope": "trade_order_profile",
+            "reason": "Yituliu guide anchor rows calibrate this special Trading Post mechanism; unsupported notes describe sub-effects not directly parsed as ordinary speed.",
+            "confidence": "guide_anchor_estimate",
+            "calibrationMode": "guide_mechanism_estimate",
+            "mechanismId": "croissant_special_order"
+          },
+          {
+            "operator": "能天使",
+            "buffId": "trade_ord_spd[020]",
+            "buffName": "物流专家",
+            "status": "counted",
+            "scope": "special_trade_partner_speed",
+            "reason": "Parsed fixed Trading Post speed is counted in partnerSpeedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "classification": "fixed_speed",
+            "numericContribution": {
+              "speedPercent": 35.0
+            }
+          },
+          {
+            "operator": "蕾缪安",
+            "buffId": "trade_ord_spd&multiPar[000]",
+            "buffName": "订单分发·α",
+            "status": "counted",
+            "scope": "special_trade_partner_speed",
+            "reason": "Parsed fixed Trading Post speed is counted in partnerSpeedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "classification": "fixed_speed",
+            "numericContribution": {
+              "speedPercent": 20.0
+            }
+          }
+        ],
+        "shift": "第1班"
+      },
+      {
+        "roomId": "trading_2",
+        "roomType": "TRADING",
+        "target": "O_DIAMOND",
+        "producedUnits": 14.52,
+        "cappedUnits": 14.52,
+        "capacity": null,
+        "baseSpeedPercent": 3.0,
+        "stationSlots": 3,
+        "roomLevel": 3,
+        "collectionIntervalHours": 12.0,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 290.4,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": 0.0,
+          "shardDelta": -29.04,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 139.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": {
+          "target": "O_DIAMOND",
+          "level": 3,
+          "expectedSeconds": 7200.0,
+          "expectedLmd": 0.0,
+          "expectedGold": 0.0,
+          "expectedOrundum": 20.0,
+          "expectedShards": 2.0,
+          "bias": "default",
+          "distribution": [
+            {
+              "shards": 2.0,
+              "orundum": 20.0,
+              "seconds": 7200.0,
+              "probability": 1.0
+            }
+          ],
+          "source": "Yituliu 2026-06 Orundum trade room summary: level-3 Orundum Trading Post paper efficiencies around 130-135%.",
+          "calibrationMode": "guide_orundum_exact_lookup",
+          "lookupId": "orundum_trade_l3_2026_06_static",
+          "paperEfficiencyPercent": 132.0,
+          "scheduleEffectivePercent": 139.0,
+          "controlSpeedPercent": 7.0
+        },
+        "manufactureProfile": null,
+        "assumptions": [
+          "Yituliu 2026-06 Orundum trade room summary: level-3 Orundum Trading Post paper efficiencies around 130-135%.",
+          "Guide-calibrated Orundum order benchmarks use paper efficiency and raw order throughput without static order-limit clipping.",
+          "望/权变 的控制中枢权变按当前静态模型外势=实地，触发贸易站 +7% 分支计入。"
+        ],
+        "unsupportedSkillEffects": [
+          {
+            "operator": "德克萨斯",
+            "buffId": "trade_ord_spd&cost_P[000]",
+            "buffName": "恩怨",
+            "reason": "同站条件未满足，未计入条件收益。"
+          }
+        ],
+        "skillEffectAudit": [
+          {
+            "operator": "德克萨斯",
+            "buffId": "trade_ord_spd&cost_P[000]",
+            "buffName": "恩怨",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 65.0
+            }
+          },
+          {
+            "operator": "德克萨斯",
+            "buffId": "trade_ord_spd&cost_P[000]",
+            "buffName": "恩怨",
+            "status": "condition_unmet",
+            "scope": "fatigue",
+            "reason": "拉普兰德未同驻同一房间，条件心情变化未计入。",
+            "confidence": "modeled_condition"
+          },
+          {
+            "operator": "德克萨斯",
+            "buffId": "trade_ord_spd&cost_P[000]",
+            "buffName": "恩怨",
+            "status": "unsupported",
+            "scope": "TRADING",
+            "reason": "同站条件未满足，未计入条件收益。",
+            "confidence": "unmodeled"
+          },
+          {
+            "operator": "雷狼龙S空爆",
+            "buffId": "trade_ord_spd[022]",
+            "buffName": "气氛组",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 35.0
+            }
+          },
+          {
+            "operator": "海蒂",
+            "buffId": "trade_ord_spd[021]",
+            "buffName": "名流欢会",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 35.0
+            }
+          },
+          {
+            "operator": "望",
+            "buffId": "",
+            "buffName": "权变",
+            "status": "counted",
+            "scope": "control_global:trade_global",
+            "reason": "望/权变 的控制中枢权变按当前静态模型外势=实地，触发贸易站 +7% 分支计入。",
+            "confidence": "modeled_rule"
+          },
+          {
+            "operator": "德克萨斯",
+            "buffId": "trade_ord_spd&cost_P[000]",
+            "buffName": "恩怨",
+            "status": "source_calibrated",
+            "scope": "orundum_trade_room_lookup",
+            "calibrationMode": "guide_orundum_exact_lookup",
+            "lookupId": "orundum_trade_l3_2026_06_static",
+            "reason": "Yituliu guide room summary calibrates Orundum Trading Post paper efficiency; static guide images do not expose an exact operator roster for this room."
+          },
+          {
+            "operator": "雷狼龙S空爆",
+            "buffId": "trade_ord_spd[022]",
+            "buffName": "气氛组",
+            "status": "source_calibrated",
+            "scope": "orundum_trade_room_lookup",
+            "calibrationMode": "guide_orundum_exact_lookup",
+            "lookupId": "orundum_trade_l3_2026_06_static",
+            "reason": "Yituliu guide room summary calibrates Orundum Trading Post paper efficiency; static guide images do not expose an exact operator roster for this room."
+          },
+          {
+            "operator": "海蒂",
+            "buffId": "trade_ord_spd[021]",
+            "buffName": "名流欢会",
+            "status": "source_calibrated",
+            "scope": "orundum_trade_room_lookup",
+            "calibrationMode": "guide_orundum_exact_lookup",
+            "lookupId": "orundum_trade_l3_2026_06_static",
+            "reason": "Yituliu guide room summary calibrates Orundum Trading Post paper efficiency; static guide images do not expose an exact operator roster for this room."
+          }
+        ],
+        "shift": "第1班"
+      },
+      {
+        "roomId": "manufacture_1",
+        "roomType": "MANUFACTURE",
+        "target": "F_EXP",
+        "producedUnits": 9.72,
+        "cappedUnits": 9.72,
+        "capacity": 54.0,
+        "baseSpeedPercent": 3.0,
+        "stationSlots": 3,
+        "roomLevel": 3,
+        "collectionIntervalHours": 12.0,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 9720.0,
+          "orundum": 0.0,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": 0.0,
+          "shardDelta": 0.0,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 140.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": null,
+        "manufactureProfile": {
+          "target": "F_EXP",
+          "level": 3,
+          "calibrationMode": "guide_exact_lookup",
+          "source": "Yituliu 2026-06 243 Orundum manufacture summary: level-3 EXP paper efficiency 140%.",
+          "lookupId": "maxed_exp_reference_l3_miss_christine",
+          "paperEfficiencyPercent": 140.0,
+          "minimumParsedSpeedPercent": null,
+          "required": [
+            "Miss.Christine",
+            "弑君者",
+            "食铁兽"
+          ]
+        },
+        "assumptions": [
+          "Yituliu 2026-06 243 Orundum manufacture summary: level-3 EXP paper efficiency 140%.",
+          "Yituliu guide manufacture lookup uses the published paper efficiency for this room-level static benchmark.",
+          "Mon3tr/最高权限 的控制中枢全局制造站加成按 +2% 计入。"
+        ],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "食铁兽",
+            "buffId": "manu_formula_spd[020]",
+            "buffName": "拳术指导录像",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 35.0
+            }
+          },
+          {
+            "operator": "Miss.Christine",
+            "buffId": "manu_prod_spd_double[100]",
+            "buffName": "盛餐的回报",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 30.0
+            }
+          },
+          {
+            "operator": "弑君者",
+            "buffId": "manu_formula_spd[022]",
+            "buffName": "逆境荣光",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 35.0
+            }
+          },
+          {
+            "operator": "Mon3tr",
+            "buffId": "",
+            "buffName": "最高权限",
+            "status": "counted",
+            "scope": "control_global:manufacture_global",
+            "reason": "Mon3tr/最高权限 的控制中枢全局制造站加成按 +2% 计入。",
+            "confidence": "modeled_rule"
+          },
+          {
+            "operator": "食铁兽",
+            "buffId": "manu_formula_spd[020]",
+            "buffName": "拳术指导录像",
+            "status": "source_calibrated",
+            "scope": "manufacture_paper_efficiency",
+            "reason": "Exact Yituliu guide manufacture lookup calibrates this room output; parsed fixed speed remains available as diagnostic evidence.",
+            "confidence": "guide_exact_lookup",
+            "numericContribution": {
+              "paperEfficiencyPercent": 140.0,
+              "parsedSpeedPercent": 102.0
+            },
+            "calibrationMode": "guide_exact_lookup",
+            "lookupId": "maxed_exp_reference_l3_miss_christine"
+          },
+          {
+            "operator": "Miss.Christine",
+            "buffId": "manu_prod_spd_double[100]",
+            "buffName": "盛餐的回报",
+            "status": "source_calibrated",
+            "scope": "manufacture_paper_efficiency",
+            "reason": "Exact Yituliu guide manufacture lookup calibrates this room output; parsed fixed speed remains available as diagnostic evidence.",
+            "confidence": "guide_exact_lookup",
+            "numericContribution": {
+              "paperEfficiencyPercent": 140.0,
+              "parsedSpeedPercent": 102.0
+            },
+            "calibrationMode": "guide_exact_lookup",
+            "lookupId": "maxed_exp_reference_l3_miss_christine"
+          },
+          {
+            "operator": "弑君者",
+            "buffId": "manu_formula_spd[022]",
+            "buffName": "逆境荣光",
+            "status": "source_calibrated",
+            "scope": "manufacture_paper_efficiency",
+            "reason": "Exact Yituliu guide manufacture lookup calibrates this room output; parsed fixed speed remains available as diagnostic evidence.",
+            "confidence": "guide_exact_lookup",
+            "numericContribution": {
+              "paperEfficiencyPercent": 140.0,
+              "parsedSpeedPercent": 102.0
+            },
+            "calibrationMode": "guide_exact_lookup",
+            "lookupId": "maxed_exp_reference_l3_miss_christine"
+          }
+        ],
+        "shift": "第1班"
+      },
+      {
+        "roomId": "manufacture_2",
+        "roomType": "MANUFACTURE",
+        "target": "F_GOLD",
+        "producedUnits": 20.7,
+        "cappedUnits": 20.7,
+        "capacity": 54.0,
+        "baseSpeedPercent": 3.0,
+        "stationSlots": 3,
+        "roomLevel": 3,
+        "collectionIntervalHours": 12.0,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 0.0,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": 20.7,
+          "shardDelta": 0.0,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 104.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": null,
+        "manufactureProfile": null,
+        "assumptions": [
+          "Mon3tr/最高权限 的控制中枢全局制造站加成按 +2% 计入。",
+          "薇薇安娜/烛骑士微光 的控制中枢骑士制造站加成按每人 +7% 计入。"
+        ],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "砾",
+            "buffId": "manu_formula_spd[110]",
+            "buffName": "金属工艺·β",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 35.0
+            }
+          },
+          {
+            "operator": "斑点",
+            "buffId": "manu_formula_spd[100]",
+            "buffName": "金属工艺·α",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 30.0
+            }
+          },
+          {
+            "operator": "夜烟",
+            "buffId": "manu_formula_spd[100]",
+            "buffName": "金属工艺·α",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 30.0
+            }
+          },
+          {
+            "operator": "Mon3tr",
+            "buffId": "",
+            "buffName": "最高权限",
+            "status": "counted",
+            "scope": "control_global:manufacture_global",
+            "reason": "Mon3tr/最高权限 的控制中枢全局制造站加成按 +2% 计入。",
+            "confidence": "modeled_rule"
+          },
+          {
+            "operator": "薇薇安娜",
+            "buffId": "",
+            "buffName": "烛骑士微光",
+            "status": "counted",
+            "scope": "control_global:knight_manufacture",
+            "reason": "薇薇安娜/烛骑士微光 的控制中枢骑士制造站加成按每人 +7% 计入。",
+            "confidence": "modeled_rule"
+          }
+        ],
+        "shift": "第1班"
+      },
+      {
+        "roomId": "manufacture_3",
+        "roomType": "MANUFACTURE",
+        "target": "F_GOLD",
+        "producedUnits": 19.5,
+        "cappedUnits": 19.5,
+        "capacity": 54.0,
+        "baseSpeedPercent": 3.0,
+        "stationSlots": 3,
+        "roomLevel": 3,
+        "collectionIntervalHours": 12.0,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 0.0,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": 19.5,
+          "shardDelta": 0.0,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 92.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": null,
+        "manufactureProfile": null,
+        "assumptions": [
+          "Mon3tr/最高权限 的控制中枢全局制造站加成按 +2% 计入。"
+        ],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "梅尔",
+            "buffId": "manu_prod_spd[020]",
+            "buffName": "咪波·制造型",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 30.0
+            }
+          },
+          {
+            "operator": "温米",
+            "buffId": "manu_formula_spd[101]",
+            "buffName": "金属工艺·α",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 30.0
+            }
+          },
+          {
+            "operator": "苍苔",
+            "buffId": "manu_formula_spd[100]",
+            "buffName": "金属工艺·α",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 30.0
+            }
+          },
+          {
+            "operator": "Mon3tr",
+            "buffId": "",
+            "buffName": "最高权限",
+            "status": "counted",
+            "scope": "control_global:manufacture_global",
+            "reason": "Mon3tr/最高权限 的控制中枢全局制造站加成按 +2% 计入。",
+            "confidence": "modeled_rule"
+          }
+        ],
+        "shift": "第1班"
+      },
+      {
+        "roomId": "manufacture_4",
+        "roomType": "MANUFACTURE",
+        "target": "F_DIAMOND",
+        "producedUnits": 25.2,
+        "cappedUnits": 25.2,
+        "capacity": 54.0,
+        "baseSpeedPercent": 3.0,
+        "stationSlots": 3,
+        "roomLevel": 3,
+        "collectionIntervalHours": 12.0,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 0.0,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": 0.0,
+          "shardDelta": 25.2,
+          "materialCosts": {
+            "30012": 50.4,
+            "4001": 40320.0
+          },
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 107.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": null,
+        "manufactureProfile": null,
+        "assumptions": [
+          "Mon3tr/最高权限 的控制中枢全局制造站加成按 +2% 计入。"
+        ],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "炎熔",
+            "buffId": "manu_formula_spd[210]",
+            "buffName": "源石工艺·β",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 35.0
+            }
+          },
+          {
+            "operator": "地灵",
+            "buffId": "manu_formula_spd[211]",
+            "buffName": "地质学·β",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 35.0
+            }
+          },
+          {
+            "operator": "锡兰",
+            "buffId": "manu_formula_spd[212]",
+            "buffName": "源石研究",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 35.0
+            }
+          },
+          {
+            "operator": "Mon3tr",
+            "buffId": "",
+            "buffName": "最高权限",
+            "status": "counted",
+            "scope": "control_global:manufacture_global",
+            "reason": "Mon3tr/最高权限 的控制中枢全局制造站加成按 +2% 计入。",
+            "confidence": "modeled_rule"
+          }
+        ],
+        "shift": "第1班"
+      },
+      {
+        "roomId": "power_1",
+        "roomType": "POWER",
+        "target": null,
+        "producedUnits": 0.0,
+        "cappedUnits": 0.0,
+        "capacity": null,
+        "baseSpeedPercent": 0.0,
+        "stationSlots": 0,
+        "roomLevel": 3,
+        "collectionIntervalHours": 0.0,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 0.0,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": 0.0,
+          "shardDelta": 0.0,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 25.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": null,
+        "manufactureProfile": null,
+        "assumptions": [],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "承曦格雷伊",
+            "buffId": "power_rec_drone[000]",
+            "buffName": "巡线框架",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 25.0
+            }
+          }
+        ],
+        "shift": "第1班"
+      },
+      {
+        "roomId": "power_2",
+        "roomType": "POWER",
+        "target": null,
+        "producedUnits": 0.0,
+        "cappedUnits": 0.0,
+        "capacity": null,
+        "baseSpeedPercent": 0.0,
+        "stationSlots": 0,
+        "roomLevel": 3,
+        "collectionIntervalHours": 0.0,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 0.0,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": 0.0,
+          "shardDelta": 0.0,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 20.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": null,
+        "manufactureProfile": null,
+        "assumptions": [],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "格雷伊",
+            "buffId": "power_rec_spd[020]",
+            "buffName": "静电场",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 20.0
+            }
+          }
+        ],
+        "shift": "第1班"
+      },
+      {
+        "roomId": "power_3",
+        "roomType": "POWER",
+        "target": null,
+        "producedUnits": 0.0,
+        "cappedUnits": 0.0,
+        "capacity": null,
+        "baseSpeedPercent": 0.0,
+        "stationSlots": 0,
+        "roomLevel": 3,
+        "collectionIntervalHours": 0.0,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 0.0,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": 0.0,
+          "shardDelta": 0.0,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 20.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": null,
+        "manufactureProfile": null,
+        "assumptions": [],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "炎狱炎熔",
+            "buffId": "power_rec_spd[022]",
+            "buffName": "热能充能·γ",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 20.0
+            }
+          }
+        ],
+        "shift": "第1班"
+      },
+      {
+        "roomId": "control_1",
+        "roomType": "CONTROL",
+        "target": null,
+        "producedUnits": 0.0,
+        "cappedUnits": 0.0,
+        "capacity": null,
+        "baseSpeedPercent": 0.0,
+        "stationSlots": 0,
+        "roomLevel": 3,
+        "collectionIntervalHours": 0.0,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 0.0,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": 0.0,
+          "shardDelta": 0.0,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 0.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": null,
+        "manufactureProfile": null,
+        "assumptions": [],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "戴菲恩",
+            "buffId": "control_tra_limit&spd[010]",
+            "buffName": "运筹好手",
+            "status": "diagnostic_only",
+            "scope": "CONTROL",
+            "reason": "Complex or upgrade-only skill produced no modeled numeric effect in this room evaluation.",
+            "confidence": "diagnostic"
+          },
+          {
+            "operator": "焰尾",
+            "buffId": "control_mp_psk[000]",
+            "buffName": "红松的骑士",
+            "status": "diagnostic_only",
+            "scope": "CONTROL",
+            "reason": "Complex or upgrade-only skill produced no modeled numeric effect in this room evaluation.",
+            "confidence": "diagnostic"
+          },
+          {
+            "operator": "薇薇安娜",
+            "buffId": "control_prod_fraction[000]",
+            "buffName": "烛骑士微光",
+            "status": "diagnostic_only",
+            "scope": "CONTROL",
+            "reason": "Complex or upgrade-only skill produced no modeled numeric effect in this room evaluation.",
+            "confidence": "diagnostic"
+          }
+        ],
+        "shift": "第1班"
+      },
+      {
+        "roomId": "meeting_1",
+        "roomType": "MEETING",
+        "target": null,
+        "producedUnits": 26.0,
+        "cappedUnits": 26.0,
+        "capacity": null,
+        "baseSpeedPercent": 2.0,
+        "stationSlots": 2,
+        "roomLevel": 3,
+        "collectionIntervalHours": 12.0,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 0.0,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 26.0,
+          "pureGoldDelta": 0.0,
+          "shardDelta": 0.0,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 50.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": null,
+        "manufactureProfile": null,
+        "assumptions": [
+          "会客室线索搜集速度按每日加权效率点计入 meetingSpeed；综合分按 meetingSpeed / 30 计入。"
+        ],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "远山",
+            "buffId": "meet_spd[030]",
+            "buffName": "占卜",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 25.0
+            }
+          },
+          {
+            "operator": "红",
+            "buffId": "meet_spd[031]",
+            "buffName": "追踪者",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 25.0
+            }
+          }
+        ],
+        "shift": "第1班"
+      },
+      {
+        "roomId": "hire_1",
+        "roomType": "HIRE",
+        "target": null,
+        "producedUnits": 23.0,
+        "cappedUnits": 23.0,
+        "capacity": null,
+        "baseSpeedPercent": 1.0,
+        "stationSlots": 1,
+        "roomLevel": 3,
+        "collectionIntervalHours": 12.0,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 0.0,
+          "officeSpeed": 23.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": 0.0,
+          "shardDelta": 0.0,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 45.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": null,
+        "manufactureProfile": null,
+        "assumptions": [
+          "办公室公开招募联络速度按每日加权效率点计入 officeSpeed；综合分按 officeSpeed / 30 计入。"
+        ],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "普罗旺斯",
+            "buffId": "hire_spd[011]",
+            "buffName": "天灾信使·β",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 45.0
+            }
+          }
+        ],
+        "shift": "第1班"
+      },
+      {
+        "roomId": "trading_1",
+        "roomType": "TRADING",
+        "target": "O_GOLD",
+        "producedUnits": 9.027,
+        "cappedUnits": 9.027,
+        "capacity": 10.0,
+        "baseSpeedPercent": 3.0,
+        "stationSlots": 3,
+        "roomLevel": 3,
+        "collectionIntervalHours": 12.0,
+        "vector": {
+          "lmdGross": 13088.5,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 0.0,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": -26.177,
+          "shardDelta": 0.0,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 152.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": {
+          "target": "O_GOLD",
+          "level": 3,
+          "expectedSeconds": 12204.0,
+          "expectedLmd": 1450.0,
+          "expectedGold": 2.9,
+          "expectedOrundum": 0.0,
+          "expectedShards": 0.0,
+          "bias": "default",
+          "distribution": [
+            {
+              "gold": 2.0,
+              "lmd": 1000.0,
+              "seconds": 8640.0,
+              "probability": 0.3
+            },
+            {
+              "gold": 3.0,
+              "lmd": 1500.0,
+              "seconds": 12600.0,
+              "probability": 0.5
+            },
+            {
+              "gold": 4.0,
+              "lmd": 2000.0,
+              "seconds": 16560.0,
+              "probability": 0.2
+            }
+          ],
+          "source": "LMD order probabilities and durations follow public Trading Post guide data.",
+          "calibrationMode": "generic_profile"
+        },
+        "manufactureProfile": null,
+        "assumptions": [
+          "LMD order probabilities and durations follow public Trading Post guide data.",
+          "维娜·维多利亚/外贸决议按格拉斯哥帮同站条件计入。",
+          "摩根/帮派指南针按同站格拉斯哥帮 2 人计入。",
+          "阿米娅/合作协议 的控制中枢全局贸易站加成按 +7% 计入。"
+        ],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "维娜·维多利亚",
+            "buffId": "trade_ord_spd&par[000]",
+            "buffName": "外贸决议·α",
+            "status": "counted",
+            "scope": "TRADING",
+            "reason": "Modeled complex rule contributed numeric effect in this room evaluation.",
+            "confidence": "modeled_rule",
+            "numericContribution": {
+              "speedPercent": 40.0
+            }
+          },
+          {
+            "operator": "夜刀",
+            "buffId": "trade_ord_spd[001]",
+            "buffName": "订单分发·β",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 30.0
+            }
+          },
+          {
+            "operator": "摩根",
+            "buffId": "trade_ord_spd_par[000]",
+            "buffName": "帮派指南针",
+            "status": "counted",
+            "scope": "TRADING",
+            "reason": "Modeled complex rule contributed numeric effect in this room evaluation.",
+            "confidence": "modeled_rule",
+            "numericContribution": {
+              "speedPercent": 75.0
+            }
+          },
+          {
+            "operator": "阿米娅",
+            "buffId": "",
+            "buffName": "合作协议",
+            "status": "counted",
+            "scope": "control_global:trade_global",
+            "reason": "阿米娅/合作协议 的控制中枢全局贸易站加成按 +7% 计入。",
+            "confidence": "modeled_rule"
+          }
+        ],
+        "shift": "第2班"
+      },
+      {
+        "roomId": "trading_2",
+        "roomType": "TRADING",
+        "target": "O_DIAMOND",
+        "producedUnits": 14.52,
+        "cappedUnits": 14.52,
+        "capacity": null,
+        "baseSpeedPercent": 3.0,
+        "stationSlots": 3,
+        "roomLevel": 3,
+        "collectionIntervalHours": 12.0,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 290.4,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": 0.0,
+          "shardDelta": -29.04,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 139.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": {
+          "target": "O_DIAMOND",
+          "level": 3,
+          "expectedSeconds": 7200.0,
+          "expectedLmd": 0.0,
+          "expectedGold": 0.0,
+          "expectedOrundum": 20.0,
+          "expectedShards": 2.0,
+          "bias": "default",
+          "distribution": [
+            {
+              "shards": 2.0,
+              "orundum": 20.0,
+              "seconds": 7200.0,
+              "probability": 1.0
+            }
+          ],
+          "source": "Yituliu 2026-06 Orundum trade room summary: level-3 Orundum Trading Post paper efficiencies around 130-135%.",
+          "calibrationMode": "guide_orundum_exact_lookup",
+          "lookupId": "orundum_trade_l3_2026_06_static",
+          "paperEfficiencyPercent": 132.0,
+          "scheduleEffectivePercent": 139.0,
+          "controlSpeedPercent": 7.0
+        },
+        "manufactureProfile": null,
+        "assumptions": [
+          "Yituliu 2026-06 Orundum trade room summary: level-3 Orundum Trading Post paper efficiencies around 130-135%.",
+          "Guide-calibrated Orundum order benchmarks use paper efficiency and raw order throughput without static order-limit clipping.",
+          "阿米娅/合作协议 的控制中枢全局贸易站加成按 +7% 计入。"
+        ],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "芬",
+            "buffId": "trade_ord_spd[001]",
+            "buffName": "订单分发·β",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 30.0
+            }
+          },
+          {
+            "operator": "慕斯",
+            "buffId": "trade_ord_spd[001]",
+            "buffName": "订单分发·β",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 30.0
+            }
+          },
+          {
+            "operator": "缠丸",
+            "buffId": "trade_ord_spd[001]",
+            "buffName": "订单分发·β",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 30.0
+            }
+          },
+          {
+            "operator": "阿米娅",
+            "buffId": "",
+            "buffName": "合作协议",
+            "status": "counted",
+            "scope": "control_global:trade_global",
+            "reason": "阿米娅/合作协议 的控制中枢全局贸易站加成按 +7% 计入。",
+            "confidence": "modeled_rule"
+          },
+          {
+            "operator": "芬",
+            "buffId": "trade_ord_spd[001]",
+            "buffName": "订单分发·β",
+            "status": "source_calibrated",
+            "scope": "orundum_trade_room_lookup",
+            "calibrationMode": "guide_orundum_exact_lookup",
+            "lookupId": "orundum_trade_l3_2026_06_static",
+            "reason": "Yituliu guide room summary calibrates Orundum Trading Post paper efficiency; static guide images do not expose an exact operator roster for this room."
+          },
+          {
+            "operator": "慕斯",
+            "buffId": "trade_ord_spd[001]",
+            "buffName": "订单分发·β",
+            "status": "source_calibrated",
+            "scope": "orundum_trade_room_lookup",
+            "calibrationMode": "guide_orundum_exact_lookup",
+            "lookupId": "orundum_trade_l3_2026_06_static",
+            "reason": "Yituliu guide room summary calibrates Orundum Trading Post paper efficiency; static guide images do not expose an exact operator roster for this room."
+          },
+          {
+            "operator": "缠丸",
+            "buffId": "trade_ord_spd[001]",
+            "buffName": "订单分发·β",
+            "status": "source_calibrated",
+            "scope": "orundum_trade_room_lookup",
+            "calibrationMode": "guide_orundum_exact_lookup",
+            "lookupId": "orundum_trade_l3_2026_06_static",
+            "reason": "Yituliu guide room summary calibrates Orundum Trading Post paper efficiency; static guide images do not expose an exact operator roster for this room."
+          }
+        ],
+        "shift": "第2班"
+      },
+      {
+        "roomId": "manufacture_1",
+        "roomType": "MANUFACTURE",
+        "target": "F_EXP",
+        "producedUnits": 9.16,
+        "cappedUnits": 9.16,
+        "capacity": 54.0,
+        "baseSpeedPercent": 3.0,
+        "stationSlots": 3,
+        "roomLevel": 3,
+        "collectionIntervalHours": 12.0,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 9160.0,
+          "orundum": 0.0,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": 0.0,
+          "shardDelta": 0.0,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 126.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": null,
+        "manufactureProfile": {
+          "target": "F_EXP",
+          "level": 3,
+          "calibrationMode": "guide_exact_lookup",
+          "source": "Yituliu 2026-06 243 Orundum manufacture summary: companion level-3 EXP paper efficiency 126%.",
+          "lookupId": "maxed_exp_reference_l3_generic_126",
+          "paperEfficiencyPercent": 126.0,
+          "minimumParsedSpeedPercent": 85.0,
+          "required": []
+        },
+        "assumptions": [
+          "Yituliu 2026-06 243 Orundum manufacture summary: companion level-3 EXP paper efficiency 126%.",
+          "Yituliu guide manufacture lookup uses the published paper efficiency for this room-level static benchmark."
+        ],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "断罪者",
+            "buffId": "manu_formula_spd[020]",
+            "buffName": "拳术指导录像",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 35.0
+            }
+          },
+          {
+            "operator": "Castle-3",
+            "buffId": "manu_formula_spd[010]",
+            "buffName": "作战指导录像",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 30.0
+            }
+          },
+          {
+            "operator": "白雪",
+            "buffId": "manu_formula_spd[010]",
+            "buffName": "作战指导录像",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 30.0
+            }
+          },
+          {
+            "operator": "断罪者",
+            "buffId": "manu_formula_spd[020]",
+            "buffName": "拳术指导录像",
+            "status": "source_calibrated",
+            "scope": "manufacture_paper_efficiency",
+            "reason": "Exact Yituliu guide manufacture lookup calibrates this room output; parsed fixed speed remains available as diagnostic evidence.",
+            "confidence": "guide_exact_lookup",
+            "numericContribution": {
+              "paperEfficiencyPercent": 126.0,
+              "parsedSpeedPercent": 95.0
+            },
+            "calibrationMode": "guide_exact_lookup",
+            "lookupId": "maxed_exp_reference_l3_generic_126"
+          },
+          {
+            "operator": "Castle-3",
+            "buffId": "manu_formula_spd[010]",
+            "buffName": "作战指导录像",
+            "status": "source_calibrated",
+            "scope": "manufacture_paper_efficiency",
+            "reason": "Exact Yituliu guide manufacture lookup calibrates this room output; parsed fixed speed remains available as diagnostic evidence.",
+            "confidence": "guide_exact_lookup",
+            "numericContribution": {
+              "paperEfficiencyPercent": 126.0,
+              "parsedSpeedPercent": 95.0
+            },
+            "calibrationMode": "guide_exact_lookup",
+            "lookupId": "maxed_exp_reference_l3_generic_126"
+          },
+          {
+            "operator": "白雪",
+            "buffId": "manu_formula_spd[010]",
+            "buffName": "作战指导录像",
+            "status": "source_calibrated",
+            "scope": "manufacture_paper_efficiency",
+            "reason": "Exact Yituliu guide manufacture lookup calibrates this room output; parsed fixed speed remains available as diagnostic evidence.",
+            "confidence": "guide_exact_lookup",
+            "numericContribution": {
+              "paperEfficiencyPercent": 126.0,
+              "parsedSpeedPercent": 95.0
+            },
+            "calibrationMode": "guide_exact_lookup",
+            "lookupId": "maxed_exp_reference_l3_generic_126"
+          }
+        ],
+        "shift": "第2班"
+      },
+      {
+        "roomId": "manufacture_2",
+        "roomType": "MANUFACTURE",
+        "target": "F_GOLD",
+        "producedUnits": 18.8,
+        "cappedUnits": 18.8,
+        "capacity": 54.0,
+        "baseSpeedPercent": 3.0,
+        "stationSlots": 3,
+        "roomLevel": 3,
+        "collectionIntervalHours": 12.0,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 0.0,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": 18.8,
+          "shardDelta": 0.0,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 85.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": null,
+        "manufactureProfile": null,
+        "assumptions": [],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "引星棘刺",
+            "buffId": "manu_formula_spd[102]",
+            "buffName": "金属工艺·α",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 30.0
+            }
+          },
+          {
+            "operator": "玛露西尔",
+            "buffId": "manu_prod_spd[014]",
+            "buffName": "差遣使魔·β",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 30.0
+            }
+          },
+          {
+            "operator": "史都华德",
+            "buffId": "manu_prod_spd[010]",
+            "buffName": "标准化·β",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 25.0
+            }
+          }
+        ],
+        "shift": "第2班"
+      },
+      {
+        "roomId": "manufacture_3",
+        "roomType": "MANUFACTURE",
+        "target": "F_GOLD",
+        "producedUnits": 18.3,
+        "cappedUnits": 18.3,
+        "capacity": 54.0,
+        "baseSpeedPercent": 3.0,
+        "stationSlots": 3,
+        "roomLevel": 3,
+        "collectionIntervalHours": 12.0,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 0.0,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": 18.3,
+          "shardDelta": 0.0,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 80.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": null,
+        "manufactureProfile": null,
+        "assumptions": [],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "淬羽赫默",
+            "buffId": "manu_prod_spd[021]",
+            "buffName": "莱茵科技·γ",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 30.0
+            }
+          },
+          {
+            "operator": "香草",
+            "buffId": "manu_prod_spd[010]",
+            "buffName": "标准化·β",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 25.0
+            }
+          },
+          {
+            "operator": "调香师",
+            "buffId": "manu_prod_spd[010]",
+            "buffName": "标准化·β",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 25.0
+            }
+          }
+        ],
+        "shift": "第2班"
+      },
+      {
+        "roomId": "manufacture_4",
+        "roomType": "MANUFACTURE",
+        "target": "F_DIAMOND",
+        "producedUnits": 23.76,
+        "cappedUnits": 23.76,
+        "capacity": 54.0,
+        "baseSpeedPercent": 3.0,
+        "stationSlots": 3,
+        "roomLevel": 3,
+        "collectionIntervalHours": 12.0,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 0.0,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": 0.0,
+          "shardDelta": 23.76,
+          "materialCosts": {
+            "30012": 47.52,
+            "4001": 38016.0
+          },
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 95.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": null,
+        "manufactureProfile": null,
+        "assumptions": [],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "艾雅法拉",
+            "buffId": "manu_formula_spd[213]",
+            "buffName": "火山学家",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 35.0
+            }
+          },
+          {
+            "operator": "月见夜",
+            "buffId": "manu_formula_spd[200]",
+            "buffName": "源石工艺·α",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 30.0
+            }
+          },
+          {
+            "operator": "褐果",
+            "buffId": "manu_formula_spd[201]",
+            "buffName": "地质学·α",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 30.0
+            }
+          }
+        ],
+        "shift": "第2班"
+      },
+      {
+        "roomId": "power_1",
+        "roomType": "POWER",
+        "target": null,
+        "producedUnits": 0.0,
+        "cappedUnits": 0.0,
+        "capacity": null,
+        "baseSpeedPercent": 0.0,
+        "stationSlots": 0,
+        "roomLevel": 3,
+        "collectionIntervalHours": 0.0,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 0.0,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": 0.0,
+          "shardDelta": 0.0,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 20.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": null,
+        "manufactureProfile": null,
+        "assumptions": [],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "雷蛇",
+            "buffId": "power_rec_spd[021]",
+            "buffName": "脉冲电弧·β",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 20.0
+            }
+          }
+        ],
+        "shift": "第2班"
+      },
+      {
+        "roomId": "power_2",
+        "roomType": "POWER",
+        "target": null,
+        "producedUnits": 0.0,
+        "cappedUnits": 0.0,
+        "capacity": null,
+        "baseSpeedPercent": 0.0,
+        "stationSlots": 0,
+        "roomLevel": 3,
+        "collectionIntervalHours": 0.0,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 0.0,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": 0.0,
+          "shardDelta": 0.0,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 20.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": null,
+        "manufactureProfile": null,
+        "assumptions": [],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "海霓",
+            "buffId": "power_rec_spd[026]",
+            "buffName": "穹顶物流管理·β",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 20.0
+            }
+          }
+        ],
+        "shift": "第2班"
+      },
+      {
+        "roomId": "power_3",
+        "roomType": "POWER",
+        "target": null,
+        "producedUnits": 0.0,
+        "cappedUnits": 0.0,
+        "capacity": null,
+        "baseSpeedPercent": 0.0,
+        "stationSlots": 0,
+        "roomLevel": 3,
+        "collectionIntervalHours": 0.0,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 0.0,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": 0.0,
+          "shardDelta": 0.0,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 20.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": null,
+        "manufactureProfile": null,
+        "assumptions": [],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "天空盒",
+            "buffId": "power_rec_spd[024]",
+            "buffName": "合法窃电",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 20.0
+            }
+          }
+        ],
+        "shift": "第2班"
+      },
+      {
+        "roomId": "control_1",
+        "roomType": "CONTROL",
+        "target": null,
+        "producedUnits": 0.0,
+        "cappedUnits": 0.0,
+        "capacity": null,
+        "baseSpeedPercent": 0.0,
+        "stationSlots": 0,
+        "roomLevel": 3,
+        "collectionIntervalHours": 0.0,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 0.0,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": 0.0,
+          "shardDelta": 0.0,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 0.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 1.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": null,
+        "manufactureProfile": null,
+        "assumptions": [
+          "魔王/魔王传承 的阿米娅同驻心情恢复条件已满足。"
+        ],
+        "unsupportedSkillEffects": [
+          {
+            "operator": "魔王",
+            "buffId": "control_mp_cost_double[000]",
+            "buffName": "魔王传承",
+            "reason": "控制中枢复杂条件效果尚未完全建模，未计入全局加成。"
+          }
+        ],
+        "skillEffectAudit": [
+          {
+            "operator": "维什戴尔",
+            "buffId": "control_meeting&ord[000]",
+            "buffName": "同谋·α",
+            "status": "counted",
+            "scope": "order_limit",
+            "reason": "Parsed order-limit bonus is counted in room order capacity.",
+            "confidence": "parsed_order_limit",
+            "numericContribution": {
+              "orderLimitBonus": 1.0
+            }
+          },
+          {
+            "operator": "魔王",
+            "buffId": "control_mp_cost_double[000]",
+            "buffName": "魔王传承",
+            "status": "counted",
+            "scope": "fatigue",
+            "reason": "Parsed morale delta is counted in fatigue risk.",
+            "confidence": "parsed_fatigue",
+            "numericContribution": {
+              "fatigueDeltaPerHour": -0.05
+            }
+          },
+          {
+            "operator": "凛御银灰",
+            "buffId": "control_tra_limit&spd3[000]",
+            "buffName": "商业版图",
+            "status": "diagnostic_only",
+            "scope": "CONTROL",
+            "reason": "Complex or upgrade-only skill produced no modeled numeric effect in this room evaluation.",
+            "confidence": "diagnostic"
+          },
+          {
+            "operator": "八幡海铃",
+            "buffId": "control_tra_limit&spd2[000]",
+            "buffName": "家族认可",
+            "status": "diagnostic_only",
+            "scope": "CONTROL",
+            "reason": "Complex or upgrade-only skill produced no modeled numeric effect in this room evaluation.",
+            "confidence": "diagnostic"
+          },
+          {
+            "operator": "魔王",
+            "buffId": "control_mp_cost_double[000]",
+            "buffName": "魔王传承",
+            "status": "unsupported",
+            "scope": "control_global",
+            "reason": "Unmodeled conditional Control Center effect was not silently counted.",
+            "confidence": "unmodeled"
+          }
+        ],
+        "shift": "第2班"
+      },
+      {
+        "roomId": "meeting_1",
+        "roomType": "MEETING",
+        "target": null,
+        "producedUnits": 26.0,
+        "cappedUnits": 26.0,
+        "capacity": null,
+        "baseSpeedPercent": 2.0,
+        "stationSlots": 2,
+        "roomLevel": 3,
+        "collectionIntervalHours": 12.0,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 0.0,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 26.0,
+          "pureGoldDelta": 0.0,
+          "shardDelta": 0.0,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 50.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": null,
+        "manufactureProfile": null,
+        "assumptions": [
+          "会客室线索搜集速度按每日加权效率点计入 meetingSpeed；综合分按 meetingSpeed / 30 计入。"
+        ],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "星极",
+            "buffId": "meet_spd&team[110]",
+            "buffName": "星象学",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 25.0
+            }
+          },
+          {
+            "operator": "陈",
+            "buffId": "meet_spd&team[100]",
+            "buffName": "警司",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 25.0
+            }
+          }
+        ],
+        "shift": "第2班"
+      },
+      {
+        "roomId": "hire_1",
+        "roomType": "HIRE",
+        "target": null,
+        "producedUnits": 23.0,
+        "cappedUnits": 23.0,
+        "capacity": null,
+        "baseSpeedPercent": 1.0,
+        "stationSlots": 1,
+        "roomLevel": 3,
+        "collectionIntervalHours": 12.0,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 0.0,
+          "officeSpeed": 23.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": 0.0,
+          "shardDelta": 0.0,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 45.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": null,
+        "manufactureProfile": null,
+        "assumptions": [
+          "办公室公开招募联络速度按每日加权效率点计入 officeSpeed；综合分按 officeSpeed / 30 计入。",
+          "圣聆初雪/雪境归心按凛御银灰进驻控制中枢额外 +10% 计入。"
+        ],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "圣聆初雪",
+            "buffId": "hire_spd_cost&char[001]",
+            "buffName": "雪境归心",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 35.0
+            }
+          },
+          {
+            "operator": "圣聆初雪",
+            "buffId": "hire_spd_cost&char[001]",
+            "buffName": "雪境归心",
+            "status": "counted",
+            "scope": "fatigue",
+            "reason": "Parsed morale delta is counted in fatigue risk.",
+            "confidence": "parsed_fatigue",
+            "numericContribution": {
+              "fatigueDeltaPerHour": -0.25
+            }
+          }
+        ],
+        "shift": "第2班"
+      },
+      {
+        "roomId": "trading_1",
+        "roomType": "TRADING",
+        "target": "O_GOLD",
+        "producedUnits": 0.5,
+        "cappedUnits": 0.5,
+        "capacity": null,
+        "baseSpeedPercent": 3.0,
+        "stationSlots": 3,
+        "roomLevel": 3,
+        "collectionIntervalHours": 12.0,
+        "vector": {
+          "lmdGross": 10920.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 0.0,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": -18.2,
+          "shardDelta": 0.0,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 72.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": {
+          "target": "O_GOLD",
+          "level": 3,
+          "calibrationMode": "guide_mechanism_estimate",
+          "mechanismId": "croissant_special_order",
+          "anchorOperator": "可露希尔",
+          "baseLmdPer24h": 12000.0,
+          "baseGoldPer24h": 20.0,
+          "intrinsicSpeedPercent": 20.0,
+          "partnerSpeedPercent": 55.0,
+          "scheduleEffectivePercent": 182.0,
+          "mechanismScheduleEffectivePercent": 175.0,
+          "controlSpeedPercent": 7.0,
+          "confidence": "guide_anchor_estimate",
+          "matchedAnchorRows": [
+            "croissant_l1",
+            "croissant_l2_plus_40",
+            "croissant_l2_plus_45",
+            "croissant_l3_plus_two_40",
+            "croissant_l3_plus_two_45"
+          ],
+          "source": "Yituliu 2026-06 trade lookup rows for Croissant special orders.",
+          "partnerContributions": [
+            {
+              "operatorName": "能天使",
+              "buffId": "trade_ord_spd[020]",
+              "buffName": "物流专家",
+              "parsedScore": 35.0,
+              "countedSpeedPercent": 35.0,
+              "counted": true,
+              "classification": "fixed_speed",
+              "reason": "Parsed fixed Trading Post speed is counted in partnerSpeedPercent.",
+              "hasUpgradeRequirement": false
+            },
+            {
+              "operatorName": "蕾缪安",
+              "buffId": "trade_ord_spd&multiPar[000]",
+              "buffName": "订单分发·α",
+              "parsedScore": 20.0,
+              "countedSpeedPercent": 20.0,
+              "counted": true,
+              "classification": "fixed_speed",
+              "reason": "Parsed fixed Trading Post speed is counted in partnerSpeedPercent.",
+              "hasUpgradeRequirement": false
+            }
+          ]
+        },
+        "manufactureProfile": null,
+        "assumptions": [
+          "Yituliu 2026-06 trade lookup rows for Croissant special orders.",
+          "Yituliu guide anchor rows are used to estimate this special Trading Post mechanism when no exact combo lookup matches.",
+          "望/权变 的控制中枢权变按当前静态模型外势=实地，触发贸易站 +7% 分支计入。"
+        ],
+        "unsupportedSkillEffects": [
+          {
+            "operator": "可露希尔",
+            "buffId": "trade_ord_closure[000]",
+            "buffName": "特别订单",
+            "reason": "违约订单收益需要订单分布模型；当前仅标记，不直接改变产出。校准贸易档案可能会单独处理房间总产出。"
+          },
+          {
+            "operator": "可露希尔",
+            "buffId": "trade_ord_closure[000]",
+            "buffName": "特别订单",
+            "reason": "特别订单真实收益未在公开 building_data 中给出，按基础订单速度估算。"
+          }
+        ],
+        "skillEffectAudit": [
+          {
+            "operator": "可露希尔",
+            "buffId": "trade_ord_closure[000]",
+            "buffName": "特别订单",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 10.0
+            }
+          },
+          {
+            "operator": "可露希尔",
+            "buffId": "trade_ord_closure[000]",
+            "buffName": "特别订单",
+            "status": "unsupported",
+            "scope": "TRADING",
+            "reason": "违约订单收益需要订单分布模型；当前仅标记，不直接改变产出。校准贸易档案可能会单独处理房间总产出。",
+            "confidence": "unmodeled"
+          },
+          {
+            "operator": "可露希尔",
+            "buffId": "trade_ord_closure[000]",
+            "buffName": "特别订单",
+            "status": "unsupported",
+            "scope": "TRADING",
+            "reason": "特别订单真实收益未在公开 building_data 中给出，按基础订单速度估算。",
+            "confidence": "unmodeled"
+          },
+          {
+            "operator": "能天使",
+            "buffId": "trade_ord_spd[020]",
+            "buffName": "物流专家",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 35.0
+            }
+          },
+          {
+            "operator": "蕾缪安",
+            "buffId": "trade_ord_spd&multiPar[000]",
+            "buffName": "订单分发·α",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 20.0
+            }
+          },
+          {
+            "operator": "望",
+            "buffId": "",
+            "buffName": "权变",
+            "status": "counted",
+            "scope": "control_global:trade_global",
+            "reason": "望/权变 的控制中枢权变按当前静态模型外势=实地，触发贸易站 +7% 分支计入。",
+            "confidence": "modeled_rule"
+          },
+          {
+            "operator": "可露希尔",
+            "buffId": "trade_ord_closure[000]",
+            "buffName": "特别订单",
+            "status": "source_calibrated",
+            "scope": "trade_order_profile",
+            "reason": "Yituliu guide anchor rows calibrate this special Trading Post mechanism; unsupported notes describe sub-effects not directly parsed as ordinary speed.",
+            "confidence": "guide_anchor_estimate",
+            "calibrationMode": "guide_mechanism_estimate",
+            "mechanismId": "croissant_special_order"
+          },
+          {
+            "operator": "能天使",
+            "buffId": "trade_ord_spd[020]",
+            "buffName": "物流专家",
+            "status": "counted",
+            "scope": "special_trade_partner_speed",
+            "reason": "Parsed fixed Trading Post speed is counted in partnerSpeedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "classification": "fixed_speed",
+            "numericContribution": {
+              "speedPercent": 35.0
+            }
+          },
+          {
+            "operator": "蕾缪安",
+            "buffId": "trade_ord_spd&multiPar[000]",
+            "buffName": "订单分发·α",
+            "status": "counted",
+            "scope": "special_trade_partner_speed",
+            "reason": "Parsed fixed Trading Post speed is counted in partnerSpeedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "classification": "fixed_speed",
+            "numericContribution": {
+              "speedPercent": 20.0
+            }
+          }
+        ],
+        "shift": "第3班"
+      },
+      {
+        "roomId": "trading_2",
+        "roomType": "TRADING",
+        "target": "O_DIAMOND",
+        "producedUnits": 14.52,
+        "cappedUnits": 14.52,
+        "capacity": null,
+        "baseSpeedPercent": 3.0,
+        "stationSlots": 3,
+        "roomLevel": 3,
+        "collectionIntervalHours": 12.0,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 290.4,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": 0.0,
+          "shardDelta": -29.04,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 139.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": {
+          "target": "O_DIAMOND",
+          "level": 3,
+          "expectedSeconds": 7200.0,
+          "expectedLmd": 0.0,
+          "expectedGold": 0.0,
+          "expectedOrundum": 20.0,
+          "expectedShards": 2.0,
+          "bias": "default",
+          "distribution": [
+            {
+              "shards": 2.0,
+              "orundum": 20.0,
+              "seconds": 7200.0,
+              "probability": 1.0
+            }
+          ],
+          "source": "Yituliu 2026-06 Orundum trade room summary: level-3 Orundum Trading Post paper efficiencies around 130-135%.",
+          "calibrationMode": "guide_orundum_exact_lookup",
+          "lookupId": "orundum_trade_l3_2026_06_static",
+          "paperEfficiencyPercent": 132.0,
+          "scheduleEffectivePercent": 139.0,
+          "controlSpeedPercent": 7.0
+        },
+        "manufactureProfile": null,
+        "assumptions": [
+          "Yituliu 2026-06 Orundum trade room summary: level-3 Orundum Trading Post paper efficiencies around 130-135%.",
+          "Guide-calibrated Orundum order benchmarks use paper efficiency and raw order throughput without static order-limit clipping.",
+          "望/权变 的控制中枢权变按当前静态模型外势=实地，触发贸易站 +7% 分支计入。"
+        ],
+        "unsupportedSkillEffects": [
+          {
+            "operator": "德克萨斯",
+            "buffId": "trade_ord_spd&cost_P[000]",
+            "buffName": "恩怨",
+            "reason": "同站条件未满足，未计入条件收益。"
+          }
+        ],
+        "skillEffectAudit": [
+          {
+            "operator": "德克萨斯",
+            "buffId": "trade_ord_spd&cost_P[000]",
+            "buffName": "恩怨",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 65.0
+            }
+          },
+          {
+            "operator": "德克萨斯",
+            "buffId": "trade_ord_spd&cost_P[000]",
+            "buffName": "恩怨",
+            "status": "condition_unmet",
+            "scope": "fatigue",
+            "reason": "拉普兰德未同驻同一房间，条件心情变化未计入。",
+            "confidence": "modeled_condition"
+          },
+          {
+            "operator": "德克萨斯",
+            "buffId": "trade_ord_spd&cost_P[000]",
+            "buffName": "恩怨",
+            "status": "unsupported",
+            "scope": "TRADING",
+            "reason": "同站条件未满足，未计入条件收益。",
+            "confidence": "unmodeled"
+          },
+          {
+            "operator": "雷狼龙S空爆",
+            "buffId": "trade_ord_spd[022]",
+            "buffName": "气氛组",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 35.0
+            }
+          },
+          {
+            "operator": "海蒂",
+            "buffId": "trade_ord_spd[021]",
+            "buffName": "名流欢会",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 35.0
+            }
+          },
+          {
+            "operator": "望",
+            "buffId": "",
+            "buffName": "权变",
+            "status": "counted",
+            "scope": "control_global:trade_global",
+            "reason": "望/权变 的控制中枢权变按当前静态模型外势=实地，触发贸易站 +7% 分支计入。",
+            "confidence": "modeled_rule"
+          },
+          {
+            "operator": "德克萨斯",
+            "buffId": "trade_ord_spd&cost_P[000]",
+            "buffName": "恩怨",
+            "status": "source_calibrated",
+            "scope": "orundum_trade_room_lookup",
+            "calibrationMode": "guide_orundum_exact_lookup",
+            "lookupId": "orundum_trade_l3_2026_06_static",
+            "reason": "Yituliu guide room summary calibrates Orundum Trading Post paper efficiency; static guide images do not expose an exact operator roster for this room."
+          },
+          {
+            "operator": "雷狼龙S空爆",
+            "buffId": "trade_ord_spd[022]",
+            "buffName": "气氛组",
+            "status": "source_calibrated",
+            "scope": "orundum_trade_room_lookup",
+            "calibrationMode": "guide_orundum_exact_lookup",
+            "lookupId": "orundum_trade_l3_2026_06_static",
+            "reason": "Yituliu guide room summary calibrates Orundum Trading Post paper efficiency; static guide images do not expose an exact operator roster for this room."
+          },
+          {
+            "operator": "海蒂",
+            "buffId": "trade_ord_spd[021]",
+            "buffName": "名流欢会",
+            "status": "source_calibrated",
+            "scope": "orundum_trade_room_lookup",
+            "calibrationMode": "guide_orundum_exact_lookup",
+            "lookupId": "orundum_trade_l3_2026_06_static",
+            "reason": "Yituliu guide room summary calibrates Orundum Trading Post paper efficiency; static guide images do not expose an exact operator roster for this room."
+          }
+        ],
+        "shift": "第3班"
+      },
+      {
+        "roomId": "manufacture_1",
+        "roomType": "MANUFACTURE",
+        "target": "F_EXP",
+        "producedUnits": 9.72,
+        "cappedUnits": 9.72,
+        "capacity": 54.0,
+        "baseSpeedPercent": 3.0,
+        "stationSlots": 3,
+        "roomLevel": 3,
+        "collectionIntervalHours": 12.0,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 9720.0,
+          "orundum": 0.0,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": 0.0,
+          "shardDelta": 0.0,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 140.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": null,
+        "manufactureProfile": {
+          "target": "F_EXP",
+          "level": 3,
+          "calibrationMode": "guide_exact_lookup",
+          "source": "Yituliu 2026-06 243 Orundum manufacture summary: level-3 EXP paper efficiency 140%.",
+          "lookupId": "maxed_exp_reference_l3_miss_christine",
+          "paperEfficiencyPercent": 140.0,
+          "minimumParsedSpeedPercent": null,
+          "required": [
+            "Miss.Christine",
+            "弑君者",
+            "食铁兽"
+          ]
+        },
+        "assumptions": [
+          "Yituliu 2026-06 243 Orundum manufacture summary: level-3 EXP paper efficiency 140%.",
+          "Yituliu guide manufacture lookup uses the published paper efficiency for this room-level static benchmark.",
+          "Mon3tr/最高权限 的控制中枢全局制造站加成按 +2% 计入。"
+        ],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "食铁兽",
+            "buffId": "manu_formula_spd[020]",
+            "buffName": "拳术指导录像",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 35.0
+            }
+          },
+          {
+            "operator": "Miss.Christine",
+            "buffId": "manu_prod_spd_double[100]",
+            "buffName": "盛餐的回报",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 30.0
+            }
+          },
+          {
+            "operator": "弑君者",
+            "buffId": "manu_formula_spd[022]",
+            "buffName": "逆境荣光",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 35.0
+            }
+          },
+          {
+            "operator": "Mon3tr",
+            "buffId": "",
+            "buffName": "最高权限",
+            "status": "counted",
+            "scope": "control_global:manufacture_global",
+            "reason": "Mon3tr/最高权限 的控制中枢全局制造站加成按 +2% 计入。",
+            "confidence": "modeled_rule"
+          },
+          {
+            "operator": "食铁兽",
+            "buffId": "manu_formula_spd[020]",
+            "buffName": "拳术指导录像",
+            "status": "source_calibrated",
+            "scope": "manufacture_paper_efficiency",
+            "reason": "Exact Yituliu guide manufacture lookup calibrates this room output; parsed fixed speed remains available as diagnostic evidence.",
+            "confidence": "guide_exact_lookup",
+            "numericContribution": {
+              "paperEfficiencyPercent": 140.0,
+              "parsedSpeedPercent": 102.0
+            },
+            "calibrationMode": "guide_exact_lookup",
+            "lookupId": "maxed_exp_reference_l3_miss_christine"
+          },
+          {
+            "operator": "Miss.Christine",
+            "buffId": "manu_prod_spd_double[100]",
+            "buffName": "盛餐的回报",
+            "status": "source_calibrated",
+            "scope": "manufacture_paper_efficiency",
+            "reason": "Exact Yituliu guide manufacture lookup calibrates this room output; parsed fixed speed remains available as diagnostic evidence.",
+            "confidence": "guide_exact_lookup",
+            "numericContribution": {
+              "paperEfficiencyPercent": 140.0,
+              "parsedSpeedPercent": 102.0
+            },
+            "calibrationMode": "guide_exact_lookup",
+            "lookupId": "maxed_exp_reference_l3_miss_christine"
+          },
+          {
+            "operator": "弑君者",
+            "buffId": "manu_formula_spd[022]",
+            "buffName": "逆境荣光",
+            "status": "source_calibrated",
+            "scope": "manufacture_paper_efficiency",
+            "reason": "Exact Yituliu guide manufacture lookup calibrates this room output; parsed fixed speed remains available as diagnostic evidence.",
+            "confidence": "guide_exact_lookup",
+            "numericContribution": {
+              "paperEfficiencyPercent": 140.0,
+              "parsedSpeedPercent": 102.0
+            },
+            "calibrationMode": "guide_exact_lookup",
+            "lookupId": "maxed_exp_reference_l3_miss_christine"
+          }
+        ],
+        "shift": "第3班"
+      },
+      {
+        "roomId": "manufacture_2",
+        "roomType": "MANUFACTURE",
+        "target": "F_GOLD",
+        "producedUnits": 20.7,
+        "cappedUnits": 20.7,
+        "capacity": 54.0,
+        "baseSpeedPercent": 3.0,
+        "stationSlots": 3,
+        "roomLevel": 3,
+        "collectionIntervalHours": 12.0,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 0.0,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": 20.7,
+          "shardDelta": 0.0,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 104.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": null,
+        "manufactureProfile": null,
+        "assumptions": [
+          "Mon3tr/最高权限 的控制中枢全局制造站加成按 +2% 计入。",
+          "薇薇安娜/烛骑士微光 的控制中枢骑士制造站加成按每人 +7% 计入。"
+        ],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "砾",
+            "buffId": "manu_formula_spd[110]",
+            "buffName": "金属工艺·β",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 35.0
+            }
+          },
+          {
+            "operator": "斑点",
+            "buffId": "manu_formula_spd[100]",
+            "buffName": "金属工艺·α",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 30.0
+            }
+          },
+          {
+            "operator": "夜烟",
+            "buffId": "manu_formula_spd[100]",
+            "buffName": "金属工艺·α",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 30.0
+            }
+          },
+          {
+            "operator": "Mon3tr",
+            "buffId": "",
+            "buffName": "最高权限",
+            "status": "counted",
+            "scope": "control_global:manufacture_global",
+            "reason": "Mon3tr/最高权限 的控制中枢全局制造站加成按 +2% 计入。",
+            "confidence": "modeled_rule"
+          },
+          {
+            "operator": "薇薇安娜",
+            "buffId": "",
+            "buffName": "烛骑士微光",
+            "status": "counted",
+            "scope": "control_global:knight_manufacture",
+            "reason": "薇薇安娜/烛骑士微光 的控制中枢骑士制造站加成按每人 +7% 计入。",
+            "confidence": "modeled_rule"
+          }
+        ],
+        "shift": "第3班"
+      },
+      {
+        "roomId": "manufacture_3",
+        "roomType": "MANUFACTURE",
+        "target": "F_GOLD",
+        "producedUnits": 19.5,
+        "cappedUnits": 19.5,
+        "capacity": 54.0,
+        "baseSpeedPercent": 3.0,
+        "stationSlots": 3,
+        "roomLevel": 3,
+        "collectionIntervalHours": 12.0,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 0.0,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": 19.5,
+          "shardDelta": 0.0,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 92.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": null,
+        "manufactureProfile": null,
+        "assumptions": [
+          "Mon3tr/最高权限 的控制中枢全局制造站加成按 +2% 计入。"
+        ],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "梅尔",
+            "buffId": "manu_prod_spd[020]",
+            "buffName": "咪波·制造型",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 30.0
+            }
+          },
+          {
+            "operator": "温米",
+            "buffId": "manu_formula_spd[101]",
+            "buffName": "金属工艺·α",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 30.0
+            }
+          },
+          {
+            "operator": "苍苔",
+            "buffId": "manu_formula_spd[100]",
+            "buffName": "金属工艺·α",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 30.0
+            }
+          },
+          {
+            "operator": "Mon3tr",
+            "buffId": "",
+            "buffName": "最高权限",
+            "status": "counted",
+            "scope": "control_global:manufacture_global",
+            "reason": "Mon3tr/最高权限 的控制中枢全局制造站加成按 +2% 计入。",
+            "confidence": "modeled_rule"
+          }
+        ],
+        "shift": "第3班"
+      },
+      {
+        "roomId": "manufacture_4",
+        "roomType": "MANUFACTURE",
+        "target": "F_DIAMOND",
+        "producedUnits": 25.2,
+        "cappedUnits": 25.2,
+        "capacity": 54.0,
+        "baseSpeedPercent": 3.0,
+        "stationSlots": 3,
+        "roomLevel": 3,
+        "collectionIntervalHours": 12.0,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 0.0,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": 0.0,
+          "shardDelta": 25.2,
+          "materialCosts": {
+            "30012": 50.4,
+            "4001": 40320.0
+          },
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 107.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": null,
+        "manufactureProfile": null,
+        "assumptions": [
+          "Mon3tr/最高权限 的控制中枢全局制造站加成按 +2% 计入。"
+        ],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "炎熔",
+            "buffId": "manu_formula_spd[210]",
+            "buffName": "源石工艺·β",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 35.0
+            }
+          },
+          {
+            "operator": "地灵",
+            "buffId": "manu_formula_spd[211]",
+            "buffName": "地质学·β",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 35.0
+            }
+          },
+          {
+            "operator": "锡兰",
+            "buffId": "manu_formula_spd[212]",
+            "buffName": "源石研究",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 35.0
+            }
+          },
+          {
+            "operator": "Mon3tr",
+            "buffId": "",
+            "buffName": "最高权限",
+            "status": "counted",
+            "scope": "control_global:manufacture_global",
+            "reason": "Mon3tr/最高权限 的控制中枢全局制造站加成按 +2% 计入。",
+            "confidence": "modeled_rule"
+          }
+        ],
+        "shift": "第3班"
+      },
+      {
+        "roomId": "power_1",
+        "roomType": "POWER",
+        "target": null,
+        "producedUnits": 0.0,
+        "cappedUnits": 0.0,
+        "capacity": null,
+        "baseSpeedPercent": 0.0,
+        "stationSlots": 0,
+        "roomLevel": 3,
+        "collectionIntervalHours": 0.0,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 0.0,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": 0.0,
+          "shardDelta": 0.0,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 25.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": null,
+        "manufactureProfile": null,
+        "assumptions": [],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "承曦格雷伊",
+            "buffId": "power_rec_drone[000]",
+            "buffName": "巡线框架",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 25.0
+            }
+          }
+        ],
+        "shift": "第3班"
+      },
+      {
+        "roomId": "power_2",
+        "roomType": "POWER",
+        "target": null,
+        "producedUnits": 0.0,
+        "cappedUnits": 0.0,
+        "capacity": null,
+        "baseSpeedPercent": 0.0,
+        "stationSlots": 0,
+        "roomLevel": 3,
+        "collectionIntervalHours": 0.0,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 0.0,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": 0.0,
+          "shardDelta": 0.0,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 20.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": null,
+        "manufactureProfile": null,
+        "assumptions": [],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "格雷伊",
+            "buffId": "power_rec_spd[020]",
+            "buffName": "静电场",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 20.0
+            }
+          }
+        ],
+        "shift": "第3班"
+      },
+      {
+        "roomId": "power_3",
+        "roomType": "POWER",
+        "target": null,
+        "producedUnits": 0.0,
+        "cappedUnits": 0.0,
+        "capacity": null,
+        "baseSpeedPercent": 0.0,
+        "stationSlots": 0,
+        "roomLevel": 3,
+        "collectionIntervalHours": 0.0,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 0.0,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": 0.0,
+          "shardDelta": 0.0,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 20.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": null,
+        "manufactureProfile": null,
+        "assumptions": [],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "炎狱炎熔",
+            "buffId": "power_rec_spd[022]",
+            "buffName": "热能充能·γ",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 20.0
+            }
+          }
+        ],
+        "shift": "第3班"
+      },
+      {
+        "roomId": "control_1",
+        "roomType": "CONTROL",
+        "target": null,
+        "producedUnits": 0.0,
+        "cappedUnits": 0.0,
+        "capacity": null,
+        "baseSpeedPercent": 0.0,
+        "stationSlots": 0,
+        "roomLevel": 3,
+        "collectionIntervalHours": 0.0,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 0.0,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": 0.0,
+          "shardDelta": 0.0,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 0.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": null,
+        "manufactureProfile": null,
+        "assumptions": [],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "戴菲恩",
+            "buffId": "control_tra_limit&spd[010]",
+            "buffName": "运筹好手",
+            "status": "diagnostic_only",
+            "scope": "CONTROL",
+            "reason": "Complex or upgrade-only skill produced no modeled numeric effect in this room evaluation.",
+            "confidence": "diagnostic"
+          },
+          {
+            "operator": "焰尾",
+            "buffId": "control_mp_psk[000]",
+            "buffName": "红松的骑士",
+            "status": "diagnostic_only",
+            "scope": "CONTROL",
+            "reason": "Complex or upgrade-only skill produced no modeled numeric effect in this room evaluation.",
+            "confidence": "diagnostic"
+          },
+          {
+            "operator": "薇薇安娜",
+            "buffId": "control_prod_fraction[000]",
+            "buffName": "烛骑士微光",
+            "status": "diagnostic_only",
+            "scope": "CONTROL",
+            "reason": "Complex or upgrade-only skill produced no modeled numeric effect in this room evaluation.",
+            "confidence": "diagnostic"
+          }
+        ],
+        "shift": "第3班"
+      },
+      {
+        "roomId": "meeting_1",
+        "roomType": "MEETING",
+        "target": null,
+        "producedUnits": 26.0,
+        "cappedUnits": 26.0,
+        "capacity": null,
+        "baseSpeedPercent": 2.0,
+        "stationSlots": 2,
+        "roomLevel": 3,
+        "collectionIntervalHours": 12.0,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 0.0,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 26.0,
+          "pureGoldDelta": 0.0,
+          "shardDelta": 0.0,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 50.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": null,
+        "manufactureProfile": null,
+        "assumptions": [
+          "会客室线索搜集速度按每日加权效率点计入 meetingSpeed；综合分按 meetingSpeed / 30 计入。"
+        ],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "远山",
+            "buffId": "meet_spd[030]",
+            "buffName": "占卜",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 25.0
+            }
+          },
+          {
+            "operator": "红",
+            "buffId": "meet_spd[031]",
+            "buffName": "追踪者",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 25.0
+            }
+          }
+        ],
+        "shift": "第3班"
+      },
+      {
+        "roomId": "hire_1",
+        "roomType": "HIRE",
+        "target": null,
+        "producedUnits": 23.0,
+        "cappedUnits": 23.0,
+        "capacity": null,
+        "baseSpeedPercent": 1.0,
+        "stationSlots": 1,
+        "roomLevel": 3,
+        "collectionIntervalHours": 12.0,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 0.0,
+          "officeSpeed": 23.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": 0.0,
+          "shardDelta": 0.0,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 45.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": null,
+        "manufactureProfile": null,
+        "assumptions": [
+          "办公室公开招募联络速度按每日加权效率点计入 officeSpeed；综合分按 officeSpeed / 30 计入。"
+        ],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "普罗旺斯",
+            "buffId": "hire_spd[011]",
+            "buffName": "天灾信使·β",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 45.0
+            }
+          }
+        ],
+        "shift": "第3班"
+      },
+      {
+        "roomId": "trading_1",
+        "roomType": "TRADING",
+        "target": "O_GOLD",
+        "producedUnits": 9.027,
+        "cappedUnits": 9.027,
+        "capacity": 10.0,
+        "baseSpeedPercent": 3.0,
+        "stationSlots": 3,
+        "roomLevel": 3,
+        "collectionIntervalHours": 12.0,
+        "vector": {
+          "lmdGross": 13088.5,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 0.0,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": -26.177,
+          "shardDelta": 0.0,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 152.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": {
+          "target": "O_GOLD",
+          "level": 3,
+          "expectedSeconds": 12204.0,
+          "expectedLmd": 1450.0,
+          "expectedGold": 2.9,
+          "expectedOrundum": 0.0,
+          "expectedShards": 0.0,
+          "bias": "default",
+          "distribution": [
+            {
+              "gold": 2.0,
+              "lmd": 1000.0,
+              "seconds": 8640.0,
+              "probability": 0.3
+            },
+            {
+              "gold": 3.0,
+              "lmd": 1500.0,
+              "seconds": 12600.0,
+              "probability": 0.5
+            },
+            {
+              "gold": 4.0,
+              "lmd": 2000.0,
+              "seconds": 16560.0,
+              "probability": 0.2
+            }
+          ],
+          "source": "LMD order probabilities and durations follow public Trading Post guide data.",
+          "calibrationMode": "generic_profile"
+        },
+        "manufactureProfile": null,
+        "assumptions": [
+          "LMD order probabilities and durations follow public Trading Post guide data.",
+          "维娜·维多利亚/外贸决议按格拉斯哥帮同站条件计入。",
+          "摩根/帮派指南针按同站格拉斯哥帮 2 人计入。",
+          "阿米娅/合作协议 的控制中枢全局贸易站加成按 +7% 计入。"
+        ],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "维娜·维多利亚",
+            "buffId": "trade_ord_spd&par[000]",
+            "buffName": "外贸决议·α",
+            "status": "counted",
+            "scope": "TRADING",
+            "reason": "Modeled complex rule contributed numeric effect in this room evaluation.",
+            "confidence": "modeled_rule",
+            "numericContribution": {
+              "speedPercent": 40.0
+            }
+          },
+          {
+            "operator": "夜刀",
+            "buffId": "trade_ord_spd[001]",
+            "buffName": "订单分发·β",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 30.0
+            }
+          },
+          {
+            "operator": "摩根",
+            "buffId": "trade_ord_spd_par[000]",
+            "buffName": "帮派指南针",
+            "status": "counted",
+            "scope": "TRADING",
+            "reason": "Modeled complex rule contributed numeric effect in this room evaluation.",
+            "confidence": "modeled_rule",
+            "numericContribution": {
+              "speedPercent": 75.0
+            }
+          },
+          {
+            "operator": "阿米娅",
+            "buffId": "",
+            "buffName": "合作协议",
+            "status": "counted",
+            "scope": "control_global:trade_global",
+            "reason": "阿米娅/合作协议 的控制中枢全局贸易站加成按 +7% 计入。",
+            "confidence": "modeled_rule"
+          }
+        ],
+        "shift": "第4班"
+      },
+      {
+        "roomId": "trading_2",
+        "roomType": "TRADING",
+        "target": "O_DIAMOND",
+        "producedUnits": 14.52,
+        "cappedUnits": 14.52,
+        "capacity": null,
+        "baseSpeedPercent": 3.0,
+        "stationSlots": 3,
+        "roomLevel": 3,
+        "collectionIntervalHours": 12.0,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 290.4,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": 0.0,
+          "shardDelta": -29.04,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 139.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": {
+          "target": "O_DIAMOND",
+          "level": 3,
+          "expectedSeconds": 7200.0,
+          "expectedLmd": 0.0,
+          "expectedGold": 0.0,
+          "expectedOrundum": 20.0,
+          "expectedShards": 2.0,
+          "bias": "default",
+          "distribution": [
+            {
+              "shards": 2.0,
+              "orundum": 20.0,
+              "seconds": 7200.0,
+              "probability": 1.0
+            }
+          ],
+          "source": "Yituliu 2026-06 Orundum trade room summary: level-3 Orundum Trading Post paper efficiencies around 130-135%.",
+          "calibrationMode": "guide_orundum_exact_lookup",
+          "lookupId": "orundum_trade_l3_2026_06_static",
+          "paperEfficiencyPercent": 132.0,
+          "scheduleEffectivePercent": 139.0,
+          "controlSpeedPercent": 7.0
+        },
+        "manufactureProfile": null,
+        "assumptions": [
+          "Yituliu 2026-06 Orundum trade room summary: level-3 Orundum Trading Post paper efficiencies around 130-135%.",
+          "Guide-calibrated Orundum order benchmarks use paper efficiency and raw order throughput without static order-limit clipping.",
+          "阿米娅/合作协议 的控制中枢全局贸易站加成按 +7% 计入。"
+        ],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "芬",
+            "buffId": "trade_ord_spd[001]",
+            "buffName": "订单分发·β",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 30.0
+            }
+          },
+          {
+            "operator": "慕斯",
+            "buffId": "trade_ord_spd[001]",
+            "buffName": "订单分发·β",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 30.0
+            }
+          },
+          {
+            "operator": "缠丸",
+            "buffId": "trade_ord_spd[001]",
+            "buffName": "订单分发·β",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 30.0
+            }
+          },
+          {
+            "operator": "阿米娅",
+            "buffId": "",
+            "buffName": "合作协议",
+            "status": "counted",
+            "scope": "control_global:trade_global",
+            "reason": "阿米娅/合作协议 的控制中枢全局贸易站加成按 +7% 计入。",
+            "confidence": "modeled_rule"
+          },
+          {
+            "operator": "芬",
+            "buffId": "trade_ord_spd[001]",
+            "buffName": "订单分发·β",
+            "status": "source_calibrated",
+            "scope": "orundum_trade_room_lookup",
+            "calibrationMode": "guide_orundum_exact_lookup",
+            "lookupId": "orundum_trade_l3_2026_06_static",
+            "reason": "Yituliu guide room summary calibrates Orundum Trading Post paper efficiency; static guide images do not expose an exact operator roster for this room."
+          },
+          {
+            "operator": "慕斯",
+            "buffId": "trade_ord_spd[001]",
+            "buffName": "订单分发·β",
+            "status": "source_calibrated",
+            "scope": "orundum_trade_room_lookup",
+            "calibrationMode": "guide_orundum_exact_lookup",
+            "lookupId": "orundum_trade_l3_2026_06_static",
+            "reason": "Yituliu guide room summary calibrates Orundum Trading Post paper efficiency; static guide images do not expose an exact operator roster for this room."
+          },
+          {
+            "operator": "缠丸",
+            "buffId": "trade_ord_spd[001]",
+            "buffName": "订单分发·β",
+            "status": "source_calibrated",
+            "scope": "orundum_trade_room_lookup",
+            "calibrationMode": "guide_orundum_exact_lookup",
+            "lookupId": "orundum_trade_l3_2026_06_static",
+            "reason": "Yituliu guide room summary calibrates Orundum Trading Post paper efficiency; static guide images do not expose an exact operator roster for this room."
+          }
+        ],
+        "shift": "第4班"
+      },
+      {
+        "roomId": "manufacture_1",
+        "roomType": "MANUFACTURE",
+        "target": "F_EXP",
+        "producedUnits": 9.16,
+        "cappedUnits": 9.16,
+        "capacity": 54.0,
+        "baseSpeedPercent": 3.0,
+        "stationSlots": 3,
+        "roomLevel": 3,
+        "collectionIntervalHours": 12.0,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 9160.0,
+          "orundum": 0.0,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": 0.0,
+          "shardDelta": 0.0,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 126.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": null,
+        "manufactureProfile": {
+          "target": "F_EXP",
+          "level": 3,
+          "calibrationMode": "guide_exact_lookup",
+          "source": "Yituliu 2026-06 243 Orundum manufacture summary: companion level-3 EXP paper efficiency 126%.",
+          "lookupId": "maxed_exp_reference_l3_generic_126",
+          "paperEfficiencyPercent": 126.0,
+          "minimumParsedSpeedPercent": 85.0,
+          "required": []
+        },
+        "assumptions": [
+          "Yituliu 2026-06 243 Orundum manufacture summary: companion level-3 EXP paper efficiency 126%.",
+          "Yituliu guide manufacture lookup uses the published paper efficiency for this room-level static benchmark."
+        ],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "断罪者",
+            "buffId": "manu_formula_spd[020]",
+            "buffName": "拳术指导录像",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 35.0
+            }
+          },
+          {
+            "operator": "Castle-3",
+            "buffId": "manu_formula_spd[010]",
+            "buffName": "作战指导录像",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 30.0
+            }
+          },
+          {
+            "operator": "白雪",
+            "buffId": "manu_formula_spd[010]",
+            "buffName": "作战指导录像",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 30.0
+            }
+          },
+          {
+            "operator": "断罪者",
+            "buffId": "manu_formula_spd[020]",
+            "buffName": "拳术指导录像",
+            "status": "source_calibrated",
+            "scope": "manufacture_paper_efficiency",
+            "reason": "Exact Yituliu guide manufacture lookup calibrates this room output; parsed fixed speed remains available as diagnostic evidence.",
+            "confidence": "guide_exact_lookup",
+            "numericContribution": {
+              "paperEfficiencyPercent": 126.0,
+              "parsedSpeedPercent": 95.0
+            },
+            "calibrationMode": "guide_exact_lookup",
+            "lookupId": "maxed_exp_reference_l3_generic_126"
+          },
+          {
+            "operator": "Castle-3",
+            "buffId": "manu_formula_spd[010]",
+            "buffName": "作战指导录像",
+            "status": "source_calibrated",
+            "scope": "manufacture_paper_efficiency",
+            "reason": "Exact Yituliu guide manufacture lookup calibrates this room output; parsed fixed speed remains available as diagnostic evidence.",
+            "confidence": "guide_exact_lookup",
+            "numericContribution": {
+              "paperEfficiencyPercent": 126.0,
+              "parsedSpeedPercent": 95.0
+            },
+            "calibrationMode": "guide_exact_lookup",
+            "lookupId": "maxed_exp_reference_l3_generic_126"
+          },
+          {
+            "operator": "白雪",
+            "buffId": "manu_formula_spd[010]",
+            "buffName": "作战指导录像",
+            "status": "source_calibrated",
+            "scope": "manufacture_paper_efficiency",
+            "reason": "Exact Yituliu guide manufacture lookup calibrates this room output; parsed fixed speed remains available as diagnostic evidence.",
+            "confidence": "guide_exact_lookup",
+            "numericContribution": {
+              "paperEfficiencyPercent": 126.0,
+              "parsedSpeedPercent": 95.0
+            },
+            "calibrationMode": "guide_exact_lookup",
+            "lookupId": "maxed_exp_reference_l3_generic_126"
+          }
+        ],
+        "shift": "第4班"
+      },
+      {
+        "roomId": "manufacture_2",
+        "roomType": "MANUFACTURE",
+        "target": "F_GOLD",
+        "producedUnits": 18.8,
+        "cappedUnits": 18.8,
+        "capacity": 54.0,
+        "baseSpeedPercent": 3.0,
+        "stationSlots": 3,
+        "roomLevel": 3,
+        "collectionIntervalHours": 12.0,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 0.0,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": 18.8,
+          "shardDelta": 0.0,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 85.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": null,
+        "manufactureProfile": null,
+        "assumptions": [],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "引星棘刺",
+            "buffId": "manu_formula_spd[102]",
+            "buffName": "金属工艺·α",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 30.0
+            }
+          },
+          {
+            "operator": "玛露西尔",
+            "buffId": "manu_prod_spd[014]",
+            "buffName": "差遣使魔·β",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 30.0
+            }
+          },
+          {
+            "operator": "史都华德",
+            "buffId": "manu_prod_spd[010]",
+            "buffName": "标准化·β",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 25.0
+            }
+          }
+        ],
+        "shift": "第4班"
+      },
+      {
+        "roomId": "manufacture_3",
+        "roomType": "MANUFACTURE",
+        "target": "F_GOLD",
+        "producedUnits": 18.3,
+        "cappedUnits": 18.3,
+        "capacity": 54.0,
+        "baseSpeedPercent": 3.0,
+        "stationSlots": 3,
+        "roomLevel": 3,
+        "collectionIntervalHours": 12.0,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 0.0,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": 18.3,
+          "shardDelta": 0.0,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 80.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": null,
+        "manufactureProfile": null,
+        "assumptions": [],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "淬羽赫默",
+            "buffId": "manu_prod_spd[021]",
+            "buffName": "莱茵科技·γ",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 30.0
+            }
+          },
+          {
+            "operator": "香草",
+            "buffId": "manu_prod_spd[010]",
+            "buffName": "标准化·β",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 25.0
+            }
+          },
+          {
+            "operator": "调香师",
+            "buffId": "manu_prod_spd[010]",
+            "buffName": "标准化·β",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 25.0
+            }
+          }
+        ],
+        "shift": "第4班"
+      },
+      {
+        "roomId": "manufacture_4",
+        "roomType": "MANUFACTURE",
+        "target": "F_DIAMOND",
+        "producedUnits": 23.76,
+        "cappedUnits": 23.76,
+        "capacity": 54.0,
+        "baseSpeedPercent": 3.0,
+        "stationSlots": 3,
+        "roomLevel": 3,
+        "collectionIntervalHours": 12.0,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 0.0,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": 0.0,
+          "shardDelta": 23.76,
+          "materialCosts": {
+            "30012": 47.52,
+            "4001": 38016.0
+          },
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 95.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": null,
+        "manufactureProfile": null,
+        "assumptions": [],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "艾雅法拉",
+            "buffId": "manu_formula_spd[213]",
+            "buffName": "火山学家",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 35.0
+            }
+          },
+          {
+            "operator": "月见夜",
+            "buffId": "manu_formula_spd[200]",
+            "buffName": "源石工艺·α",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 30.0
+            }
+          },
+          {
+            "operator": "褐果",
+            "buffId": "manu_formula_spd[201]",
+            "buffName": "地质学·α",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 30.0
+            }
+          }
+        ],
+        "shift": "第4班"
+      },
+      {
+        "roomId": "power_1",
+        "roomType": "POWER",
+        "target": null,
+        "producedUnits": 0.0,
+        "cappedUnits": 0.0,
+        "capacity": null,
+        "baseSpeedPercent": 0.0,
+        "stationSlots": 0,
+        "roomLevel": 3,
+        "collectionIntervalHours": 0.0,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 0.0,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": 0.0,
+          "shardDelta": 0.0,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 20.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": null,
+        "manufactureProfile": null,
+        "assumptions": [],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "雷蛇",
+            "buffId": "power_rec_spd[021]",
+            "buffName": "脉冲电弧·β",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 20.0
+            }
+          }
+        ],
+        "shift": "第4班"
+      },
+      {
+        "roomId": "power_2",
+        "roomType": "POWER",
+        "target": null,
+        "producedUnits": 0.0,
+        "cappedUnits": 0.0,
+        "capacity": null,
+        "baseSpeedPercent": 0.0,
+        "stationSlots": 0,
+        "roomLevel": 3,
+        "collectionIntervalHours": 0.0,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 0.0,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": 0.0,
+          "shardDelta": 0.0,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 20.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": null,
+        "manufactureProfile": null,
+        "assumptions": [],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "海霓",
+            "buffId": "power_rec_spd[026]",
+            "buffName": "穹顶物流管理·β",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 20.0
+            }
+          }
+        ],
+        "shift": "第4班"
+      },
+      {
+        "roomId": "power_3",
+        "roomType": "POWER",
+        "target": null,
+        "producedUnits": 0.0,
+        "cappedUnits": 0.0,
+        "capacity": null,
+        "baseSpeedPercent": 0.0,
+        "stationSlots": 0,
+        "roomLevel": 3,
+        "collectionIntervalHours": 0.0,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 0.0,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": 0.0,
+          "shardDelta": 0.0,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 20.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": null,
+        "manufactureProfile": null,
+        "assumptions": [],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "天空盒",
+            "buffId": "power_rec_spd[024]",
+            "buffName": "合法窃电",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 20.0
+            }
+          }
+        ],
+        "shift": "第4班"
+      },
+      {
+        "roomId": "control_1",
+        "roomType": "CONTROL",
+        "target": null,
+        "producedUnits": 0.0,
+        "cappedUnits": 0.0,
+        "capacity": null,
+        "baseSpeedPercent": 0.0,
+        "stationSlots": 0,
+        "roomLevel": 3,
+        "collectionIntervalHours": 0.0,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 0.0,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": 0.0,
+          "shardDelta": 0.0,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 0.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 1.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": null,
+        "manufactureProfile": null,
+        "assumptions": [
+          "魔王/魔王传承 的阿米娅同驻心情恢复条件已满足。"
+        ],
+        "unsupportedSkillEffects": [
+          {
+            "operator": "魔王",
+            "buffId": "control_mp_cost_double[000]",
+            "buffName": "魔王传承",
+            "reason": "控制中枢复杂条件效果尚未完全建模，未计入全局加成。"
+          }
+        ],
+        "skillEffectAudit": [
+          {
+            "operator": "维什戴尔",
+            "buffId": "control_meeting&ord[000]",
+            "buffName": "同谋·α",
+            "status": "counted",
+            "scope": "order_limit",
+            "reason": "Parsed order-limit bonus is counted in room order capacity.",
+            "confidence": "parsed_order_limit",
+            "numericContribution": {
+              "orderLimitBonus": 1.0
+            }
+          },
+          {
+            "operator": "魔王",
+            "buffId": "control_mp_cost_double[000]",
+            "buffName": "魔王传承",
+            "status": "counted",
+            "scope": "fatigue",
+            "reason": "Parsed morale delta is counted in fatigue risk.",
+            "confidence": "parsed_fatigue",
+            "numericContribution": {
+              "fatigueDeltaPerHour": -0.05
+            }
+          },
+          {
+            "operator": "凛御银灰",
+            "buffId": "control_tra_limit&spd3[000]",
+            "buffName": "商业版图",
+            "status": "diagnostic_only",
+            "scope": "CONTROL",
+            "reason": "Complex or upgrade-only skill produced no modeled numeric effect in this room evaluation.",
+            "confidence": "diagnostic"
+          },
+          {
+            "operator": "八幡海铃",
+            "buffId": "control_tra_limit&spd2[000]",
+            "buffName": "家族认可",
+            "status": "diagnostic_only",
+            "scope": "CONTROL",
+            "reason": "Complex or upgrade-only skill produced no modeled numeric effect in this room evaluation.",
+            "confidence": "diagnostic"
+          },
+          {
+            "operator": "魔王",
+            "buffId": "control_mp_cost_double[000]",
+            "buffName": "魔王传承",
+            "status": "unsupported",
+            "scope": "control_global",
+            "reason": "Unmodeled conditional Control Center effect was not silently counted.",
+            "confidence": "unmodeled"
+          }
+        ],
+        "shift": "第4班"
+      },
+      {
+        "roomId": "meeting_1",
+        "roomType": "MEETING",
+        "target": null,
+        "producedUnits": 26.0,
+        "cappedUnits": 26.0,
+        "capacity": null,
+        "baseSpeedPercent": 2.0,
+        "stationSlots": 2,
+        "roomLevel": 3,
+        "collectionIntervalHours": 12.0,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 0.0,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 26.0,
+          "pureGoldDelta": 0.0,
+          "shardDelta": 0.0,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 50.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": null,
+        "manufactureProfile": null,
+        "assumptions": [
+          "会客室线索搜集速度按每日加权效率点计入 meetingSpeed；综合分按 meetingSpeed / 30 计入。"
+        ],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "星极",
+            "buffId": "meet_spd&team[110]",
+            "buffName": "星象学",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 25.0
+            }
+          },
+          {
+            "operator": "陈",
+            "buffId": "meet_spd&team[100]",
+            "buffName": "警司",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 25.0
+            }
+          }
+        ],
+        "shift": "第4班"
+      },
+      {
+        "roomId": "hire_1",
+        "roomType": "HIRE",
+        "target": null,
+        "producedUnits": 23.0,
+        "cappedUnits": 23.0,
+        "capacity": null,
+        "baseSpeedPercent": 1.0,
+        "stationSlots": 1,
+        "roomLevel": 3,
+        "collectionIntervalHours": 12.0,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 0.0,
+          "officeSpeed": 23.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": 0.0,
+          "shardDelta": 0.0,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 45.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": null,
+        "manufactureProfile": null,
+        "assumptions": [
+          "办公室公开招募联络速度按每日加权效率点计入 officeSpeed；综合分按 officeSpeed / 30 计入。",
+          "圣聆初雪/雪境归心按凛御银灰进驻控制中枢额外 +10% 计入。"
+        ],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "圣聆初雪",
+            "buffId": "hire_spd_cost&char[001]",
+            "buffName": "雪境归心",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 35.0
+            }
+          },
+          {
+            "operator": "圣聆初雪",
+            "buffId": "hire_spd_cost&char[001]",
+            "buffName": "雪境归心",
+            "status": "counted",
+            "scope": "fatigue",
+            "reason": "Parsed morale delta is counted in fatigue risk.",
+            "confidence": "parsed_fatigue",
+            "numericContribution": {
+              "fatigueDeltaPerHour": -0.25
+            }
+          }
+        ],
+        "shift": "第4班"
+      }
+    ]
+  }
+}

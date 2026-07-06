@@ -1,0 +1,37 @@
+# Python caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Build and packaging output
+build/
+dist/
+*.egg-info/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Local game data and generated reports
+/data/cache/
+/outputs/
+
+# Local editor, OS, and Codex working state
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+.agents/
+.codex/
+
+# Private or temporary files
+*.log
+*.tmp
+*.bak
+*.local

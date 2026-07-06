@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field, replace
 from itertools import combinations, product
+from time import perf_counter
 from typing import Any, Iterable
 
 from . import dependency_parser
@@ -99,6 +100,7 @@ class OptimizerResult:
     metric_profile: str = "guide"
     power_status: PowerStatus | None = None
     diagnostic_insertion_search: dict[str, Any] = field(default_factory=dict)
+    runtime_profile: dict[str, Any] = field(default_factory=dict)
 
 
 def parse_layout(raw: str) -> Layout:
@@ -200,6 +202,13 @@ class ScheduleOptimizer:
             calibration_profile="guide",
         )
         self._room_combo_score_cache: dict[tuple[Any, ...], float] = {}
+        self._combo_candidate_pool_cache: dict[tuple[Any, ...], tuple[Candidate, ...]] = {}
+        self._room_combos_cache: dict[tuple[Any, ...], tuple[RoomCombo, ...]] = {}
+        self._complete_room_cache: dict[tuple[Any, ...], tuple[BaseSkill, ...] | None] = {}
+        self._room_combo_vector_cache: dict[tuple[Any, ...], ProductionVector] = {}
+        self.profile_runtime = False
+        self._runtime_counters: dict[str, int] = {}
+        self._runtime_timings: dict[str, float] = {}
         self.operator_anchor_preference: set[str] = set()
         self.operator_anchor_rank: dict[str, int] = {}
         self.forced_insertion_groups: tuple[ShiftInsertionGroup, ...] = ()
@@ -224,7 +233,11 @@ class ScheduleOptimizer:
         pure_gold_target: float = DEFAULT_PURE_GOLD_TARGET_PER_DAY,
         pure_gold_tolerance: float = DEFAULT_PURE_GOLD_TOLERANCE,
         max_drone_cycle_repeats: int = DEFAULT_MAX_DRONE_CYCLE_REPEATS,
+        profile_runtime: bool = False,
     ) -> OptimizerResult:
+        self.profile_runtime = bool(profile_runtime)
+        self._runtime_counters = {}
+        self._runtime_timings = {}
         normalized_mode = normalize_mode(mode)
         self.operator_anchor_preference = set()
         self.operator_anchor_rank = {}
@@ -390,7 +403,63 @@ class ScheduleOptimizer:
             metric_profile="guide",
             power_status=layout_power,
             diagnostic_insertion_search=insertion_search,
+            runtime_profile=self._runtime_profile() if self.profile_runtime else {},
         )
+
+    def _cache_context_key(self) -> tuple[Any, ...]:
+        return (
+            OPTIMIZER_MODEL_VERSION,
+            round(self.upgrade_cost_weight, 8),
+            bool(self.allow_upgrades),
+            self.shard_formula,
+        )
+
+    def _skill_cache_key(self, skill: BaseSkill) -> tuple[Any, ...]:
+        return (
+            skill.operator_name,
+            skill.buff_id,
+            skill.room_type,
+            tuple(skill.targets),
+            bool(skill.unlocked),
+            round(float(skill.parsed_score), 6),
+            tuple(skill.faction_tags),
+            None
+            if skill.upgrade is None
+            else (
+                skill.upgrade.char_id,
+                skill.upgrade.to_elite,
+                skill.upgrade.to_level,
+                round(float(skill.upgrade.cost_score), 6),
+            ),
+        )
+
+    def _record_runtime_count(self, key: str, amount: int = 1) -> None:
+        if not self.profile_runtime:
+            return
+        self._runtime_counters[key] = self._runtime_counters.get(key, 0) + amount
+
+    def _record_runtime_time(self, key: str, elapsed: float) -> None:
+        if not self.profile_runtime:
+            return
+        self._runtime_timings[key] = self._runtime_timings.get(key, 0.0) + elapsed
+
+    def _runtime_profile(self) -> dict[str, Any]:
+        return {
+            "version": 1,
+            "optimizerModelVersion": OPTIMIZER_MODEL_VERSION,
+            "counters": dict(sorted(self._runtime_counters.items())),
+            "timingsSeconds": {
+                key: round(value, 6)
+                for key, value in sorted(self._runtime_timings.items())
+            },
+            "cacheSizes": {
+                "comboCandidatePool": len(self._combo_candidate_pool_cache),
+                "roomCombos": len(self._room_combos_cache),
+                "completeRoomAfterInsertions": len(self._complete_room_cache),
+                "roomComboScore": len(self._room_combo_score_cache),
+                "roomComboVector": len(self._room_combo_vector_cache),
+            },
+        }
 
     def _apply_pure_gold_drone_cycle_repeats(
         self,
@@ -849,12 +918,28 @@ class ScheduleOptimizer:
         *,
         mode: str = "normal",
     ) -> tuple[dict[str, Any], list[ShiftPlan] | None, ProductionReport | None]:
+        started_at = perf_counter()
+
+        def finalize(
+            result: dict[str, Any],
+            candidate: list[ShiftPlan] | None,
+            report: ProductionReport | None,
+        ) -> tuple[dict[str, Any], list[ShiftPlan] | None, ProductionReport | None]:
+            elapsed = perf_counter() - started_at
+            self._record_runtime_count("insertionAttempt.count")
+            self._record_runtime_time("insertionAttempt.seconds", elapsed)
+            status = str(result.get("status") or "unknown")
+            self._record_runtime_count(f"insertionAttempt.status.{status}")
+            if self.profile_runtime:
+                result = {**result, "runtimeSeconds": round(elapsed, 6)}
+            return result, candidate, report
+
         satisfied_shifts = [
             shift.name for shift in shifts if self._insertion_group_satisfied(shift, group)
         ]
         base = insertion_group_to_dict(group)
         if satisfied_shifts:
-            return (
+            return finalize(
                 {
                     **base,
                     "status": "already_satisfied",
@@ -908,7 +993,7 @@ class ScheduleOptimizer:
                 best_report = candidate_report
 
         if best_result is None:
-            return (
+            return finalize(
                 {
                     **base,
                     "status": "unplaceable",
@@ -918,7 +1003,7 @@ class ScheduleOptimizer:
                 None,
                 None,
             )
-        return best_result, best_candidate, best_report
+        return finalize(best_result, best_candidate, best_report)
 
     def _insert_group_with_boundary_relocation(
         self,
@@ -2021,6 +2106,28 @@ class ScheduleOptimizer:
         globally_excluded_names: set[str],
         duration_hours: float,
     ) -> list[BaseSkill] | None:
+        cache_key = (
+            *self._cache_context_key(),
+            "complete_room_after_insertions",
+            room.room_id,
+            room.room_type,
+            room.target,
+            room.room_level,
+            room.slots,
+            room.product_capacity,
+            room.order_limit,
+            round(duration_hours, 6),
+            tuple(self._skill_cache_key(skill) for skill in room.operators),
+            tuple(self._skill_cache_key(skill) for skill in forced),
+            tuple(sorted(selected_in_shift)),
+            tuple(sorted(boundary_names)),
+            tuple(sorted(globally_excluded_names)),
+        )
+        cached = self._complete_room_cache.get(cache_key)
+        if cache_key in self._complete_room_cache:
+            self._record_runtime_count("completeRoomAfterInsertions.cacheHit")
+            return None if cached is None else list(cached)
+        self._record_runtime_count("completeRoomAfterInsertions.cacheMiss")
         capacity = self._assignment_capacity(room)
         if room.room_type == "CONTROL":
             desired_count = capacity
@@ -2030,6 +2137,7 @@ class ScheduleOptimizer:
                 max(len(room.operators), len(forced), int(room.product_capacity or 0)),
             )
         if len(forced) >= desired_count:
+            self._complete_room_cache[cache_key] = tuple(forced)
             return forced
         forced_names = {skill.operator_name for skill in forced}
         excluded = selected_in_shift | forced_names | boundary_names | globally_excluded_names
@@ -2093,13 +2201,16 @@ class ScheduleOptimizer:
                 best_operators = operators
 
         if room.room_type == "CONTROL" and len(best_operators) < desired_count:
+            self._complete_room_cache[cache_key] = None
             return None
         if (
             room.room_type in {"TRADING", "MANUFACTURE", "POWER"}
             and not forced
             and len(best_operators) < desired_count
         ):
+            self._complete_room_cache[cache_key] = None
             return None
+        self._complete_room_cache[cache_key] = tuple(best_operators)
         return best_operators
 
     def _skill_for_insertion(self, spec: ShiftInsertionSpec) -> Candidate | None:
@@ -2622,8 +2733,26 @@ class ScheduleOptimizer:
     def _room_combos(
         self, spec: RoomSpec, excluded: set[str], duration_hours: float
     ) -> list[RoomCombo]:
+        cache_key = (
+            *self._cache_context_key(),
+            "room_combos",
+            spec.room_id,
+            spec.room_type,
+            spec.target,
+            spec.capacity,
+            spec.room_level,
+            spec.slots,
+            round(duration_hours, 6),
+            tuple(sorted(excluded)),
+        )
+        cached = self._room_combos_cache.get(cache_key)
+        if cached is not None:
+            self._record_runtime_count("roomCombos.cacheHit")
+            return list(cached)
+        self._record_runtime_count("roomCombos.cacheMiss")
         candidates = self._combo_candidate_pool(spec.room_type, spec.target, excluded)
         if not candidates:
+            self._room_combos_cache[cache_key] = ()
             return []
         size = min(spec.capacity, len(candidates))
         combos: list[RoomCombo] = []
@@ -2642,14 +2771,29 @@ class ScheduleOptimizer:
             ),
             reverse=True,
         )
+        self._room_combos_cache[cache_key] = tuple(combos)
         return combos
 
     def _combo_candidate_pool(
         self, room_type: str, target: str | None, excluded: set[str]
     ) -> list[Candidate]:
+        cache_key = (
+            *self._cache_context_key(),
+            "combo_candidate_pool",
+            room_type,
+            target,
+            tuple(sorted(excluded)),
+        )
+        cached = self._combo_candidate_pool_cache.get(cache_key)
+        if cached is not None:
+            self._record_runtime_count("comboCandidatePool.cacheHit")
+            return list(cached)
+        self._record_runtime_count("comboCandidatePool.cacheMiss")
         candidates = self._combo_candidates(room_type, target, excluded)
         if room_type == "POWER":
-            return candidates[:16]
+            result = candidates[:16]
+            self._combo_candidate_pool_cache[cache_key] = tuple(result)
+            return result
 
         top_limit = 14
         max_pool = 24
@@ -2693,7 +2837,9 @@ class ScheduleOptimizer:
                 selected_keys.add(key)
                 if len(selected) >= max_pool:
                     break
-        return selected[:max_pool]
+        result = selected[:max_pool]
+        self._combo_candidate_pool_cache[cache_key] = tuple(result)
+        return result
 
     def _combo_candidates(
         self, room_type: str, target: str | None, excluded: set[str]
@@ -2739,7 +2885,43 @@ class ScheduleOptimizer:
         )
         cached = self._room_combo_score_cache.get(cache_key)
         if cached is not None:
+            self._record_runtime_count("roomComboScore.cacheHit")
             return cached
+        self._record_runtime_count("roomComboScore.cacheMiss")
+        if spec.room_type == "POWER":
+            effect = evaluate_room_effect(operators, spec.target)
+            score = effect.speed_percent
+        else:
+            vector = self._room_combo_vector(spec, operators, duration_hours)
+            score = room_output_score(spec, vector)
+        score -= sum(
+            float(skill.upgrade.cost_score if skill.upgrade else 0.0)
+            for skill in operators
+        ) * self.upgrade_cost_weight
+        score = round(score, 6)
+        self._room_combo_score_cache[cache_key] = score
+        return score
+
+    def _room_combo_vector(
+        self,
+        spec: RoomSpec,
+        operators: list[BaseSkill],
+        duration_hours: float,
+    ) -> ProductionVector:
+        cache_key = (
+            spec.room_type,
+            spec.target,
+            spec.room_level,
+            spec.slots,
+            round(duration_hours, 6),
+            tuple(sorted((skill.operator_name, skill.buff_id) for skill in operators)),
+        )
+        cached = self._room_combo_vector_cache.get(cache_key)
+        if cached is not None:
+            self._record_runtime_count("roomComboVector.cacheHit")
+            return cached
+        self._record_runtime_count("roomComboVector.cacheMiss")
+        self._record_runtime_count("evaluateRoom.comboVector")
         assignment = RoomAssignment(
             room_id=spec.room_id,
             room_type=spec.room_type,
@@ -2750,21 +2932,11 @@ class ScheduleOptimizer:
             room_level=spec.room_level,
             slots=spec.slots,
         )
-        if spec.room_type == "POWER":
-            effect = evaluate_room_effect(operators, spec.target)
-            score = effect.speed_percent
-        else:
-            production = self._combo_simulator.evaluate_room(assignment, duration_hours)
-            vector = production.vector
-            vector.lmdNet = vector.lmdGross - vector.materialCosts.get("4001", 0.0)
-            score = room_output_score(spec, vector)
-        score -= sum(
-            float(skill.upgrade.cost_score if skill.upgrade else 0.0)
-            for skill in operators
-        ) * self.upgrade_cost_weight
-        score = round(score, 6)
-        self._room_combo_score_cache[cache_key] = score
-        return score
+        production = self._combo_simulator.evaluate_room(assignment, duration_hours)
+        vector = production.vector
+        vector.lmdNet = vector.lmdGross - vector.materialCosts.get("4001", 0.0)
+        self._room_combo_vector_cache[cache_key] = vector
+        return vector
 
     def _would_overflow(
         self,
@@ -2772,26 +2944,10 @@ class ScheduleOptimizer:
         operators: list[BaseSkill],
         duration_hours: float,
     ) -> bool:
-        room_id = spec.room_id
         room_type = spec.room_type
-        target = spec.target
         if room_type not in {"TRADING", "MANUFACTURE"}:
             return False
-        assignment = RoomAssignment(
-            room_id=room_id,
-            room_type=room_type,
-            room_name=ROOM_NAMES.get(room_type, room_type),
-            target=target,
-            operators=operators,
-            score=0.0,
-            room_level=spec.room_level,
-            slots=spec.slots,
-        )
-        production = ProductionSimulator(self.game_data, shard_formula=self.shard_formula).evaluate_room(
-            assignment,
-            duration_hours,
-        )
-        return production.vector.overflowLoss > 0.01
+        return self._room_combo_vector(spec, operators, duration_hours).overflowLoss > 0.01
 
     def _candidates(
         self,

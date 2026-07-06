@@ -1109,6 +1109,144 @@ class ProductionModelTest(unittest.TestCase):
         self.assertIn("referenceBenchmark", report)
         self.assertIn("导出排班 JSON", html)
 
+    def test_runtime_profile_is_optional_and_exported_when_requested(self) -> None:
+        with TemporaryDirectory() as temp_dir:
+            data_dir = Path(temp_dir) / "data"
+            data_dir.mkdir()
+            write_data(data_dir)
+            game_data = GameData.load(data_dir)
+            roster = [
+                RosterOperator(name, True, 3, 30, 0)
+                for name in game_data.char_id_by_name
+            ]
+
+            plain = ScheduleOptimizer(game_data, roster).optimize(
+                parse_layout("333"),
+                mode="normal",
+                shift_count=1,
+                shift_hours=24,
+            )
+            profiled = ScheduleOptimizer(game_data, roster).optimize(
+                parse_layout("333"),
+                mode="normal",
+                shift_count=1,
+                shift_hours=24,
+                profile_runtime=True,
+            )
+            plain_payload = result_to_dict(plain, game_data)
+            profiled_payload = result_to_dict(profiled, game_data)
+
+        self.assertEqual(plain.runtime_profile, {})
+        self.assertNotIn("runtimeProfile", plain_payload["analysis"])
+        self.assertIn("runtimeProfile", profiled_payload["analysis"])
+        self.assertIn("cacheSizes", profiled_payload["analysis"]["runtimeProfile"])
+        self.assertIn("counters", profiled_payload["analysis"]["runtimeProfile"])
+
+    def test_recommendation_cache_key_rejects_stale_candidate(self) -> None:
+        with TemporaryDirectory() as temp_dir:
+            data_dir = Path(temp_dir) / "data"
+            output_dir = Path(temp_dir) / "recommendation"
+            data_dir.mkdir()
+            write_data(data_dir)
+            game_data = GameData.load(data_dir)
+            roster = [
+                RosterOperator(name, True, 3, 30, 0)
+                for name in game_data.char_id_by_name
+            ]
+
+            first = recommend_schedules(
+                game_data,
+                roster,
+                output_dir=output_dir,
+                layouts=["333"],
+                modes=["normal"],
+                shift_patterns=[(1, 24)],
+                drone_policy="none",
+                include_upgrades=False,
+                cache_policy="refresh",
+            )
+            candidate_path = Path(first["bestCurrent"]["scheduleExport"]["path"])
+            payload = json.loads(candidate_path.read_text(encoding="utf-8"))
+            self.assertIn(
+                "candidateCacheKey",
+                payload["analysis"]["cacheValidation"],
+            )
+            payload["score"] = 999999.0
+            payload["analysis"]["diagnosticInsertionSearch"]["cacheValidation"][
+                "candidateCacheKey"
+            ] = "stale"
+            payload["analysis"]["cacheValidation"]["candidateCacheKey"] = "stale"
+            candidate_path.write_text(
+                json.dumps(payload, ensure_ascii=False, indent=2),
+                encoding="utf-8",
+            )
+
+            second = recommend_schedules(
+                game_data,
+                roster,
+                output_dir=output_dir,
+                layouts=["333"],
+                modes=["normal"],
+                shift_patterns=[(1, 24)],
+                drone_policy="none",
+                include_upgrades=False,
+                cache_policy="auto",
+            )
+            refreshed_payload = json.loads(candidate_path.read_text(encoding="utf-8"))
+
+        self.assertNotEqual(second["bestCurrent"]["score"], 999999.0)
+        self.assertNotEqual(refreshed_payload["score"], 999999.0)
+        self.assertNotEqual(
+            refreshed_payload["analysis"]["cacheValidation"]["candidateCacheKey"],
+            "stale",
+        )
+
+    def test_recommendation_jobs_are_deterministic_for_small_matrix(self) -> None:
+        with TemporaryDirectory() as temp_dir:
+            data_dir = Path(temp_dir) / "data"
+            serial_dir = Path(temp_dir) / "serial"
+            parallel_dir = Path(temp_dir) / "parallel"
+            data_dir.mkdir()
+            write_data(data_dir)
+            game_data = GameData.load(data_dir)
+            roster = [
+                RosterOperator(name, True, 3, 30, 0)
+                for name in game_data.char_id_by_name
+            ]
+
+            serial = recommend_schedules(
+                game_data,
+                roster,
+                output_dir=serial_dir,
+                layouts=["333"],
+                modes=["normal"],
+                shift_patterns=[(1, 24)],
+                drone_policy="none",
+                include_upgrades=False,
+                cache_policy="refresh",
+                jobs=1,
+            )
+            parallel = recommend_schedules(
+                game_data,
+                roster,
+                output_dir=parallel_dir,
+                layouts=["333"],
+                modes=["normal"],
+                shift_patterns=[(1, 24)],
+                drone_policy="none",
+                include_upgrades=False,
+                cache_policy="refresh",
+                jobs=2,
+            )
+
+        self.assertEqual(
+            sorted(candidate["id"] for candidate in serial["candidates"]),
+            sorted(candidate["id"] for candidate in parallel["candidates"]),
+        )
+        self.assertEqual(serial["bestCurrent"]["id"], parallel["bestCurrent"]["id"])
+        self.assertAlmostEqual(serial["bestCurrent"]["score"], parallel["bestCurrent"]["score"])
+        self.assertEqual(parallel["inputs"]["jobs"], 2)
+
     def test_recommendation_supports_shift_patterns_and_reference_benchmark(self) -> None:
         with TemporaryDirectory() as temp_dir:
             data_dir = Path(temp_dir) / "data"

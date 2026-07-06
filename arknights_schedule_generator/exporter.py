@@ -44,6 +44,34 @@ def result_to_dict(result: OptimizerResult, game_data: GameData) -> dict[str, An
     plan_times = len(result.shifts)
     generated_at = datetime.now(timezone.utc).isoformat()
     drone_targets = production_dict["dailyExpected"].get("droneTargets") or []
+    analysis = {
+        "reminders": warnings,
+        "upgrades": [upgrade_to_dict(upgrade) for upgrade in upgrades],
+        "diagnosticInsertionSearch": result.diagnostic_insertion_search,
+        "localOptimalityAudit": result.diagnostic_insertion_search.get(
+            "localOptimalityAudit", {}
+        ),
+        "candidatePoolAudit": result.diagnostic_insertion_search.get(
+            "candidatePoolAudit", {}
+        ),
+        "cacheValidation": result.diagnostic_insertion_search.get("cacheValidation", {}),
+        "pureGoldBalancePolicy": result.diagnostic_insertion_search.get(
+            "pureGoldBalancePolicy", {}
+        ),
+        "objectiveConflictAudit": result.diagnostic_insertion_search.get(
+            "objectiveConflictAudit", {}
+        ),
+        "unsupportedSkillEffects": production_dict["unsupportedSkillEffects"],
+        "assumptions": production_dict["assumptions"],
+        "calibrationProfile": production_dict.get("calibrationProfile", "guide"),
+        "sourceAssumptions": production_dict.get("sourceAssumptions", []),
+        "guideComparison": production_dict.get("guideComparison"),
+        "roomReports": production_dict["roomReports"],
+        "powerStatus": result.power_status.to_dict() if result.power_status else None,
+    }
+    if result.runtime_profile:
+        analysis["runtimeProfile"] = result.runtime_profile
+
     return {
         "author": "Codex",
         "description": (
@@ -100,31 +128,7 @@ def result_to_dict(result: OptimizerResult, game_data: GameData) -> dict[str, An
         "score": result.score,
         "scoreBreakdown": production_dict["scoreBreakdown"],
         "dailyExpected": production_dict["dailyExpected"],
-        "analysis": {
-            "reminders": warnings,
-            "upgrades": [upgrade_to_dict(upgrade) for upgrade in upgrades],
-            "diagnosticInsertionSearch": result.diagnostic_insertion_search,
-            "localOptimalityAudit": result.diagnostic_insertion_search.get(
-                "localOptimalityAudit", {}
-            ),
-            "candidatePoolAudit": result.diagnostic_insertion_search.get(
-                "candidatePoolAudit", {}
-            ),
-            "cacheValidation": result.diagnostic_insertion_search.get("cacheValidation", {}),
-            "pureGoldBalancePolicy": result.diagnostic_insertion_search.get(
-                "pureGoldBalancePolicy", {}
-            ),
-            "objectiveConflictAudit": result.diagnostic_insertion_search.get(
-                "objectiveConflictAudit", {}
-            ),
-            "unsupportedSkillEffects": production_dict["unsupportedSkillEffects"],
-            "assumptions": production_dict["assumptions"],
-            "calibrationProfile": production_dict.get("calibrationProfile", "guide"),
-            "sourceAssumptions": production_dict.get("sourceAssumptions", []),
-            "guideComparison": production_dict.get("guideComparison"),
-            "roomReports": production_dict["roomReports"],
-            "powerStatus": result.power_status.to_dict() if result.power_status else None,
-        },
+        "analysis": analysis,
         "shifts": [
             {
                 "name": shift.name,

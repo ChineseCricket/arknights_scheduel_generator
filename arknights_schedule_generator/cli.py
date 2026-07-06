@@ -98,6 +98,11 @@ def build_parser() -> argparse.ArgumentParser:
     generate_parser.add_argument("--min-lmd-gross", type=float, default=0.0)
     generate_parser.add_argument("--min-exp", type=float, default=0.0)
     generate_parser.add_argument("--min-orundum", type=float, default=0.0)
+    generate_parser.add_argument(
+        "--profile-runtime",
+        action="store_true",
+        help="Attach optimizer runtime counters and cache statistics under analysis.runtimeProfile.",
+    )
     generate_parser.add_argument("--output", default="outputs/schedule.json")
 
     score_parser = subparsers.add_parser("score", help="Score an existing Yituliu schedule JSON.")
@@ -199,6 +204,22 @@ def build_parser() -> argparse.ArgumentParser:
         "--no-enforce-baseline",
         action="store_true",
         help="Write the report even if no candidate beats the baseline schedule.",
+    )
+    recommend_parser.add_argument(
+        "--jobs",
+        default="auto",
+        help="Candidate worker count for recommendation runs. Use auto for min(cpu_count - 1, 8).",
+    )
+    recommend_parser.add_argument(
+        "--cache-policy",
+        choices=["auto", "refresh", "off"],
+        default="auto",
+        help="Reuse candidate schedule JSON when the input fingerprint matches; refresh recomputes and off disables reads.",
+    )
+    recommend_parser.add_argument(
+        "--profile-runtime",
+        action="store_true",
+        help="Attach optimizer runtime counters and cache statistics under each generated schedule analysis.runtimeProfile.",
     )
     recommend_parser.add_argument("--output-dir", default="outputs/recommendation")
 
@@ -347,6 +368,7 @@ def generate(args: argparse.Namespace) -> int:
         pure_gold_target=args.pure_gold_target,
         pure_gold_tolerance=args.pure_gold_tolerance,
         max_drone_cycle_repeats=args.max_drone_cycle_repeats,
+        profile_runtime=args.profile_runtime,
     )
     output = Path(args.output)
     write_result_json(output, result, game_data)
@@ -433,6 +455,9 @@ def recommend(args: argparse.Namespace) -> int:
         pure_gold_target=args.pure_gold_target,
         pure_gold_tolerance=args.pure_gold_tolerance,
         max_drone_cycle_repeats=args.max_drone_cycle_repeats,
+        jobs=args.jobs,
+        cache_policy=args.cache_policy,
+        profile_runtime=args.profile_runtime,
     )
     written = report["writtenFiles"]
     print(f"已写入推荐报告: {written['report']}")

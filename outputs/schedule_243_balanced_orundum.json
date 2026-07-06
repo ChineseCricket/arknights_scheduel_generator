@@ -1,0 +1,6119 @@
+{
+  "author": "Codex",
+  "description": "243 平衡搓玉 自动推荐；保留一图流 plans[].rooms 导入结构。",
+  "id": 1783187404392,
+  "title": "243 balanced_orundum 2班推荐排班",
+  "planTimes": "2班",
+  "plans": [
+    {
+      "name": "第1班",
+      "description": "08:00 开始，持续 12 小时。",
+      "description_post": "",
+      "Fiammetta": {
+        "enable": false,
+        "target": "",
+        "order": "pre"
+      },
+      "drones": {
+        "room": "trading",
+        "index": 1,
+        "enable": true,
+        "order": "post",
+        "targets": [
+          {
+            "room": "trading",
+            "index": 1,
+            "policy": "lmd-trade",
+            "roomId": "trading_1",
+            "roomType": "TRADING",
+            "target": "O_GOLD",
+            "droneCount": 192.0,
+            "durationHours": 9.6,
+            "operators": [
+              "维娜·维多利亚",
+              "摩根",
+              "可露希尔"
+            ],
+            "contribution": {
+              "lmdGross": 7199.999999999999,
+              "pureGoldDelta": -11.999999999999998
+            }
+          }
+        ],
+        "modeledDroneCount": 192.0,
+        "note": "room/index is the primary Yituliu-compatible drone target; targets records the single shift-change drone target selected by the model."
+      },
+      "rooms": {
+        "trading": [
+          {
+            "skip": false,
+            "operators": [
+              "维娜·维多利亚",
+              "摩根",
+              "可露希尔"
+            ],
+            "sort": false,
+            "autofill": false,
+            "product": "LMD"
+          },
+          {
+            "skip": false,
+            "operators": [
+              "德克萨斯",
+              "拉普兰德",
+              "柏喙"
+            ],
+            "sort": false,
+            "autofill": false,
+            "product": "Orundum"
+          }
+        ],
+        "manufacture": [
+          {
+            "skip": false,
+            "operators": [
+              "Castle-3",
+              "红豆",
+              "白雪"
+            ],
+            "sort": false,
+            "autofill": false,
+            "product": "Battle Record"
+          },
+          {
+            "skip": false,
+            "operators": [
+              "砾",
+              "斑点",
+              "铅踝"
+            ],
+            "sort": false,
+            "autofill": false,
+            "product": "Pure Gold"
+          },
+          {
+            "skip": false,
+            "operators": [
+              "夜烟",
+              "调香师",
+              "杰西卡"
+            ],
+            "sort": false,
+            "autofill": false,
+            "product": "Pure Gold"
+          },
+          {
+            "skip": false,
+            "operators": [
+              "艾雅法拉",
+              "炎熔",
+              "月见夜"
+            ],
+            "sort": false,
+            "autofill": false,
+            "product": "Originium Shard"
+          }
+        ],
+        "power": [
+          {
+            "skip": false,
+            "operators": [
+              "承曦格雷伊"
+            ],
+            "sort": false,
+            "autofill": false
+          },
+          {
+            "skip": false,
+            "operators": [
+              "格雷伊"
+            ],
+            "sort": false,
+            "autofill": false
+          },
+          {
+            "skip": false,
+            "operators": [
+              "布丁"
+            ],
+            "sort": false,
+            "autofill": false
+          }
+        ],
+        "dormitory": [
+          {
+            "skip": false,
+            "operators": [
+              "霜叶",
+              "初雪",
+              "伊内丝",
+              "伊桑",
+              "伊芙利特"
+            ],
+            "sort": false,
+            "autofill": false
+          },
+          {
+            "skip": false,
+            "operators": [
+              "但书",
+              "刻俄柏",
+              "怒潮凛冬",
+              "掠风",
+              "星源"
+            ],
+            "sort": false,
+            "autofill": false
+          },
+          {
+            "skip": false,
+            "operators": [
+              "暗索",
+              "杏仁",
+              "流星",
+              "清流",
+              "玫兰莎"
+            ],
+            "sort": false,
+            "autofill": false
+          },
+          {
+            "skip": false,
+            "operators": [
+              "石棉",
+              "维什戴尔",
+              "能天使",
+              "芬",
+              "芳汀"
+            ],
+            "sort": false,
+            "autofill": false
+          }
+        ],
+        "control": [
+          {
+            "skip": false,
+            "operators": [
+              "凛御银灰",
+              "银灰",
+              "望",
+              "凯尔希",
+              "普罗旺斯"
+            ],
+            "sort": false,
+            "autofill": false
+          }
+        ],
+        "meeting": [
+          {
+            "skip": false,
+            "operators": [
+              "星极",
+              "伺夜"
+            ],
+            "sort": false,
+            "autofill": false
+          }
+        ],
+        "hire": [
+          {
+            "skip": false,
+            "operators": [
+              "圣聆初雪"
+            ],
+            "sort": false,
+            "autofill": false
+          }
+        ],
+        "processing": []
+      }
+    },
+    {
+      "name": "第2班",
+      "description": "20:00 开始，持续 12 小时。",
+      "description_post": "",
+      "Fiammetta": {
+        "enable": false,
+        "target": "",
+        "order": "pre"
+      },
+      "drones": {
+        "room": "trading",
+        "index": 1,
+        "enable": true,
+        "order": "post",
+        "targets": [
+          {
+            "room": "trading",
+            "index": 1,
+            "policy": "lmd-trade",
+            "roomId": "trading_1",
+            "roomType": "TRADING",
+            "target": "O_GOLD",
+            "droneCount": 174.0,
+            "durationHours": 8.7,
+            "operators": [
+              "蕾缪安",
+              "能天使",
+              "但书"
+            ],
+            "contribution": {
+              "lmdGross": 9527.533125,
+              "pureGoldDelta": -19.080187499999997
+            }
+          }
+        ],
+        "modeledDroneCount": 174.0,
+        "note": "room/index is the primary Yituliu-compatible drone target; targets records the single shift-change drone target selected by the model."
+      },
+      "rooms": {
+        "trading": [
+          {
+            "skip": false,
+            "operators": [
+              "蕾缪安",
+              "能天使",
+              "但书"
+            ],
+            "sort": false,
+            "autofill": false,
+            "product": "LMD"
+          },
+          {
+            "skip": false,
+            "operators": [
+              "芬",
+              "远山",
+              "玫兰莎"
+            ],
+            "sort": false,
+            "autofill": false,
+            "product": "Orundum"
+          }
+        ],
+        "manufacture": [
+          {
+            "skip": false,
+            "operators": [
+              "霜叶",
+              "怒潮凛冬",
+              "食铁兽"
+            ],
+            "sort": false,
+            "autofill": false,
+            "product": "Battle Record"
+          },
+          {
+            "skip": false,
+            "operators": [
+              "香草",
+              "刻俄柏",
+              "钼铅"
+            ],
+            "sort": false,
+            "autofill": false,
+            "product": "Pure Gold"
+          },
+          {
+            "skip": false,
+            "operators": [
+              "杏仁",
+              "阿罗玛",
+              "石棉"
+            ],
+            "sort": false,
+            "autofill": false,
+            "product": "Pure Gold"
+          },
+          {
+            "skip": false,
+            "operators": [
+              "星源",
+              "野鬃",
+              "流星"
+            ],
+            "sort": false,
+            "autofill": false,
+            "product": "Originium Shard"
+          }
+        ],
+        "power": [
+          {
+            "skip": false,
+            "operators": [
+              "清流"
+            ],
+            "sort": false,
+            "autofill": false
+          },
+          {
+            "skip": false,
+            "operators": [
+              "伊芙利特"
+            ],
+            "sort": false,
+            "autofill": false
+          },
+          {
+            "skip": false,
+            "operators": [
+              "阿消"
+            ],
+            "sort": false,
+            "autofill": false
+          }
+        ],
+        "dormitory": [
+          {
+            "skip": false,
+            "operators": [
+              "Castle-3",
+              "伺夜",
+              "凛御银灰",
+              "凯尔希",
+              "可露希尔"
+            ],
+            "sort": false,
+            "autofill": false
+          },
+          {
+            "skip": false,
+            "operators": [
+              "圣聆初雪",
+              "夜烟",
+              "布丁",
+              "德克萨斯",
+              "承曦格雷伊"
+            ],
+            "sort": false,
+            "autofill": false
+          },
+          {
+            "skip": false,
+            "operators": [
+              "拉普兰德",
+              "摩根",
+              "斑点",
+              "星极",
+              "普罗旺斯"
+            ],
+            "sort": false,
+            "autofill": false
+          },
+          {
+            "skip": false,
+            "operators": [
+              "月见夜",
+              "望",
+              "杰西卡",
+              "柏喙",
+              "格雷伊"
+            ],
+            "sort": false,
+            "autofill": false
+          }
+        ],
+        "control": [
+          {
+            "skip": false,
+            "operators": [
+              "维什戴尔",
+              "魔王",
+              "芳汀",
+              "掠风",
+              "初雪"
+            ],
+            "sort": false,
+            "autofill": false
+          }
+        ],
+        "meeting": [
+          {
+            "skip": false,
+            "operators": [
+              "伊内丝",
+              "暗索"
+            ],
+            "sort": false,
+            "autofill": false
+          }
+        ],
+        "hire": [
+          {
+            "skip": false,
+            "operators": [
+              "伊桑"
+            ],
+            "sort": false,
+            "autofill": false
+          }
+        ],
+        "processing": []
+      }
+    }
+  ],
+  "scheduleType": {
+    "planTimes": 2,
+    "trading": 2,
+    "manufacture": 4,
+    "power": 3,
+    "dormitory": 4
+  },
+  "format": "yituliu-base-schedule-json",
+  "formatVersion": 2,
+  "generatedAt": "2026-07-04T17:50:04.392891+00:00",
+  "source": {
+    "gameData": "Kengxxiao/ArknightsGameData zh_CN",
+    "dataVersion": "Stream://torappu-data/v074/rel74.0\nChange:115904 on 2026/06/10\nVersionControl:74.4.0",
+    "buildingDataUrl": "https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/master/zh_CN/gamedata/excel/building_data.json",
+    "characterDataUrl": "https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/master/zh_CN/gamedata/excel/character_table.json"
+  },
+  "base": {
+    "layout": "243",
+    "trading": 2,
+    "manufacture": 4,
+    "power": 3,
+    "dormitory": 4,
+    "control": 1,
+    "meeting": 1,
+    "hire": 1,
+    "training": 1,
+    "workshop": 1,
+    "rightSidePreset": "full"
+  },
+  "mode": {
+    "id": "balanced_orundum",
+    "label": "平衡搓玉",
+    "contract": {
+      "id": "balanced_orundum",
+      "label": "平衡搓玉",
+      "requiredResourceChains": [
+        "lmd_trading",
+        "gold_factory",
+        "exp_factory",
+        "shard_factory",
+        "orundum_trading"
+      ],
+      "minimumRooms": {
+        "lmdTrading": 1,
+        "expFactories": 1,
+        "shardFactories": 1
+      },
+      "primaryMetrics": [
+        "orundum",
+        "lmdGross",
+        "exp"
+      ],
+      "lmdPolicy": "lmd_net_balance_required",
+      "inventoryPolicy": "prefer_near_zero_gold_shard_and_lmd_net_delta",
+      "drones": "reported_separately",
+      "targetSelectionPenalties": [
+        "inventory_balance",
+        "lmd_net_balance"
+      ]
+    }
+  },
+  "score": 367.5,
+  "scoreBreakdown": {
+    "orundum": 572.4,
+    "office": 1.45,
+    "meeting": 1.65,
+    "lmdGross": 58.933,
+    "lmdNet": 0.0,
+    "exp": 73.28,
+    "pureGoldBalance": -0.019,
+    "shardBalance": -178.56,
+    "lmdNetBalance": -142.435,
+    "overflowPenalty": -0.0,
+    "fatiguePenalty": -19.2
+  },
+  "dailyExpected": {
+    "lmdGross": 39288.96,
+    "lmdNet": -28487.04,
+    "exp": 18320.0,
+    "orundum": 572.4,
+    "officeSpeed": 43.5,
+    "meetingSpeed": 49.5,
+    "pureGoldDelta": 0.002,
+    "shardDelta": -14.88,
+    "materialCosts": {
+      "30012": 84.72,
+      "4001": 67776.0
+    },
+    "overflowLoss": 0.0,
+    "fatigueRisk": 9.6,
+    "droneContribution": {
+      "lmdGross": 16727.533,
+      "pureGoldDelta": -31.08
+    },
+    "droneCount": 366.0,
+    "droneUsed": 366.0,
+    "droneGenerationBonusPercent": 52.5,
+    "droneTarget": {
+      "shift": "A",
+      "policy": "lmd-trade",
+      "roomId": "trading_1",
+      "roomType": "TRADING",
+      "target": "O_GOLD",
+      "droneCount": 192.0,
+      "durationHours": 9.6,
+      "operators": [
+        "维娜·维多利亚",
+        "摩根",
+        "可露希尔"
+      ],
+      "contribution": {
+        "lmdGross": 7199.999999999999,
+        "pureGoldDelta": -11.999999999999998
+      }
+    },
+    "droneTargets": [
+      {
+        "shift": "A",
+        "policy": "lmd-trade",
+        "roomId": "trading_1",
+        "roomType": "TRADING",
+        "target": "O_GOLD",
+        "droneCount": 192.0,
+        "durationHours": 9.6,
+        "operators": [
+          "维娜·维多利亚",
+          "摩根",
+          "可露希尔"
+        ],
+        "contribution": {
+          "lmdGross": 7199.999999999999,
+          "pureGoldDelta": -11.999999999999998
+        }
+      },
+      {
+        "shift": "B",
+        "policy": "lmd-trade",
+        "roomId": "trading_1",
+        "roomType": "TRADING",
+        "target": "O_GOLD",
+        "droneCount": 174.0,
+        "durationHours": 8.7,
+        "operators": [
+          "蕾缪安",
+          "能天使",
+          "但书"
+        ],
+        "contribution": {
+          "lmdGross": 9527.533125,
+          "pureGoldDelta": -19.080187499999997
+        }
+      }
+    ],
+    "cycleHours": 24.0,
+    "dailyScale": 1.0
+  },
+  "analysis": {
+    "reminders": [
+      "请确认游戏内房间分布已改为 243: 2 贸易站 / 4 制造站 / 3 发电站。",
+      "请确认每个制造站和贸易站的生产/订单目标与 JSON 中 targetLabel 一致。",
+      "Power check: supply 810, demand 810, margin 0, right-side preset full.",
+      "搓玉模式会消耗龙门币和低级材料；请查看 dailyExpected 的净变化。"
+    ],
+    "upgrades": [],
+    "diagnosticInsertionSearch": {
+      "source": "diagnostic_named_dependency",
+      "maxGroups": 64,
+      "jointProductionCandidateLimit": 64,
+      "availableGroupCount": 27,
+      "accepted": [
+        {
+          "groupId": "compound_dependency:diagnostic_named_dependency:圣聆初雪:凛御银灰+diagnostic_named_dependency:圣聆初雪:银灰",
+          "specKey": "CONTROL::凛御银灰|CONTROL::银灰|HIRE::圣聆初雪",
+          "operators": [
+            "圣聆初雪",
+            "凛御银灰",
+            "银灰"
+          ],
+          "specs": [
+            {
+              "roomType": "HIRE",
+              "target": null,
+              "operator": "圣聆初雪"
+            },
+            {
+              "roomType": "CONTROL",
+              "target": null,
+              "operator": "凛御银灰"
+            },
+            {
+              "roomType": "CONTROL",
+              "target": null,
+              "operator": "银灰"
+            }
+          ],
+          "status": "accepted",
+          "shift": "A",
+          "currentScore": 313.215,
+          "candidateScore": 326.415,
+          "scoreDelta": 13.2,
+          "dailyExpectedDelta": {},
+          "assignmentChanges": [
+            {
+              "shift": "A",
+              "roomId": "control_1",
+              "roomType": "CONTROL",
+              "target": null,
+              "before": [
+                "凛御银灰",
+                "望",
+                "凯尔希",
+                "麒麟R夜刀",
+                "坚雷"
+              ],
+              "after": [
+                "凛御银灰",
+                "银灰",
+                "望",
+                "凯尔希",
+                "普罗旺斯"
+              ]
+            },
+            {
+              "shift": "A",
+              "roomId": "hire_1",
+              "roomType": "HIRE",
+              "target": null,
+              "before": [
+                "遥"
+              ],
+              "after": [
+                "圣聆初雪"
+              ]
+            }
+          ],
+          "pass": 1,
+          "finalSatisfied": true,
+          "satisfiedShifts": [
+            "A"
+          ]
+        },
+        {
+          "groupId": "compound_dependency:diagnostic_named_dependency:维什戴尔:伊内丝+diagnostic_named_dependency:维什戴尔:魔王",
+          "specKey": "CONTROL::维什戴尔|CONTROL::魔王|MEETING::伊内丝",
+          "operators": [
+            "维什戴尔",
+            "伊内丝",
+            "魔王"
+          ],
+          "specs": [
+            {
+              "roomType": "CONTROL",
+              "target": null,
+              "operator": "维什戴尔"
+            },
+            {
+              "roomType": "MEETING",
+              "target": null,
+              "operator": "伊内丝"
+            },
+            {
+              "roomType": "CONTROL",
+              "target": null,
+              "operator": "魔王"
+            }
+          ],
+          "status": "accepted",
+          "shift": "B",
+          "currentScore": 326.415,
+          "candidateScore": 335.166,
+          "scoreDelta": 8.751,
+          "dailyExpectedDelta": {
+            "lmdGross": -557.51,
+            "lmdNet": -557.51,
+            "orundum": -8.4,
+            "meetingSpeed": 2.5,
+            "pureGoldDelta": 1.117,
+            "shardDelta": 0.84
+          },
+          "assignmentChanges": [
+            {
+              "shift": "B",
+              "roomId": "control_1",
+              "roomType": "CONTROL",
+              "target": null,
+              "before": [
+                "维什戴尔",
+                "红",
+                "摆渡人",
+                "闪击",
+                "明椒"
+              ],
+              "after": [
+                "维什戴尔",
+                "魔王",
+                "芳汀",
+                "掠风",
+                "初雪"
+              ]
+            },
+            {
+              "shift": "B",
+              "roomId": "meeting_1",
+              "roomType": "MEETING",
+              "target": null,
+              "before": [
+                "暗索",
+                "宴"
+              ],
+              "after": [
+                "伊内丝",
+                "暗索"
+              ]
+            }
+          ],
+          "pass": 1,
+          "finalSatisfied": true,
+          "satisfiedShifts": [
+            "B"
+          ]
+        },
+        {
+          "groupId": "diagnostic_named_dependency:蕾缪安:能天使",
+          "specKey": "TRADING:O_GOLD:能天使|TRADING:O_GOLD:蕾缪安",
+          "operators": [
+            "蕾缪安",
+            "能天使"
+          ],
+          "specs": [
+            {
+              "roomType": "TRADING",
+              "target": "O_GOLD",
+              "operator": "蕾缪安"
+            },
+            {
+              "roomType": "TRADING",
+              "target": "O_GOLD",
+              "operator": "能天使"
+            }
+          ],
+          "status": "accepted",
+          "shift": "B",
+          "currentScore": 335.166,
+          "candidateScore": 345.397,
+          "scoreDelta": 10.231,
+          "dailyExpectedDelta": {
+            "lmdGross": -1226.94,
+            "lmdNet": -1226.94,
+            "pureGoldDelta": 2.275
+          },
+          "assignmentChanges": [
+            {
+              "shift": "A",
+              "roomId": "trading_1",
+              "roomType": "TRADING",
+              "target": "O_GOLD",
+              "before": [
+                "能天使",
+                "夜刀",
+                "可露希尔"
+              ],
+              "after": [
+                "夜刀",
+                "维娜·维多利亚",
+                "可露希尔"
+              ]
+            },
+            {
+              "shift": "B",
+              "roomId": "trading_1",
+              "roomType": "TRADING",
+              "target": "O_GOLD",
+              "before": [
+                "维娜·维多利亚",
+                "慕斯",
+                "但书"
+              ],
+              "after": [
+                "蕾缪安",
+                "能天使",
+                "但书"
+              ]
+            }
+          ],
+          "pass": 1,
+          "finalSatisfied": true,
+          "satisfiedShifts": [
+            "B"
+          ]
+        },
+        {
+          "groupId": "diagnostic_faction_dependency:维娜·维多利亚:glasgow",
+          "specKey": "TRADING:O_GOLD:摩根|TRADING:O_GOLD:维娜·维多利亚",
+          "operators": [
+            "维娜·维多利亚",
+            "摩根"
+          ],
+          "specs": [
+            {
+              "roomType": "TRADING",
+              "target": "O_GOLD",
+              "operator": "维娜·维多利亚"
+            },
+            {
+              "roomType": "TRADING",
+              "target": "O_GOLD",
+              "operator": "摩根",
+              "allowNoSkill": true
+            }
+          ],
+          "status": "accepted",
+          "shift": "A",
+          "currentScore": 345.397,
+          "candidateScore": 367.5,
+          "scoreDelta": 22.103,
+          "dailyExpectedDelta": {
+            "lmdGross": -3240.0,
+            "lmdNet": -3240.0,
+            "pureGoldDelta": 5.4
+          },
+          "assignmentChanges": [
+            {
+              "shift": "A",
+              "roomId": "trading_1",
+              "roomType": "TRADING",
+              "target": "O_GOLD",
+              "before": [
+                "夜刀",
+                "维娜·维多利亚",
+                "可露希尔"
+              ],
+              "after": [
+                "维娜·维多利亚",
+                "摩根",
+                "可露希尔"
+              ]
+            }
+          ],
+          "pass": 1,
+          "finalSatisfied": true,
+          "satisfiedShifts": [
+            "A"
+          ]
+        }
+      ],
+      "skipped": [
+        {
+          "groupId": "diagnostic_named_dependency:圣聆初雪:凛御银灰",
+          "specKey": "CONTROL::凛御银灰|HIRE::圣聆初雪",
+          "operators": [
+            "圣聆初雪",
+            "凛御银灰"
+          ],
+          "specs": [
+            {
+              "roomType": "HIRE",
+              "target": null,
+              "operator": "圣聆初雪"
+            },
+            {
+              "roomType": "CONTROL",
+              "target": null,
+              "operator": "凛御银灰"
+            }
+          ],
+          "status": "already_satisfied",
+          "satisfiedShifts": [
+            "A"
+          ],
+          "currentScore": 367.5
+        },
+        {
+          "groupId": "diagnostic_named_dependency:圣聆初雪:银灰",
+          "specKey": "CONTROL::银灰|HIRE::圣聆初雪",
+          "operators": [
+            "圣聆初雪",
+            "银灰"
+          ],
+          "specs": [
+            {
+              "roomType": "HIRE",
+              "target": null,
+              "operator": "圣聆初雪"
+            },
+            {
+              "roomType": "CONTROL",
+              "target": null,
+              "operator": "银灰"
+            }
+          ],
+          "status": "already_satisfied",
+          "satisfiedShifts": [
+            "A"
+          ],
+          "currentScore": 367.5
+        },
+        {
+          "groupId": "diagnostic_named_dependency:维什戴尔:伊内丝",
+          "specKey": "CONTROL::维什戴尔|MEETING::伊内丝",
+          "operators": [
+            "维什戴尔",
+            "伊内丝"
+          ],
+          "specs": [
+            {
+              "roomType": "CONTROL",
+              "target": null,
+              "operator": "维什戴尔"
+            },
+            {
+              "roomType": "MEETING",
+              "target": null,
+              "operator": "伊内丝"
+            }
+          ],
+          "status": "already_satisfied",
+          "satisfiedShifts": [
+            "B"
+          ],
+          "currentScore": 367.5
+        },
+        {
+          "groupId": "compound_dependency:diagnostic_named_dependency:维什戴尔:魔王+diagnostic_named_dependency:魔王:阿米娅",
+          "specKey": "CONTROL::维什戴尔|CONTROL::阿米娅|CONTROL::魔王",
+          "operators": [
+            "维什戴尔",
+            "魔王",
+            "阿米娅"
+          ],
+          "specs": [
+            {
+              "roomType": "CONTROL",
+              "target": null,
+              "operator": "维什戴尔"
+            },
+            {
+              "roomType": "CONTROL",
+              "target": null,
+              "operator": "魔王"
+            },
+            {
+              "roomType": "CONTROL",
+              "target": null,
+              "operator": "阿米娅"
+            }
+          ],
+          "status": "evaluated_not_improving",
+          "shift": "B",
+          "currentScore": 367.5,
+          "candidateScore": 367.5,
+          "scoreDelta": 0.0,
+          "dailyExpectedDelta": {},
+          "assignmentChanges": [
+            {
+              "shift": "B",
+              "roomId": "control_1",
+              "roomType": "CONTROL",
+              "target": null,
+              "before": [
+                "维什戴尔",
+                "魔王",
+                "芳汀",
+                "掠风",
+                "初雪"
+              ],
+              "after": [
+                "维什戴尔",
+                "魔王",
+                "阿米娅",
+                "芳汀",
+                "掠风"
+              ]
+            }
+          ]
+        },
+        {
+          "groupId": "compound_dependency:diagnostic_named_dependency:德克萨斯:能天使+diagnostic_named_dependency:蕾缪安:能天使",
+          "specKey": "TRADING:O_GOLD:德克萨斯|TRADING:O_GOLD:能天使|TRADING:O_GOLD:蕾缪安",
+          "operators": [
+            "德克萨斯",
+            "能天使",
+            "蕾缪安"
+          ],
+          "specs": [
+            {
+              "roomType": "TRADING",
+              "target": "O_GOLD",
+              "operator": "德克萨斯"
+            },
+            {
+              "roomType": "TRADING",
+              "target": "O_GOLD",
+              "operator": "能天使"
+            },
+            {
+              "roomType": "TRADING",
+              "target": "O_GOLD",
+              "operator": "蕾缪安"
+            }
+          ],
+          "status": "unplaceable",
+          "attemptedShifts": [
+            "A",
+            "B"
+          ],
+          "currentScore": 367.5
+        },
+        {
+          "groupId": "diagnostic_named_dependency:维什戴尔:魔王",
+          "specKey": "CONTROL::维什戴尔|CONTROL::魔王",
+          "operators": [
+            "维什戴尔",
+            "魔王"
+          ],
+          "specs": [
+            {
+              "roomType": "CONTROL",
+              "target": null,
+              "operator": "维什戴尔"
+            },
+            {
+              "roomType": "CONTROL",
+              "target": null,
+              "operator": "魔王"
+            }
+          ],
+          "status": "already_satisfied",
+          "satisfiedShifts": [
+            "B"
+          ],
+          "currentScore": 367.5
+        },
+        {
+          "groupId": "diagnostic_named_dependency:魔王:阿米娅",
+          "specKey": "CONTROL::阿米娅|CONTROL::魔王",
+          "operators": [
+            "魔王",
+            "阿米娅"
+          ],
+          "specs": [
+            {
+              "roomType": "CONTROL",
+              "target": null,
+              "operator": "魔王"
+            },
+            {
+              "roomType": "CONTROL",
+              "target": null,
+              "operator": "阿米娅"
+            }
+          ],
+          "status": "evaluated_not_improving",
+          "shift": "B",
+          "currentScore": 367.5,
+          "candidateScore": 367.416,
+          "scoreDelta": -0.084,
+          "dailyExpectedDelta": {
+            "meetingSpeed": -2.5
+          },
+          "assignmentChanges": [
+            {
+              "shift": "B",
+              "roomId": "control_1",
+              "roomType": "CONTROL",
+              "target": null,
+              "before": [
+                "维什戴尔",
+                "魔王",
+                "芳汀",
+                "掠风",
+                "初雪"
+              ],
+              "after": [
+                "魔王",
+                "阿米娅",
+                "芳汀",
+                "掠风",
+                "初雪"
+              ]
+            }
+          ]
+        },
+        {
+          "groupId": "compound_dependency:diagnostic_named_dependency:拉普兰德:德克萨斯+diagnostic_named_dependency:德克萨斯:能天使",
+          "specKey": "TRADING:O_GOLD:德克萨斯|TRADING:O_GOLD:拉普兰德|TRADING:O_GOLD:能天使",
+          "operators": [
+            "拉普兰德",
+            "德克萨斯",
+            "能天使"
+          ],
+          "specs": [
+            {
+              "roomType": "TRADING",
+              "target": "O_GOLD",
+              "operator": "拉普兰德"
+            },
+            {
+              "roomType": "TRADING",
+              "target": "O_GOLD",
+              "operator": "德克萨斯"
+            },
+            {
+              "roomType": "TRADING",
+              "target": "O_GOLD",
+              "operator": "能天使"
+            }
+          ],
+          "status": "unplaceable",
+          "attemptedShifts": [
+            "A",
+            "B"
+          ],
+          "currentScore": 367.5
+        },
+        {
+          "groupId": "compound_dependency:diagnostic_named_dependency:德克萨斯:拉普兰德+diagnostic_named_dependency:德克萨斯:能天使",
+          "specKey": "TRADING:O_GOLD:德克萨斯|TRADING:O_GOLD:拉普兰德|TRADING:O_GOLD:能天使",
+          "operators": [
+            "德克萨斯",
+            "拉普兰德",
+            "能天使"
+          ],
+          "specs": [
+            {
+              "roomType": "TRADING",
+              "target": "O_GOLD",
+              "operator": "德克萨斯"
+            },
+            {
+              "roomType": "TRADING",
+              "target": "O_GOLD",
+              "operator": "拉普兰德"
+            },
+            {
+              "roomType": "TRADING",
+              "target": "O_GOLD",
+              "operator": "能天使"
+            }
+          ],
+          "status": "unplaceable",
+          "attemptedShifts": [
+            "A",
+            "B"
+          ],
+          "currentScore": 367.5
+        },
+        {
+          "groupId": "diagnostic_named_dependency:德克萨斯:能天使",
+          "specKey": "TRADING:O_GOLD:德克萨斯|TRADING:O_GOLD:能天使",
+          "operators": [
+            "德克萨斯",
+            "能天使"
+          ],
+          "specs": [
+            {
+              "roomType": "TRADING",
+              "target": "O_GOLD",
+              "operator": "德克萨斯"
+            },
+            {
+              "roomType": "TRADING",
+              "target": "O_GOLD",
+              "operator": "能天使"
+            }
+          ],
+          "status": "unplaceable",
+          "attemptedShifts": [
+            "A",
+            "B"
+          ],
+          "currentScore": 367.5
+        },
+        {
+          "groupId": "diagnostic_guide_trade_anchor:可露希尔",
+          "specKey": "TRADING:O_GOLD:可露希尔",
+          "operators": [
+            "可露希尔"
+          ],
+          "specs": [
+            {
+              "roomType": "TRADING",
+              "target": "O_GOLD",
+              "operator": "可露希尔"
+            }
+          ],
+          "status": "already_satisfied",
+          "satisfiedShifts": [
+            "A"
+          ],
+          "currentScore": 367.5
+        },
+        {
+          "groupId": "compound_dependency:diagnostic_faction_dependency:维娜·维多利亚:glasgow+diagnostic_faction_dependency:维娜·维多利亚:glasgow",
+          "specKey": "TRADING:O_GOLD:推进之王|TRADING:O_GOLD:摩根|TRADING:O_GOLD:维娜·维多利亚",
+          "operators": [
+            "维娜·维多利亚",
+            "摩根",
+            "推进之王"
+          ],
+          "specs": [
+            {
+              "roomType": "TRADING",
+              "target": "O_GOLD",
+              "operator": "维娜·维多利亚"
+            },
+            {
+              "roomType": "TRADING",
+              "target": "O_GOLD",
+              "operator": "摩根",
+              "allowNoSkill": true
+            },
+            {
+              "roomType": "TRADING",
+              "target": "O_GOLD",
+              "operator": "推进之王",
+              "allowNoSkill": true
+            }
+          ],
+          "status": "evaluated_not_improving",
+          "shift": "A",
+          "currentScore": 367.5,
+          "candidateScore": 322.429,
+          "scoreDelta": -45.071,
+          "dailyExpectedDelta": {
+            "lmdGross": -3972.92,
+            "lmdNet": -3972.92,
+            "pureGoldDelta": 2.406
+          },
+          "assignmentChanges": [
+            {
+              "shift": "A",
+              "roomId": "trading_1",
+              "roomType": "TRADING",
+              "target": "O_GOLD",
+              "before": [
+                "维娜·维多利亚",
+                "摩根",
+                "可露希尔"
+              ],
+              "after": [
+                "维娜·维多利亚",
+                "摩根",
+                "推进之王"
+              ]
+            }
+          ]
+        },
+        {
+          "groupId": "compound_dependency:diagnostic_faction_dependency:维娜·维多利亚:glasgow+diagnostic_faction_dependency:维娜·维多利亚:glasgow",
+          "specKey": "TRADING:O_GOLD:摩根|TRADING:O_GOLD:维娜·维多利亚|TRADING:O_GOLD:达格达",
+          "operators": [
+            "维娜·维多利亚",
+            "摩根",
+            "达格达"
+          ],
+          "specs": [
+            {
+              "roomType": "TRADING",
+              "target": "O_GOLD",
+              "operator": "维娜·维多利亚"
+            },
+            {
+              "roomType": "TRADING",
+              "target": "O_GOLD",
+              "operator": "摩根",
+              "allowNoSkill": true
+            },
+            {
+              "roomType": "TRADING",
+              "target": "O_GOLD",
+              "operator": "达格达",
+              "allowNoSkill": true
+            }
+          ],
+          "status": "evaluated_not_improving",
+          "shift": "A",
+          "currentScore": 367.5,
+          "candidateScore": 322.429,
+          "scoreDelta": -45.071,
+          "dailyExpectedDelta": {
+            "lmdGross": -3972.92,
+            "lmdNet": -3972.92,
+            "pureGoldDelta": 2.406
+          },
+          "assignmentChanges": [
+            {
+              "shift": "A",
+              "roomId": "trading_1",
+              "roomType": "TRADING",
+              "target": "O_GOLD",
+              "before": [
+                "维娜·维多利亚",
+                "摩根",
+                "可露希尔"
+              ],
+              "after": [
+                "维娜·维多利亚",
+                "摩根",
+                "达格达"
+              ]
+            }
+          ]
+        },
+        {
+          "groupId": "compound_dependency:diagnostic_faction_dependency:维娜·维多利亚:glasgow+diagnostic_faction_dependency:维娜·维多利亚:glasgow",
+          "specKey": "TRADING:O_GOLD:因陀罗|TRADING:O_GOLD:摩根|TRADING:O_GOLD:维娜·维多利亚",
+          "operators": [
+            "维娜·维多利亚",
+            "摩根",
+            "因陀罗"
+          ],
+          "specs": [
+            {
+              "roomType": "TRADING",
+              "target": "O_GOLD",
+              "operator": "维娜·维多利亚"
+            },
+            {
+              "roomType": "TRADING",
+              "target": "O_GOLD",
+              "operator": "摩根",
+              "allowNoSkill": true
+            },
+            {
+              "roomType": "TRADING",
+              "target": "O_GOLD",
+              "operator": "因陀罗",
+              "allowNoSkill": true
+            }
+          ],
+          "status": "evaluated_not_improving",
+          "shift": "A",
+          "currentScore": 367.5,
+          "candidateScore": 322.429,
+          "scoreDelta": -45.071,
+          "dailyExpectedDelta": {
+            "lmdGross": -3972.92,
+            "lmdNet": -3972.92,
+            "pureGoldDelta": 2.406
+          },
+          "assignmentChanges": [
+            {
+              "shift": "A",
+              "roomId": "trading_1",
+              "roomType": "TRADING",
+              "target": "O_GOLD",
+              "before": [
+                "维娜·维多利亚",
+                "摩根",
+                "可露希尔"
+              ],
+              "after": [
+                "维娜·维多利亚",
+                "摩根",
+                "因陀罗"
+              ]
+            }
+          ]
+        },
+        {
+          "groupId": "compound_dependency:diagnostic_faction_dependency:维娜·维多利亚:glasgow+diagnostic_faction_dependency:维娜·维多利亚:glasgow",
+          "specKey": "TRADING:O_GOLD:推进之王|TRADING:O_GOLD:维娜·维多利亚|TRADING:O_GOLD:达格达",
+          "operators": [
+            "维娜·维多利亚",
+            "推进之王",
+            "达格达"
+          ],
+          "specs": [
+            {
+              "roomType": "TRADING",
+              "target": "O_GOLD",
+              "operator": "维娜·维多利亚"
+            },
+            {
+              "roomType": "TRADING",
+              "target": "O_GOLD",
+              "operator": "推进之王",
+              "allowNoSkill": true
+            },
+            {
+              "roomType": "TRADING",
+              "target": "O_GOLD",
+              "operator": "达格达",
+              "allowNoSkill": true
+            }
+          ],
+          "status": "evaluated_not_improving",
+          "shift": "A",
+          "currentScore": 367.5,
+          "candidateScore": 322.429,
+          "scoreDelta": -45.071,
+          "dailyExpectedDelta": {
+            "lmdGross": -3972.92,
+            "lmdNet": -3972.92,
+            "pureGoldDelta": 2.406
+          },
+          "assignmentChanges": [
+            {
+              "shift": "A",
+              "roomId": "trading_1",
+              "roomType": "TRADING",
+              "target": "O_GOLD",
+              "before": [
+                "维娜·维多利亚",
+                "摩根",
+                "可露希尔"
+              ],
+              "after": [
+                "维娜·维多利亚",
+                "推进之王",
+                "达格达"
+              ]
+            }
+          ]
+        },
+        {
+          "groupId": "compound_dependency:diagnostic_faction_dependency:维娜·维多利亚:glasgow+diagnostic_faction_dependency:维娜·维多利亚:glasgow",
+          "specKey": "TRADING:O_GOLD:因陀罗|TRADING:O_GOLD:推进之王|TRADING:O_GOLD:维娜·维多利亚",
+          "operators": [
+            "维娜·维多利亚",
+            "推进之王",
+            "因陀罗"
+          ],
+          "specs": [
+            {
+              "roomType": "TRADING",
+              "target": "O_GOLD",
+              "operator": "维娜·维多利亚"
+            },
+            {
+              "roomType": "TRADING",
+              "target": "O_GOLD",
+              "operator": "推进之王",
+              "allowNoSkill": true
+            },
+            {
+              "roomType": "TRADING",
+              "target": "O_GOLD",
+              "operator": "因陀罗",
+              "allowNoSkill": true
+            }
+          ],
+          "status": "evaluated_not_improving",
+          "shift": "A",
+          "currentScore": 367.5,
+          "candidateScore": 322.429,
+          "scoreDelta": -45.071,
+          "dailyExpectedDelta": {
+            "lmdGross": -3972.92,
+            "lmdNet": -3972.92,
+            "pureGoldDelta": 2.406
+          },
+          "assignmentChanges": [
+            {
+              "shift": "A",
+              "roomId": "trading_1",
+              "roomType": "TRADING",
+              "target": "O_GOLD",
+              "before": [
+                "维娜·维多利亚",
+                "摩根",
+                "可露希尔"
+              ],
+              "after": [
+                "维娜·维多利亚",
+                "推进之王",
+                "因陀罗"
+              ]
+            }
+          ]
+        },
+        {
+          "groupId": "compound_dependency:diagnostic_faction_dependency:维娜·维多利亚:glasgow+diagnostic_faction_dependency:维娜·维多利亚:glasgow",
+          "specKey": "TRADING:O_GOLD:因陀罗|TRADING:O_GOLD:维娜·维多利亚|TRADING:O_GOLD:达格达",
+          "operators": [
+            "维娜·维多利亚",
+            "达格达",
+            "因陀罗"
+          ],
+          "specs": [
+            {
+              "roomType": "TRADING",
+              "target": "O_GOLD",
+              "operator": "维娜·维多利亚"
+            },
+            {
+              "roomType": "TRADING",
+              "target": "O_GOLD",
+              "operator": "达格达",
+              "allowNoSkill": true
+            },
+            {
+              "roomType": "TRADING",
+              "target": "O_GOLD",
+              "operator": "因陀罗",
+              "allowNoSkill": true
+            }
+          ],
+          "status": "evaluated_not_improving",
+          "shift": "A",
+          "currentScore": 367.5,
+          "candidateScore": 322.429,
+          "scoreDelta": -45.071,
+          "dailyExpectedDelta": {
+            "lmdGross": -3972.92,
+            "lmdNet": -3972.92,
+            "pureGoldDelta": 2.406
+          },
+          "assignmentChanges": [
+            {
+              "shift": "A",
+              "roomId": "trading_1",
+              "roomType": "TRADING",
+              "target": "O_GOLD",
+              "before": [
+                "维娜·维多利亚",
+                "摩根",
+                "可露希尔"
+              ],
+              "after": [
+                "维娜·维多利亚",
+                "达格达",
+                "因陀罗"
+              ]
+            }
+          ]
+        },
+        {
+          "groupId": "diagnostic_guide_trade_anchor:但书",
+          "specKey": "TRADING:O_GOLD:但书",
+          "operators": [
+            "但书"
+          ],
+          "specs": [
+            {
+              "roomType": "TRADING",
+              "target": "O_GOLD",
+              "operator": "但书"
+            }
+          ],
+          "status": "already_satisfied",
+          "satisfiedShifts": [
+            "B"
+          ],
+          "currentScore": 367.5
+        },
+        {
+          "groupId": "diagnostic_named_dependency:拉普兰德:德克萨斯",
+          "specKey": "TRADING:O_GOLD:德克萨斯|TRADING:O_GOLD:拉普兰德",
+          "operators": [
+            "拉普兰德",
+            "德克萨斯"
+          ],
+          "specs": [
+            {
+              "roomType": "TRADING",
+              "target": "O_GOLD",
+              "operator": "拉普兰德"
+            },
+            {
+              "roomType": "TRADING",
+              "target": "O_GOLD",
+              "operator": "德克萨斯"
+            }
+          ],
+          "status": "unplaceable",
+          "attemptedShifts": [
+            "A",
+            "B"
+          ],
+          "currentScore": 367.5
+        },
+        {
+          "groupId": "diagnostic_named_dependency:德克萨斯:拉普兰德",
+          "specKey": "TRADING:O_GOLD:德克萨斯|TRADING:O_GOLD:拉普兰德",
+          "operators": [
+            "德克萨斯",
+            "拉普兰德"
+          ],
+          "specs": [
+            {
+              "roomType": "TRADING",
+              "target": "O_GOLD",
+              "operator": "德克萨斯"
+            },
+            {
+              "roomType": "TRADING",
+              "target": "O_GOLD",
+              "operator": "拉普兰德"
+            }
+          ],
+          "status": "unplaceable",
+          "attemptedShifts": [
+            "A",
+            "B"
+          ],
+          "currentScore": 367.5
+        },
+        {
+          "groupId": "diagnostic_faction_dependency:维娜·维多利亚:glasgow",
+          "specKey": "TRADING:O_GOLD:推进之王|TRADING:O_GOLD:维娜·维多利亚",
+          "operators": [
+            "维娜·维多利亚",
+            "推进之王"
+          ],
+          "specs": [
+            {
+              "roomType": "TRADING",
+              "target": "O_GOLD",
+              "operator": "维娜·维多利亚"
+            },
+            {
+              "roomType": "TRADING",
+              "target": "O_GOLD",
+              "operator": "推进之王",
+              "allowNoSkill": true
+            }
+          ],
+          "status": "evaluated_not_improving",
+          "shift": "B",
+          "currentScore": 367.5,
+          "candidateScore": 365.117,
+          "scoreDelta": -2.383,
+          "dailyExpectedDelta": {
+            "lmdGross": 345.31,
+            "lmdNet": 345.31,
+            "pureGoldDelta": 0.579
+          },
+          "assignmentChanges": [
+            {
+              "shift": "A",
+              "roomId": "trading_1",
+              "roomType": "TRADING",
+              "target": "O_GOLD",
+              "before": [
+                "维娜·维多利亚",
+                "摩根",
+                "可露希尔"
+              ],
+              "after": [
+                "能天使",
+                "夜刀",
+                "可露希尔"
+              ]
+            },
+            {
+              "shift": "B",
+              "roomId": "trading_1",
+              "roomType": "TRADING",
+              "target": "O_GOLD",
+              "before": [
+                "蕾缪安",
+                "能天使",
+                "但书"
+              ],
+              "after": [
+                "维娜·维多利亚",
+                "推进之王",
+                "但书"
+              ]
+            }
+          ]
+        },
+        {
+          "groupId": "diagnostic_faction_dependency:维娜·维多利亚:glasgow",
+          "specKey": "TRADING:O_GOLD:维娜·维多利亚|TRADING:O_GOLD:达格达",
+          "operators": [
+            "维娜·维多利亚",
+            "达格达"
+          ],
+          "specs": [
+            {
+              "roomType": "TRADING",
+              "target": "O_GOLD",
+              "operator": "维娜·维多利亚"
+            },
+            {
+              "roomType": "TRADING",
+              "target": "O_GOLD",
+              "operator": "达格达",
+              "allowNoSkill": true
+            }
+          ],
+          "status": "evaluated_not_improving",
+          "shift": "B",
+          "currentScore": 367.5,
+          "candidateScore": 365.117,
+          "scoreDelta": -2.383,
+          "dailyExpectedDelta": {
+            "lmdGross": 345.31,
+            "lmdNet": 345.31,
+            "pureGoldDelta": 0.579
+          },
+          "assignmentChanges": [
+            {
+              "shift": "A",
+              "roomId": "trading_1",
+              "roomType": "TRADING",
+              "target": "O_GOLD",
+              "before": [
+                "维娜·维多利亚",
+                "摩根",
+                "可露希尔"
+              ],
+              "after": [
+                "能天使",
+                "夜刀",
+                "可露希尔"
+              ]
+            },
+            {
+              "shift": "B",
+              "roomId": "trading_1",
+              "roomType": "TRADING",
+              "target": "O_GOLD",
+              "before": [
+                "蕾缪安",
+                "能天使",
+                "但书"
+              ],
+              "after": [
+                "维娜·维多利亚",
+                "达格达",
+                "但书"
+              ]
+            }
+          ]
+        },
+        {
+          "groupId": "diagnostic_faction_dependency:维娜·维多利亚:glasgow",
+          "specKey": "TRADING:O_GOLD:因陀罗|TRADING:O_GOLD:维娜·维多利亚",
+          "operators": [
+            "维娜·维多利亚",
+            "因陀罗"
+          ],
+          "specs": [
+            {
+              "roomType": "TRADING",
+              "target": "O_GOLD",
+              "operator": "维娜·维多利亚"
+            },
+            {
+              "roomType": "TRADING",
+              "target": "O_GOLD",
+              "operator": "因陀罗",
+              "allowNoSkill": true
+            }
+          ],
+          "status": "evaluated_not_improving",
+          "shift": "B",
+          "currentScore": 367.5,
+          "candidateScore": 365.117,
+          "scoreDelta": -2.383,
+          "dailyExpectedDelta": {
+            "lmdGross": 345.31,
+            "lmdNet": 345.31,
+            "pureGoldDelta": 0.579
+          },
+          "assignmentChanges": [
+            {
+              "shift": "A",
+              "roomId": "trading_1",
+              "roomType": "TRADING",
+              "target": "O_GOLD",
+              "before": [
+                "维娜·维多利亚",
+                "摩根",
+                "可露希尔"
+              ],
+              "after": [
+                "能天使",
+                "夜刀",
+                "可露希尔"
+              ]
+            },
+            {
+              "shift": "B",
+              "roomId": "trading_1",
+              "roomType": "TRADING",
+              "target": "O_GOLD",
+              "before": [
+                "蕾缪安",
+                "能天使",
+                "但书"
+              ],
+              "after": [
+                "维娜·维多利亚",
+                "因陀罗",
+                "但书"
+              ]
+            }
+          ]
+        }
+      ],
+      "maxPasses": 8,
+      "displaced": [],
+      "summary": {
+        "availableGroupCount": 27,
+        "acceptedCount": 4,
+        "displacedCount": 0,
+        "skippedCount": 23,
+        "alreadySatisfiedCount": 6,
+        "evaluatedNotImprovingCount": 11,
+        "unplaceableCount": 6,
+        "remainingImprovementCount": 0
+      },
+      "localQualityAudit": {
+        "remainingPositiveCount": 0,
+        "positiveNeighborhoods": []
+      }
+    },
+    "unsupportedSkillEffects": [
+      {
+        "operator": "魔王",
+        "buffId": "control_mp_cost_double[000]",
+        "buffName": "魔王传承",
+        "reason": "控制中枢复杂条件效果尚未完全建模，未计入全局加成。"
+      },
+      {
+        "operator": "但书",
+        "buffId": "trade_ord_law[000]",
+        "buffName": "合同法",
+        "reason": "违约订单收益需要订单分布模型；当前仅标记，不直接改变产出。校准贸易档案可能会单独处理房间总产出。"
+      }
+    ],
+    "assumptions": [
+      "Factory and Trading Post base production includes +1% per effective slot.",
+      "LMD Trading Post orders use guide probabilities by room level: L1 low, L2 low/medium, L3 low/medium/high.",
+      "Level 3 LMD order probabilities are default 30%/50%/20%, Tailoring alpha 15%/30%/55%, Tailoring beta 5%/10%/85%.",
+      "Yituliu 2026-06 special LMD Trading Post lookups are used for modeled Shamare/Tequila/Proviso, Croissant, and high-efficiency partner combinations.",
+      "Orundum orders are modeled as 2 Originium Shards -> 20 Orundum with a 2-hour order duration calibrated from Yituliu 2026-06 schedules.",
+      "Overflow is calculated per shift/collection interval.",
+      "Production is first summed across one complete shift cycle, then scaled to a 24-hour daily average.",
+      "Drone generation starts from 240 drones/day and applies weighted Power Plant drone-recovery skill bonuses from scheduled power rooms.",
+      "Auto drone usage first tries to cover Pure Gold and Originium Shard deficits across the full cycle, then spends remaining drones on the best output target."
+    ],
+    "calibrationProfile": "guide",
+    "sourceAssumptions": [
+      "GamePress 252 guide: 252 means 2 Trading Posts, 5 Factories, 2 Power Plants; common factory splits are 3 EXP/2 Gold or 2 EXP/3 Gold.",
+      "Arknights Wiki Trading Post: LMD orders use 2/3/4 Pure Gold order types with level-dependent odds and order durations.",
+      "ArkBuilding model: room type, slots, product type and baseProdEff=1+0.01*slots are modeled explicitly.",
+      "Drone policy: auto. Drone contribution is reported separately."
+    ],
+    "guideComparison": null,
+    "roomReports": [
+      {
+        "roomId": "control_1",
+        "roomType": "CONTROL",
+        "target": null,
+        "producedUnits": 0.0,
+        "cappedUnits": 0.0,
+        "capacity": null,
+        "baseSpeedPercent": 0.0,
+        "stationSlots": 0,
+        "roomLevel": 5,
+        "collectionIntervalHours": 0.0,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 0.0,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": 0.0,
+          "shardDelta": 0.0,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 0.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": null,
+        "manufactureProfile": null,
+        "assumptions": [],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "凛御银灰",
+            "buffId": "control_tra_limit&spd3[000]",
+            "buffName": "商业版图",
+            "status": "diagnostic_only",
+            "scope": "CONTROL",
+            "reason": "Complex or upgrade-only skill produced no modeled numeric effect in this room evaluation.",
+            "confidence": "diagnostic"
+          }
+        ],
+        "shift": "A"
+      },
+      {
+        "roomId": "trading_1",
+        "roomType": "TRADING",
+        "target": "O_GOLD",
+        "producedUnits": 0.5,
+        "cappedUnits": 0.5,
+        "capacity": null,
+        "baseSpeedPercent": 3.0,
+        "stationSlots": 3,
+        "roomLevel": 3,
+        "collectionIntervalHours": 12,
+        "vector": {
+          "lmdGross": 9420.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 0.0,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": -15.7,
+          "shardDelta": 0.0,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 37.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": {
+          "target": "O_GOLD",
+          "level": 3,
+          "calibrationMode": "guide_mechanism_estimate",
+          "mechanismId": "croissant_special_order",
+          "anchorOperator": "可露希尔",
+          "baseLmdPer24h": 12000.0,
+          "baseGoldPer24h": 20.0,
+          "intrinsicSpeedPercent": 20.0,
+          "partnerSpeedPercent": 30.0,
+          "scheduleEffectivePercent": 157.0,
+          "mechanismScheduleEffectivePercent": 150.0,
+          "controlSpeedPercent": 7.0,
+          "confidence": "guide_anchor_estimate",
+          "matchedAnchorRows": [
+            "croissant_l1",
+            "croissant_l2_plus_40",
+            "croissant_l2_plus_45",
+            "croissant_l3_plus_two_40",
+            "croissant_l3_plus_two_45"
+          ],
+          "source": "Yituliu 2026-06 trade lookup rows for Croissant special orders.",
+          "partnerContributions": [
+            {
+              "operatorName": "维娜·维多利亚",
+              "buffId": "trade_ord_spd&par[000]",
+              "buffName": "外贸决议·α",
+              "parsedScore": 30.0,
+              "countedSpeedPercent": 30.0,
+              "counted": true,
+              "classification": "fixed_speed",
+              "reason": "Parsed fixed Trading Post speed is counted in partnerSpeedPercent.",
+              "hasUpgradeRequirement": false
+            },
+            {
+              "operatorName": "摩根",
+              "buffId": "none",
+              "buffName": "无匹配基建技能",
+              "parsedScore": 0.0,
+              "countedSpeedPercent": 0.0,
+              "counted": false,
+              "classification": "conditional_human_fire",
+              "reason": "Human-fire style trade speed depends on external/dormitory state and is not statically converted into partner speed.",
+              "hasUpgradeRequirement": false
+            }
+          ],
+          "ignoredPartnerNotes": [
+            "摩根/无匹配基建技能 excluded from mechanism partner speed: Human-fire style trade speed depends on external/dormitory state and is not statically converted into partner speed."
+          ]
+        },
+        "manufactureProfile": null,
+        "assumptions": [
+          "Yituliu 2026-06 trade lookup rows for Croissant special orders.",
+          "Yituliu guide anchor rows are used to estimate this special Trading Post mechanism when no exact combo lookup matches.",
+          "维娜·维多利亚/外贸决议按格拉斯哥帮同站条件计入。",
+          "望/权变 的控制中枢权变按当前静态模型外势=实地，触发贸易站 +7% 分支计入。"
+        ],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "维娜·维多利亚",
+            "buffId": "trade_ord_spd&par[000]",
+            "buffName": "外贸决议·α",
+            "status": "counted",
+            "scope": "TRADING",
+            "reason": "Modeled complex rule contributed numeric effect in this room evaluation.",
+            "confidence": "modeled_rule",
+            "numericContribution": {
+              "speedPercent": 30.0
+            }
+          },
+          {
+            "operator": "可露希尔",
+            "buffId": "guide_special_trade_anchor[croissant_special_order]",
+            "buffName": "Guide special trade anchor",
+            "status": "diagnostic_only",
+            "scope": "TRADING",
+            "reason": "Complex or upgrade-only skill produced no modeled numeric effect in this room evaluation.",
+            "confidence": "diagnostic"
+          },
+          {
+            "operator": "望",
+            "buffId": "",
+            "buffName": "权变",
+            "status": "counted",
+            "scope": "control_global:trade_global",
+            "reason": "望/权变 的控制中枢权变按当前静态模型外势=实地，触发贸易站 +7% 分支计入。",
+            "confidence": "modeled_rule"
+          },
+          {
+            "operator": "可露希尔",
+            "buffId": "guide_special_trade_anchor[croissant_special_order]",
+            "buffName": "Guide special trade anchor",
+            "status": "source_calibrated",
+            "scope": "trade_order_profile",
+            "reason": "Yituliu guide anchor rows calibrate this special Trading Post mechanism; unsupported notes describe sub-effects not directly parsed as ordinary speed.",
+            "confidence": "guide_anchor_estimate",
+            "calibrationMode": "guide_mechanism_estimate",
+            "mechanismId": "croissant_special_order"
+          },
+          {
+            "operator": "维娜·维多利亚",
+            "buffId": "trade_ord_spd&par[000]",
+            "buffName": "外贸决议·α",
+            "status": "counted",
+            "scope": "special_trade_partner_speed",
+            "reason": "Parsed fixed Trading Post speed is counted in partnerSpeedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "classification": "fixed_speed",
+            "numericContribution": {
+              "speedPercent": 30.0
+            }
+          },
+          {
+            "operator": "摩根",
+            "buffId": "none",
+            "buffName": "无匹配基建技能",
+            "status": "diagnostic_only",
+            "scope": "special_trade_partner_speed",
+            "reason": "Human-fire style trade speed depends on external/dormitory state and is not statically converted into partner speed.",
+            "confidence": "diagnostic",
+            "classification": "conditional_human_fire"
+          }
+        ],
+        "shift": "A"
+      },
+      {
+        "roomId": "trading_2",
+        "roomType": "TRADING",
+        "target": "O_DIAMOND",
+        "producedUnits": 14.52,
+        "cappedUnits": 14.52,
+        "capacity": null,
+        "baseSpeedPercent": 3.0,
+        "stationSlots": 3,
+        "roomLevel": 3,
+        "collectionIntervalHours": 12,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 290.4,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": 0.0,
+          "shardDelta": -29.04,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 139.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 2.0,
+        "orderWeightLevel": 1,
+        "tradeOrderProfile": {
+          "target": "O_DIAMOND",
+          "level": 3,
+          "expectedSeconds": 7200.0,
+          "expectedLmd": 0.0,
+          "expectedGold": 0.0,
+          "expectedOrundum": 20.0,
+          "expectedShards": 2.0,
+          "bias": "default",
+          "distribution": [
+            {
+              "shards": 2.0,
+              "orundum": 20.0,
+              "seconds": 7200.0,
+              "probability": 1.0
+            }
+          ],
+          "source": "Yituliu 2026-06 Orundum trade room summary: level-3 Orundum Trading Post paper efficiencies around 130-135%.",
+          "calibrationMode": "guide_orundum_exact_lookup",
+          "lookupId": "orundum_trade_l3_2026_06_static",
+          "paperEfficiencyPercent": 132.0,
+          "scheduleEffectivePercent": 139.0,
+          "controlSpeedPercent": 7.0
+        },
+        "manufactureProfile": null,
+        "assumptions": [
+          "Yituliu 2026-06 Orundum trade room summary: level-3 Orundum Trading Post paper efficiencies around 130-135%.",
+          "Guide-calibrated Orundum order benchmarks use paper efficiency and raw order throughput without static order-limit clipping.",
+          "德克萨斯/恩怨 的同站条件已满足并计入。",
+          "拉普兰德/醉翁之意·α 的同站条件已满足并计入。",
+          "望/权变 的控制中枢权变按当前静态模型外势=实地，触发贸易站 +7% 分支计入。"
+        ],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "德克萨斯",
+            "buffId": "trade_ord_spd&cost_P[000]",
+            "buffName": "恩怨",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 65.0
+            }
+          },
+          {
+            "operator": "德克萨斯",
+            "buffId": "trade_ord_spd&cost_P[000]",
+            "buffName": "恩怨",
+            "status": "counted",
+            "scope": "fatigue",
+            "reason": "Parsed morale delta is counted in fatigue risk.",
+            "confidence": "parsed_fatigue",
+            "numericContribution": {
+              "fatigueDeltaPerHour": 0.3
+            }
+          },
+          {
+            "operator": "德克萨斯",
+            "buffId": "trade_ord_spd&cost_P[000]",
+            "buffName": "恩怨",
+            "status": "counted",
+            "scope": "same_room_condition",
+            "reason": "Named same-room condition is satisfied and counted.",
+            "confidence": "modeled_rule",
+            "numericContribution": {
+              "speedPercent": 65.0
+            }
+          },
+          {
+            "operator": "拉普兰德",
+            "buffId": "trade_ord_limit&cost_P[000]",
+            "buffName": "醉翁之意·α",
+            "status": "counted",
+            "scope": "order_limit",
+            "reason": "Parsed order-limit bonus is counted in room order capacity.",
+            "confidence": "parsed_order_limit",
+            "numericContribution": {
+              "orderLimitBonus": 2.0
+            }
+          },
+          {
+            "operator": "拉普兰德",
+            "buffId": "trade_ord_limit&cost_P[000]",
+            "buffName": "醉翁之意·α",
+            "status": "counted",
+            "scope": "fatigue",
+            "reason": "Parsed morale delta is counted in fatigue risk.",
+            "confidence": "parsed_fatigue",
+            "numericContribution": {
+              "fatigueDeltaPerHour": -0.1
+            }
+          },
+          {
+            "operator": "拉普兰德",
+            "buffId": "trade_ord_limit&cost_P[000]",
+            "buffName": "醉翁之意·α",
+            "status": "counted",
+            "scope": "same_room_condition",
+            "reason": "Named same-room condition is satisfied and counted.",
+            "confidence": "modeled_rule",
+            "numericContribution": {}
+          },
+          {
+            "operator": "柏喙",
+            "buffId": "trade_ord_wt&cost[000]",
+            "buffName": "裁缝·α",
+            "status": "counted",
+            "scope": "fatigue",
+            "reason": "Parsed morale delta is counted in fatigue risk.",
+            "confidence": "parsed_fatigue",
+            "numericContribution": {
+              "fatigueDeltaPerHour": -0.25
+            }
+          },
+          {
+            "operator": "柏喙",
+            "buffId": "trade_ord_wt&cost[000]",
+            "buffName": "裁缝·α",
+            "status": "counted",
+            "scope": "order_probability",
+            "reason": "Parsed order-quality bias is counted in the generic LMD order profile.",
+            "confidence": "parsed_order_weight",
+            "numericContribution": {
+              "orderWeightLevel": 1.0
+            }
+          },
+          {
+            "operator": "望",
+            "buffId": "",
+            "buffName": "权变",
+            "status": "counted",
+            "scope": "control_global:trade_global",
+            "reason": "望/权变 的控制中枢权变按当前静态模型外势=实地，触发贸易站 +7% 分支计入。",
+            "confidence": "modeled_rule"
+          },
+          {
+            "operator": "德克萨斯",
+            "buffId": "trade_ord_spd&cost_P[000]",
+            "buffName": "恩怨",
+            "status": "source_calibrated",
+            "scope": "orundum_trade_room_lookup",
+            "calibrationMode": "guide_orundum_exact_lookup",
+            "lookupId": "orundum_trade_l3_2026_06_static",
+            "reason": "Yituliu guide room summary calibrates Orundum Trading Post paper efficiency; static guide images do not expose an exact operator roster for this room."
+          },
+          {
+            "operator": "拉普兰德",
+            "buffId": "trade_ord_limit&cost_P[000]",
+            "buffName": "醉翁之意·α",
+            "status": "source_calibrated",
+            "scope": "orundum_trade_room_lookup",
+            "calibrationMode": "guide_orundum_exact_lookup",
+            "lookupId": "orundum_trade_l3_2026_06_static",
+            "reason": "Yituliu guide room summary calibrates Orundum Trading Post paper efficiency; static guide images do not expose an exact operator roster for this room."
+          },
+          {
+            "operator": "柏喙",
+            "buffId": "trade_ord_wt&cost[000]",
+            "buffName": "裁缝·α",
+            "status": "source_calibrated",
+            "scope": "orundum_trade_room_lookup",
+            "calibrationMode": "guide_orundum_exact_lookup",
+            "lookupId": "orundum_trade_l3_2026_06_static",
+            "reason": "Yituliu guide room summary calibrates Orundum Trading Post paper efficiency; static guide images do not expose an exact operator roster for this room."
+          }
+        ],
+        "shift": "A"
+      },
+      {
+        "roomId": "manufacture_1",
+        "roomType": "MANUFACTURE",
+        "target": "F_EXP",
+        "producedUnits": 9.16,
+        "cappedUnits": 9.16,
+        "capacity": 54.0,
+        "baseSpeedPercent": 3.0,
+        "stationSlots": 3,
+        "roomLevel": 3,
+        "collectionIntervalHours": 12,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 9160.0,
+          "orundum": 0.0,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": 0.0,
+          "shardDelta": 0.0,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 126.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": null,
+        "manufactureProfile": {
+          "target": "F_EXP",
+          "level": 3,
+          "calibrationMode": "guide_exact_lookup",
+          "source": "Yituliu 2026-06 243 Orundum manufacture summary: companion level-3 EXP paper efficiency 126%.",
+          "lookupId": "maxed_exp_reference_l3_generic_126",
+          "paperEfficiencyPercent": 126.0,
+          "minimumParsedSpeedPercent": 90.0,
+          "required": []
+        },
+        "assumptions": [
+          "Yituliu 2026-06 243 Orundum manufacture summary: companion level-3 EXP paper efficiency 126%.",
+          "Yituliu guide manufacture lookup uses the published paper efficiency for this room-level static benchmark.",
+          "凯尔希/最高权限 的控制中枢全局制造站加成按 +2% 计入。"
+        ],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "Castle-3",
+            "buffId": "manu_formula_spd[010]",
+            "buffName": "作战指导录像",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 30.0
+            }
+          },
+          {
+            "operator": "红豆",
+            "buffId": "manu_formula_spd[010]",
+            "buffName": "作战指导录像",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 30.0
+            }
+          },
+          {
+            "operator": "白雪",
+            "buffId": "manu_formula_spd[010]",
+            "buffName": "作战指导录像",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 30.0
+            }
+          },
+          {
+            "operator": "凯尔希",
+            "buffId": "",
+            "buffName": "最高权限",
+            "status": "counted",
+            "scope": "control_global:manufacture_global",
+            "reason": "凯尔希/最高权限 的控制中枢全局制造站加成按 +2% 计入。",
+            "confidence": "modeled_rule"
+          },
+          {
+            "operator": "Castle-3",
+            "buffId": "manu_formula_spd[010]",
+            "buffName": "作战指导录像",
+            "status": "source_calibrated",
+            "scope": "manufacture_paper_efficiency",
+            "reason": "Exact Yituliu guide manufacture lookup calibrates this room output; parsed fixed speed remains available as diagnostic evidence.",
+            "confidence": "guide_exact_lookup",
+            "numericContribution": {
+              "paperEfficiencyPercent": 126.0,
+              "parsedSpeedPercent": 92.0
+            },
+            "calibrationMode": "guide_exact_lookup",
+            "lookupId": "maxed_exp_reference_l3_generic_126"
+          },
+          {
+            "operator": "红豆",
+            "buffId": "manu_formula_spd[010]",
+            "buffName": "作战指导录像",
+            "status": "source_calibrated",
+            "scope": "manufacture_paper_efficiency",
+            "reason": "Exact Yituliu guide manufacture lookup calibrates this room output; parsed fixed speed remains available as diagnostic evidence.",
+            "confidence": "guide_exact_lookup",
+            "numericContribution": {
+              "paperEfficiencyPercent": 126.0,
+              "parsedSpeedPercent": 92.0
+            },
+            "calibrationMode": "guide_exact_lookup",
+            "lookupId": "maxed_exp_reference_l3_generic_126"
+          },
+          {
+            "operator": "白雪",
+            "buffId": "manu_formula_spd[010]",
+            "buffName": "作战指导录像",
+            "status": "source_calibrated",
+            "scope": "manufacture_paper_efficiency",
+            "reason": "Exact Yituliu guide manufacture lookup calibrates this room output; parsed fixed speed remains available as diagnostic evidence.",
+            "confidence": "guide_exact_lookup",
+            "numericContribution": {
+              "paperEfficiencyPercent": 126.0,
+              "parsedSpeedPercent": 92.0
+            },
+            "calibrationMode": "guide_exact_lookup",
+            "lookupId": "maxed_exp_reference_l3_generic_126"
+          }
+        ],
+        "shift": "A"
+      },
+      {
+        "roomId": "manufacture_2",
+        "roomType": "MANUFACTURE",
+        "target": "F_GOLD",
+        "producedUnits": 20.0,
+        "cappedUnits": 20.0,
+        "capacity": 54.0,
+        "baseSpeedPercent": 3.0,
+        "stationSlots": 3,
+        "roomLevel": 3,
+        "collectionIntervalHours": 12,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 0.0,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": 20.0,
+          "shardDelta": 0.0,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 97.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": null,
+        "manufactureProfile": null,
+        "assumptions": [
+          "凯尔希/最高权限 的控制中枢全局制造站加成按 +2% 计入。"
+        ],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "砾",
+            "buffId": "manu_formula_spd[110]",
+            "buffName": "金属工艺·β",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 35.0
+            }
+          },
+          {
+            "operator": "斑点",
+            "buffId": "manu_formula_spd[100]",
+            "buffName": "金属工艺·α",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 30.0
+            }
+          },
+          {
+            "operator": "铅踝",
+            "buffId": "manu_prod_spd_reduce[000]",
+            "buffName": "模糊视线",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 30.0
+            }
+          },
+          {
+            "operator": "凯尔希",
+            "buffId": "",
+            "buffName": "最高权限",
+            "status": "counted",
+            "scope": "control_global:manufacture_global",
+            "reason": "凯尔希/最高权限 的控制中枢全局制造站加成按 +2% 计入。",
+            "confidence": "modeled_rule"
+          }
+        ],
+        "shift": "A"
+      },
+      {
+        "roomId": "manufacture_3",
+        "roomType": "MANUFACTURE",
+        "target": "F_GOLD",
+        "producedUnits": 18.5,
+        "cappedUnits": 18.5,
+        "capacity": 54.0,
+        "baseSpeedPercent": 3.0,
+        "stationSlots": 3,
+        "roomLevel": 3,
+        "collectionIntervalHours": 12,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 0.0,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": 18.5,
+          "shardDelta": 0.0,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 82.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": null,
+        "manufactureProfile": null,
+        "assumptions": [
+          "凯尔希/最高权限 的控制中枢全局制造站加成按 +2% 计入。"
+        ],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "夜烟",
+            "buffId": "manu_formula_spd[100]",
+            "buffName": "金属工艺·α",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 30.0
+            }
+          },
+          {
+            "operator": "调香师",
+            "buffId": "manu_prod_spd[010]",
+            "buffName": "标准化·β",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 25.0
+            }
+          },
+          {
+            "operator": "杰西卡",
+            "buffId": "manu_prod_spd[010]",
+            "buffName": "标准化·β",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 25.0
+            }
+          },
+          {
+            "operator": "凯尔希",
+            "buffId": "",
+            "buffName": "最高权限",
+            "status": "counted",
+            "scope": "control_global:manufacture_global",
+            "reason": "凯尔希/最高权限 的控制中枢全局制造站加成按 +2% 计入。",
+            "confidence": "modeled_rule"
+          }
+        ],
+        "shift": "A"
+      },
+      {
+        "roomId": "manufacture_4",
+        "roomType": "MANUFACTURE",
+        "target": "F_DIAMOND",
+        "producedUnits": 24.6,
+        "cappedUnits": 24.6,
+        "capacity": 54.0,
+        "baseSpeedPercent": 3.0,
+        "stationSlots": 3,
+        "roomLevel": 3,
+        "collectionIntervalHours": 12,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 0.0,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": 0.0,
+          "shardDelta": 24.6,
+          "materialCosts": {
+            "30012": 49.2,
+            "4001": 39360.0
+          },
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 102.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": null,
+        "manufactureProfile": null,
+        "assumptions": [
+          "凯尔希/最高权限 的控制中枢全局制造站加成按 +2% 计入。"
+        ],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "艾雅法拉",
+            "buffId": "manu_formula_spd[213]",
+            "buffName": "火山学家",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 35.0
+            }
+          },
+          {
+            "operator": "炎熔",
+            "buffId": "manu_formula_spd[210]",
+            "buffName": "源石工艺·β",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 35.0
+            }
+          },
+          {
+            "operator": "月见夜",
+            "buffId": "manu_formula_spd[200]",
+            "buffName": "源石工艺·α",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 30.0
+            }
+          },
+          {
+            "operator": "凯尔希",
+            "buffId": "",
+            "buffName": "最高权限",
+            "status": "counted",
+            "scope": "control_global:manufacture_global",
+            "reason": "凯尔希/最高权限 的控制中枢全局制造站加成按 +2% 计入。",
+            "confidence": "modeled_rule"
+          }
+        ],
+        "shift": "A"
+      },
+      {
+        "roomId": "power_1",
+        "roomType": "POWER",
+        "target": null,
+        "producedUnits": 0.0,
+        "cappedUnits": 0.0,
+        "capacity": null,
+        "baseSpeedPercent": 0.0,
+        "stationSlots": 0,
+        "roomLevel": 3,
+        "collectionIntervalHours": 0.0,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 0.0,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": 0.0,
+          "shardDelta": 0.0,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 25.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": null,
+        "manufactureProfile": null,
+        "assumptions": [],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "承曦格雷伊",
+            "buffId": "power_rec_drone[000]",
+            "buffName": "巡线框架",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 25.0
+            }
+          }
+        ],
+        "shift": "A"
+      },
+      {
+        "roomId": "power_2",
+        "roomType": "POWER",
+        "target": null,
+        "producedUnits": 0.0,
+        "cappedUnits": 0.0,
+        "capacity": null,
+        "baseSpeedPercent": 0.0,
+        "stationSlots": 0,
+        "roomLevel": 3,
+        "collectionIntervalHours": 0.0,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 0.0,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": 0.0,
+          "shardDelta": 0.0,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 20.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": null,
+        "manufactureProfile": null,
+        "assumptions": [],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "格雷伊",
+            "buffId": "power_rec_spd[020]",
+            "buffName": "静电场",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 20.0
+            }
+          }
+        ],
+        "shift": "A"
+      },
+      {
+        "roomId": "power_3",
+        "roomType": "POWER",
+        "target": null,
+        "producedUnits": 0.0,
+        "cappedUnits": 0.0,
+        "capacity": null,
+        "baseSpeedPercent": 0.0,
+        "stationSlots": 0,
+        "roomLevel": 3,
+        "collectionIntervalHours": 0.0,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 0.0,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": 0.0,
+          "shardDelta": 0.0,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 15.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": null,
+        "manufactureProfile": null,
+        "assumptions": [],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "布丁",
+            "buffId": "power_rec_spd[010]",
+            "buffName": "设备维护",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 15.0
+            }
+          }
+        ],
+        "shift": "A"
+      },
+      {
+        "roomId": "meeting_1",
+        "roomType": "MEETING",
+        "target": null,
+        "producedUnits": 26.0,
+        "cappedUnits": 26.0,
+        "capacity": null,
+        "baseSpeedPercent": 2.0,
+        "stationSlots": 2,
+        "roomLevel": 3,
+        "collectionIntervalHours": 12,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 0.0,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 26.0,
+          "pureGoldDelta": 0.0,
+          "shardDelta": 0.0,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 50.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": null,
+        "manufactureProfile": null,
+        "assumptions": [
+          "会客室线索搜集速度按每日加权效率点计入 meetingSpeed；综合分按 meetingSpeed / 30 计入。"
+        ],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "星极",
+            "buffId": "meet_spd&team[110]",
+            "buffName": "星象学",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 25.0
+            }
+          },
+          {
+            "operator": "伺夜",
+            "buffId": "meet_spd[032]",
+            "buffName": "领袖外交",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 25.0
+            }
+          }
+        ],
+        "shift": "A"
+      },
+      {
+        "roomId": "hire_1",
+        "roomType": "HIRE",
+        "target": null,
+        "producedUnits": 23.0,
+        "cappedUnits": 23.0,
+        "capacity": null,
+        "baseSpeedPercent": 1.0,
+        "stationSlots": 1,
+        "roomLevel": 3,
+        "collectionIntervalHours": 12,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 0.0,
+          "officeSpeed": 23.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": 0.0,
+          "shardDelta": 0.0,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 45.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": null,
+        "manufactureProfile": null,
+        "assumptions": [
+          "办公室公开招募联络速度按每日加权效率点计入 officeSpeed；综合分按 officeSpeed / 30 计入。",
+          "圣聆初雪/雪境归心按凛御银灰进驻控制中枢额外 +10% 计入。"
+        ],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "圣聆初雪",
+            "buffId": "hire_spd_cost&char[001]",
+            "buffName": "雪境归心",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 35.0
+            }
+          },
+          {
+            "operator": "圣聆初雪",
+            "buffId": "hire_spd_cost&char[001]",
+            "buffName": "雪境归心",
+            "status": "counted",
+            "scope": "fatigue",
+            "reason": "Parsed morale delta is counted in fatigue risk.",
+            "confidence": "parsed_fatigue",
+            "numericContribution": {
+              "fatigueDeltaPerHour": -0.25
+            }
+          }
+        ],
+        "shift": "A"
+      },
+      {
+        "roomId": "control_1",
+        "roomType": "CONTROL",
+        "target": null,
+        "producedUnits": 0.0,
+        "cappedUnits": 0.0,
+        "capacity": null,
+        "baseSpeedPercent": 0.0,
+        "stationSlots": 0,
+        "roomLevel": 5,
+        "collectionIntervalHours": 0.0,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 0.0,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": 0.0,
+          "shardDelta": 0.0,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.6,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 0.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 1.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": null,
+        "manufactureProfile": null,
+        "assumptions": [],
+        "unsupportedSkillEffects": [
+          {
+            "operator": "魔王",
+            "buffId": "control_mp_cost_double[000]",
+            "buffName": "魔王传承",
+            "reason": "控制中枢复杂条件效果尚未完全建模，未计入全局加成。"
+          }
+        ],
+        "skillEffectAudit": [
+          {
+            "operator": "维什戴尔",
+            "buffId": "control_meeting&ord[000]",
+            "buffName": "同谋·α",
+            "status": "counted",
+            "scope": "order_limit",
+            "reason": "Parsed order-limit bonus is counted in room order capacity.",
+            "confidence": "parsed_order_limit",
+            "numericContribution": {
+              "orderLimitBonus": 1.0
+            }
+          },
+          {
+            "operator": "魔王",
+            "buffId": "control_mp_cost_double[000]",
+            "buffName": "魔王传承",
+            "status": "counted",
+            "scope": "fatigue",
+            "reason": "Parsed morale delta is counted in fatigue risk.",
+            "confidence": "parsed_fatigue",
+            "numericContribution": {
+              "fatigueDeltaPerHour": 0.05
+            }
+          },
+          {
+            "operator": "魔王",
+            "buffId": "control_mp_cost_double[000]",
+            "buffName": "魔王传承",
+            "status": "unsupported",
+            "scope": "control_global",
+            "reason": "Unmodeled conditional Control Center effect was not silently counted.",
+            "confidence": "unmodeled"
+          }
+        ],
+        "shift": "B"
+      },
+      {
+        "roomId": "trading_1",
+        "roomType": "TRADING",
+        "target": "O_GOLD",
+        "producedUnits": 0.5,
+        "cappedUnits": 0.5,
+        "capacity": null,
+        "baseSpeedPercent": 3.0,
+        "stationSlots": 3,
+        "roomLevel": 3,
+        "collectionIntervalHours": 12,
+        "vector": {
+          "lmdGross": 13141.42,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 0.0,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": -26.317,
+          "shardDelta": 0.0,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 55.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": {
+          "target": "O_GOLD",
+          "level": 3,
+          "calibrationMode": "guide_mechanism_estimate",
+          "mechanismId": "butushu_contract_order",
+          "anchorOperator": "但书",
+          "baseLmdPer24h": 15929.0,
+          "baseGoldPer24h": 31.9,
+          "intrinsicSpeedPercent": 10.0,
+          "partnerSpeedPercent": 55.0,
+          "scheduleEffectivePercent": 165.0,
+          "mechanismScheduleEffectivePercent": 165.0,
+          "controlSpeedPercent": 0.0,
+          "confidence": "guide_anchor_estimate",
+          "matchedAnchorRows": [
+            "butushu_l1",
+            "butushu_l2_plus_40",
+            "butushu_l2_plus_45",
+            "butushu_l3_plus_two_40",
+            "butushu_l3_plus_two_45"
+          ],
+          "source": "Yituliu 2026-06 trade lookup rows for Proviso/Butushu special contract orders.",
+          "partnerContributions": [
+            {
+              "operatorName": "蕾缪安",
+              "buffId": "trade_ord_spd&multiPar[000]",
+              "buffName": "订单分发·α",
+              "parsedScore": 20.0,
+              "countedSpeedPercent": 20.0,
+              "counted": true,
+              "classification": "fixed_speed",
+              "reason": "Parsed fixed Trading Post speed is counted in partnerSpeedPercent.",
+              "hasUpgradeRequirement": false
+            },
+            {
+              "operatorName": "能天使",
+              "buffId": "trade_ord_spd[020]",
+              "buffName": "物流专家",
+              "parsedScore": 35.0,
+              "countedSpeedPercent": 35.0,
+              "counted": true,
+              "classification": "fixed_speed",
+              "reason": "Parsed fixed Trading Post speed is counted in partnerSpeedPercent.",
+              "hasUpgradeRequirement": false
+            }
+          ]
+        },
+        "manufactureProfile": null,
+        "assumptions": [
+          "Yituliu 2026-06 trade lookup rows for Proviso/Butushu special contract orders.",
+          "Yituliu guide anchor rows are used to estimate this special Trading Post mechanism when no exact combo lookup matches."
+        ],
+        "unsupportedSkillEffects": [
+          {
+            "operator": "但书",
+            "buffId": "trade_ord_law[000]",
+            "buffName": "合同法",
+            "reason": "违约订单收益需要订单分布模型；当前仅标记，不直接改变产出。校准贸易档案可能会单独处理房间总产出。"
+          }
+        ],
+        "skillEffectAudit": [
+          {
+            "operator": "蕾缪安",
+            "buffId": "trade_ord_spd&multiPar[000]",
+            "buffName": "订单分发·α",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 20.0
+            }
+          },
+          {
+            "operator": "能天使",
+            "buffId": "trade_ord_spd[020]",
+            "buffName": "物流专家",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 35.0
+            }
+          },
+          {
+            "operator": "但书",
+            "buffId": "trade_ord_law[000]",
+            "buffName": "合同法",
+            "status": "unsupported",
+            "scope": "TRADING",
+            "reason": "违约订单收益需要订单分布模型；当前仅标记，不直接改变产出。校准贸易档案可能会单独处理房间总产出。",
+            "confidence": "unmodeled"
+          },
+          {
+            "operator": "但书",
+            "buffId": "trade_ord_law[000]",
+            "buffName": "合同法",
+            "status": "source_calibrated",
+            "scope": "trade_order_profile",
+            "reason": "Yituliu guide anchor rows calibrate this special Trading Post mechanism; unsupported notes describe sub-effects not directly parsed as ordinary speed.",
+            "confidence": "guide_anchor_estimate",
+            "calibrationMode": "guide_mechanism_estimate",
+            "mechanismId": "butushu_contract_order"
+          },
+          {
+            "operator": "蕾缪安",
+            "buffId": "trade_ord_spd&multiPar[000]",
+            "buffName": "订单分发·α",
+            "status": "counted",
+            "scope": "special_trade_partner_speed",
+            "reason": "Parsed fixed Trading Post speed is counted in partnerSpeedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "classification": "fixed_speed",
+            "numericContribution": {
+              "speedPercent": 20.0
+            }
+          },
+          {
+            "operator": "能天使",
+            "buffId": "trade_ord_spd[020]",
+            "buffName": "物流专家",
+            "status": "counted",
+            "scope": "special_trade_partner_speed",
+            "reason": "Parsed fixed Trading Post speed is counted in partnerSpeedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "classification": "fixed_speed",
+            "numericContribution": {
+              "speedPercent": 35.0
+            }
+          }
+        ],
+        "shift": "B"
+      },
+      {
+        "roomId": "trading_2",
+        "roomType": "TRADING",
+        "target": "O_DIAMOND",
+        "producedUnits": 14.1,
+        "cappedUnits": 14.1,
+        "capacity": null,
+        "baseSpeedPercent": 3.0,
+        "stationSlots": 3,
+        "roomLevel": 3,
+        "collectionIntervalHours": 12,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 282.0,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": 0.0,
+          "shardDelta": -28.2,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 132.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 2.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": {
+          "target": "O_DIAMOND",
+          "level": 3,
+          "expectedSeconds": 7200.0,
+          "expectedLmd": 0.0,
+          "expectedGold": 0.0,
+          "expectedOrundum": 20.0,
+          "expectedShards": 2.0,
+          "bias": "default",
+          "distribution": [
+            {
+              "shards": 2.0,
+              "orundum": 20.0,
+              "seconds": 7200.0,
+              "probability": 1.0
+            }
+          ],
+          "source": "Yituliu 2026-06 Orundum trade room summary: level-3 Orundum Trading Post paper efficiencies around 130-135%.",
+          "calibrationMode": "guide_orundum_exact_lookup",
+          "lookupId": "orundum_trade_l3_2026_06_static",
+          "paperEfficiencyPercent": 132.0,
+          "scheduleEffectivePercent": 132.0,
+          "controlSpeedPercent": 0.0
+        },
+        "manufactureProfile": null,
+        "assumptions": [
+          "Yituliu 2026-06 Orundum trade room summary: level-3 Orundum Trading Post paper efficiencies around 130-135%.",
+          "Guide-calibrated Orundum order benchmarks use paper efficiency and raw order throughput without static order-limit clipping."
+        ],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "芬",
+            "buffId": "trade_ord_spd[001]",
+            "buffName": "订单分发·β",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 30.0
+            }
+          },
+          {
+            "operator": "远山",
+            "buffId": "trade_ord_spd&limit[010]",
+            "buffName": "供应管理",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 25.0
+            }
+          },
+          {
+            "operator": "远山",
+            "buffId": "trade_ord_spd&limit[010]",
+            "buffName": "供应管理",
+            "status": "counted",
+            "scope": "order_limit",
+            "reason": "Parsed order-limit bonus is counted in room order capacity.",
+            "confidence": "parsed_order_limit",
+            "numericContribution": {
+              "orderLimitBonus": 1.0
+            }
+          },
+          {
+            "operator": "玫兰莎",
+            "buffId": "trade_ord_spd&limit[010]",
+            "buffName": "供应管理",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 25.0
+            }
+          },
+          {
+            "operator": "玫兰莎",
+            "buffId": "trade_ord_spd&limit[010]",
+            "buffName": "供应管理",
+            "status": "counted",
+            "scope": "order_limit",
+            "reason": "Parsed order-limit bonus is counted in room order capacity.",
+            "confidence": "parsed_order_limit",
+            "numericContribution": {
+              "orderLimitBonus": 1.0
+            }
+          },
+          {
+            "operator": "芬",
+            "buffId": "trade_ord_spd[001]",
+            "buffName": "订单分发·β",
+            "status": "source_calibrated",
+            "scope": "orundum_trade_room_lookup",
+            "calibrationMode": "guide_orundum_exact_lookup",
+            "lookupId": "orundum_trade_l3_2026_06_static",
+            "reason": "Yituliu guide room summary calibrates Orundum Trading Post paper efficiency; static guide images do not expose an exact operator roster for this room."
+          },
+          {
+            "operator": "远山",
+            "buffId": "trade_ord_spd&limit[010]",
+            "buffName": "供应管理",
+            "status": "source_calibrated",
+            "scope": "orundum_trade_room_lookup",
+            "calibrationMode": "guide_orundum_exact_lookup",
+            "lookupId": "orundum_trade_l3_2026_06_static",
+            "reason": "Yituliu guide room summary calibrates Orundum Trading Post paper efficiency; static guide images do not expose an exact operator roster for this room."
+          },
+          {
+            "operator": "玫兰莎",
+            "buffId": "trade_ord_spd&limit[010]",
+            "buffName": "供应管理",
+            "status": "source_calibrated",
+            "scope": "orundum_trade_room_lookup",
+            "calibrationMode": "guide_orundum_exact_lookup",
+            "lookupId": "orundum_trade_l3_2026_06_static",
+            "reason": "Yituliu guide room summary calibrates Orundum Trading Post paper efficiency; static guide images do not expose an exact operator roster for this room."
+          }
+        ],
+        "shift": "B"
+      },
+      {
+        "roomId": "manufacture_1",
+        "roomType": "MANUFACTURE",
+        "target": "F_EXP",
+        "producedUnits": 9.16,
+        "cappedUnits": 9.16,
+        "capacity": 54.0,
+        "baseSpeedPercent": 3.0,
+        "stationSlots": 3,
+        "roomLevel": 3,
+        "collectionIntervalHours": 12,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 9160.0,
+          "orundum": 0.0,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": 0.0,
+          "shardDelta": 0.0,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 126.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": null,
+        "manufactureProfile": {
+          "target": "F_EXP",
+          "level": 3,
+          "calibrationMode": "guide_exact_lookup",
+          "source": "Yituliu 2026-06 243 Orundum manufacture summary: companion level-3 EXP paper efficiency 126%.",
+          "lookupId": "maxed_exp_reference_l3_generic_126",
+          "paperEfficiencyPercent": 126.0,
+          "minimumParsedSpeedPercent": 90.0,
+          "required": []
+        },
+        "assumptions": [
+          "Yituliu 2026-06 243 Orundum manufacture summary: companion level-3 EXP paper efficiency 126%.",
+          "Yituliu guide manufacture lookup uses the published paper efficiency for this room-level static benchmark."
+        ],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "霜叶",
+            "buffId": "manu_formula_spd[010]",
+            "buffName": "作战指导录像",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 30.0
+            }
+          },
+          {
+            "operator": "怒潮凛冬",
+            "buffId": "manu_formula_spd&bd[000]",
+            "buffName": "战阵领袖",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 30.0
+            }
+          },
+          {
+            "operator": "食铁兽",
+            "buffId": "manu_formula_spd[010]",
+            "buffName": "作战指导录像",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 30.0
+            }
+          },
+          {
+            "operator": "霜叶",
+            "buffId": "manu_formula_spd[010]",
+            "buffName": "作战指导录像",
+            "status": "source_calibrated",
+            "scope": "manufacture_paper_efficiency",
+            "reason": "Exact Yituliu guide manufacture lookup calibrates this room output; parsed fixed speed remains available as diagnostic evidence.",
+            "confidence": "guide_exact_lookup",
+            "numericContribution": {
+              "paperEfficiencyPercent": 126.0,
+              "parsedSpeedPercent": 90.0
+            },
+            "calibrationMode": "guide_exact_lookup",
+            "lookupId": "maxed_exp_reference_l3_generic_126"
+          },
+          {
+            "operator": "怒潮凛冬",
+            "buffId": "manu_formula_spd&bd[000]",
+            "buffName": "战阵领袖",
+            "status": "source_calibrated",
+            "scope": "manufacture_paper_efficiency",
+            "reason": "Exact Yituliu guide manufacture lookup calibrates this room output; parsed fixed speed remains available as diagnostic evidence.",
+            "confidence": "guide_exact_lookup",
+            "numericContribution": {
+              "paperEfficiencyPercent": 126.0,
+              "parsedSpeedPercent": 90.0
+            },
+            "calibrationMode": "guide_exact_lookup",
+            "lookupId": "maxed_exp_reference_l3_generic_126"
+          },
+          {
+            "operator": "食铁兽",
+            "buffId": "manu_formula_spd[010]",
+            "buffName": "作战指导录像",
+            "status": "source_calibrated",
+            "scope": "manufacture_paper_efficiency",
+            "reason": "Exact Yituliu guide manufacture lookup calibrates this room output; parsed fixed speed remains available as diagnostic evidence.",
+            "confidence": "guide_exact_lookup",
+            "numericContribution": {
+              "paperEfficiencyPercent": 126.0,
+              "parsedSpeedPercent": 90.0
+            },
+            "calibrationMode": "guide_exact_lookup",
+            "lookupId": "maxed_exp_reference_l3_generic_126"
+          }
+        ],
+        "shift": "B"
+      },
+      {
+        "roomId": "manufacture_2",
+        "roomType": "MANUFACTURE",
+        "target": "F_GOLD",
+        "producedUnits": 16.8,
+        "cappedUnits": 16.8,
+        "capacity": 54.0,
+        "baseSpeedPercent": 3.0,
+        "stationSlots": 3,
+        "roomLevel": 3,
+        "collectionIntervalHours": 12,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 0.0,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": 16.8,
+          "shardDelta": 0.0,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 65.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": null,
+        "manufactureProfile": null,
+        "assumptions": [],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "香草",
+            "buffId": "manu_prod_spd[010]",
+            "buffName": "标准化·β",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 25.0
+            }
+          },
+          {
+            "operator": "刻俄柏",
+            "buffId": "manu_prod_spd_addition[031]",
+            "buffName": "“等不及”",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 20.0
+            }
+          },
+          {
+            "operator": "钼铅",
+            "buffId": "manu_prod_spd&limit&cost[300]",
+            "buffName": "行动派",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 20.0
+            }
+          }
+        ],
+        "shift": "B"
+      },
+      {
+        "roomId": "manufacture_3",
+        "roomType": "MANUFACTURE",
+        "target": "F_GOLD",
+        "producedUnits": 17.8,
+        "cappedUnits": 17.8,
+        "capacity": 54.0,
+        "baseSpeedPercent": 3.0,
+        "stationSlots": 3,
+        "roomLevel": 3,
+        "collectionIntervalHours": 12,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 0.0,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": 17.8,
+          "shardDelta": 0.0,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 9.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 75.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": null,
+        "manufactureProfile": null,
+        "assumptions": [],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "杏仁",
+            "buffId": "manu_formula_spd&cost[000]",
+            "buffName": "小奇思",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 25.0
+            }
+          },
+          {
+            "operator": "杏仁",
+            "buffId": "manu_formula_spd&cost[000]",
+            "buffName": "小奇思",
+            "status": "counted",
+            "scope": "fatigue",
+            "reason": "Parsed morale delta is counted in fatigue risk.",
+            "confidence": "parsed_fatigue",
+            "numericContribution": {
+              "fatigueDeltaPerHour": 0.25
+            }
+          },
+          {
+            "operator": "阿罗玛",
+            "buffId": "manu_formula_spd&cost[001]",
+            "buffName": "净味香氛",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 25.0
+            }
+          },
+          {
+            "operator": "阿罗玛",
+            "buffId": "manu_formula_spd&cost[001]",
+            "buffName": "净味香氛",
+            "status": "counted",
+            "scope": "fatigue",
+            "reason": "Parsed morale delta is counted in fatigue risk.",
+            "confidence": "parsed_fatigue",
+            "numericContribution": {
+              "fatigueDeltaPerHour": 0.25
+            }
+          },
+          {
+            "operator": "石棉",
+            "buffId": "manu_prod_spd&limit&cost[011]",
+            "buffName": "特立独行",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 25.0
+            }
+          },
+          {
+            "operator": "石棉",
+            "buffId": "manu_prod_spd&limit&cost[011]",
+            "buffName": "特立独行",
+            "status": "counted",
+            "scope": "fatigue",
+            "reason": "Parsed morale delta is counted in fatigue risk.",
+            "confidence": "parsed_fatigue",
+            "numericContribution": {
+              "fatigueDeltaPerHour": 0.25
+            }
+          }
+        ],
+        "shift": "B"
+      },
+      {
+        "roomId": "manufacture_4",
+        "roomType": "MANUFACTURE",
+        "target": "F_DIAMOND",
+        "producedUnits": 17.76,
+        "cappedUnits": 17.76,
+        "capacity": 54.0,
+        "baseSpeedPercent": 3.0,
+        "stationSlots": 3,
+        "roomLevel": 3,
+        "collectionIntervalHours": 12,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 0.0,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": 0.0,
+          "shardDelta": 17.76,
+          "materialCosts": {
+            "30012": 35.52,
+            "4001": 28416.0
+          },
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 45.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": null,
+        "manufactureProfile": null,
+        "assumptions": [],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "星源",
+            "buffId": "manu_prod_spd[001]",
+            "buffName": "莱茵科技·α",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 15.0
+            }
+          },
+          {
+            "operator": "野鬃",
+            "buffId": "manu_prod_spd[002]",
+            "buffName": "红松骑士团·α",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 15.0
+            }
+          },
+          {
+            "operator": "流星",
+            "buffId": "manu_prod_spd[000]",
+            "buffName": "标准化·α",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 15.0
+            }
+          }
+        ],
+        "shift": "B"
+      },
+      {
+        "roomId": "power_1",
+        "roomType": "POWER",
+        "target": null,
+        "producedUnits": 0.0,
+        "cappedUnits": 0.0,
+        "capacity": null,
+        "baseSpeedPercent": 0.0,
+        "stationSlots": 0,
+        "roomLevel": 3,
+        "collectionIntervalHours": 0.0,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 0.0,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": 0.0,
+          "shardDelta": 0.0,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 15.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": null,
+        "manufactureProfile": null,
+        "assumptions": [],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "清流",
+            "buffId": "power_rec_spd[011]",
+            "buffName": "清洁能源",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 15.0
+            }
+          }
+        ],
+        "shift": "B"
+      },
+      {
+        "roomId": "power_2",
+        "roomType": "POWER",
+        "target": null,
+        "producedUnits": 0.0,
+        "cappedUnits": 0.0,
+        "capacity": null,
+        "baseSpeedPercent": 0.0,
+        "stationSlots": 0,
+        "roomLevel": 3,
+        "collectionIntervalHours": 0.0,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 0.0,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": 0.0,
+          "shardDelta": 0.0,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 15.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": null,
+        "manufactureProfile": null,
+        "assumptions": [],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "伊芙利特",
+            "buffId": "power_rec_spd[013]",
+            "buffName": "高热充能",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 15.0
+            }
+          }
+        ],
+        "shift": "B"
+      },
+      {
+        "roomId": "power_3",
+        "roomType": "POWER",
+        "target": null,
+        "producedUnits": 0.0,
+        "cappedUnits": 0.0,
+        "capacity": null,
+        "baseSpeedPercent": 0.0,
+        "stationSlots": 0,
+        "roomLevel": 3,
+        "collectionIntervalHours": 0.0,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 0.0,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": 0.0,
+          "shardDelta": 0.0,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 15.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": null,
+        "manufactureProfile": null,
+        "assumptions": [],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "阿消",
+            "buffId": "power_rec_spd[010]",
+            "buffName": "设备维护",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 15.0
+            }
+          }
+        ],
+        "shift": "B"
+      },
+      {
+        "roomId": "meeting_1",
+        "roomType": "MEETING",
+        "target": null,
+        "producedUnits": 23.5,
+        "cappedUnits": 23.5,
+        "capacity": null,
+        "baseSpeedPercent": 2.0,
+        "stationSlots": 2,
+        "roomLevel": 3,
+        "collectionIntervalHours": 12,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 0.0,
+          "officeSpeed": 0.0,
+          "meetingSpeed": 23.5,
+          "pureGoldDelta": 0.0,
+          "shardDelta": 0.0,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 45.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": null,
+        "manufactureProfile": null,
+        "assumptions": [
+          "会客室线索搜集速度按每日加权效率点计入 meetingSpeed；综合分按 meetingSpeed / 30 计入。",
+          "维什戴尔/同谋·α 的控制中枢伊内丝会客室联动按 +5% 计入。"
+        ],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "伊内丝",
+            "buffId": "meet_spd_hast[000]",
+            "buffName": "聚影",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 20.0
+            }
+          },
+          {
+            "operator": "暗索",
+            "buffId": "meet_spd[020]",
+            "buffName": "线索搜集·β",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 20.0
+            }
+          },
+          {
+            "operator": "维什戴尔",
+            "buffId": "",
+            "buffName": "同谋·α",
+            "status": "counted",
+            "scope": "control_global:meeting_global",
+            "reason": "维什戴尔/同谋·α 的控制中枢伊内丝会客室联动按 +5% 计入。",
+            "confidence": "modeled_rule"
+          }
+        ],
+        "shift": "B"
+      },
+      {
+        "roomId": "hire_1",
+        "roomType": "HIRE",
+        "target": null,
+        "producedUnits": 20.5,
+        "cappedUnits": 20.5,
+        "capacity": null,
+        "baseSpeedPercent": 1.0,
+        "stationSlots": 1,
+        "roomLevel": 3,
+        "collectionIntervalHours": 12,
+        "vector": {
+          "lmdGross": 0.0,
+          "lmdNet": 0.0,
+          "exp": 0.0,
+          "orundum": 0.0,
+          "officeSpeed": 20.5,
+          "meetingSpeed": 0.0,
+          "pureGoldDelta": 0.0,
+          "shardDelta": 0.0,
+          "materialCosts": {},
+          "overflowLoss": 0.0,
+          "fatigueRisk": 0.0,
+          "droneContribution": {},
+          "droneCount": 0.0,
+          "droneUsed": 0.0,
+          "droneGenerationBonusPercent": 0.0,
+          "droneTarget": {},
+          "droneTargets": [],
+          "cycleHours": 24.0,
+          "dailyScale": 1.0
+        },
+        "speedPercent": 40.0,
+        "capacityBonus": 0.0,
+        "orderLimitBonus": 0.0,
+        "orderWeightLevel": 0,
+        "tradeOrderProfile": null,
+        "manufactureProfile": null,
+        "assumptions": [
+          "办公室公开招募联络速度按每日加权效率点计入 officeSpeed；综合分按 officeSpeed / 30 计入。"
+        ],
+        "unsupportedSkillEffects": [],
+        "skillEffectAudit": [
+          {
+            "operator": "伊桑",
+            "buffId": "hire_spd[030]",
+            "buffName": "WRITER",
+            "status": "counted",
+            "scope": "room_speed",
+            "reason": "Parsed fixed room speed is counted in speedPercent.",
+            "confidence": "parsed_fixed_speed",
+            "numericContribution": {
+              "speedPercent": 40.0
+            }
+          }
+        ],
+        "shift": "B"
+      }
+    ],
+    "powerStatus": {
+      "feasible": true,
+      "supplied": 810,
+      "consumed": 810,
+      "margin": 0,
+      "preset": "full",
+      "rooms": [
+        {
+          "roomType": "CONTROL",
+          "index": 1,
+          "level": 5,
+          "electricity": 0
+        },
+        {
+          "roomType": "TRADING",
+          "index": 1,
+          "level": 3,
+          "electricity": -60
+        },
+        {
+          "roomType": "TRADING",
+          "index": 2,
+          "level": 3,
+          "electricity": -60
+        },
+        {
+          "roomType": "MANUFACTURE",
+          "index": 1,
+          "level": 3,
+          "electricity": -60
+        },
+        {
+          "roomType": "MANUFACTURE",
+          "index": 2,
+          "level": 3,
+          "electricity": -60
+        },
+        {
+          "roomType": "MANUFACTURE",
+          "index": 3,
+          "level": 3,
+          "electricity": -60
+        },
+        {
+          "roomType": "MANUFACTURE",
+          "index": 4,
+          "level": 3,
+          "electricity": -60
+        },
+        {
+          "roomType": "POWER",
+          "index": 1,
+          "level": 3,
+          "electricity": 270
+        },
+        {
+          "roomType": "POWER",
+          "index": 2,
+          "level": 3,
+          "electricity": 270
+        },
+        {
+          "roomType": "POWER",
+          "index": 3,
+          "level": 3,
+          "electricity": 270
+        },
+        {
+          "roomType": "DORMITORY",
+          "index": 1,
+          "level": 5,
+          "electricity": -65
+        },
+        {
+          "roomType": "DORMITORY",
+          "index": 2,
+          "level": 5,
+          "electricity": -65
+        },
+        {
+          "roomType": "DORMITORY",
+          "index": 3,
+          "level": 5,
+          "electricity": -65
+        },
+        {
+          "roomType": "DORMITORY",
+          "index": 4,
+          "level": 5,
+          "electricity": -65
+        },
+        {
+          "roomType": "MEETING",
+          "index": 1,
+          "level": 3,
+          "electricity": -60
+        },
+        {
+          "roomType": "HIRE",
+          "index": 1,
+          "level": 3,
+          "electricity": -60
+        },
+        {
+          "roomType": "TRAINING",
+          "index": 1,
+          "level": 3,
+          "electricity": -60
+        },
+        {
+          "roomType": "WORKSHOP",
+          "index": 1,
+          "level": 3,
+          "electricity": -10
+        }
+      ],
+      "powerAdjustment": {}
+    }
+  },
+  "shifts": [
+    {
+      "name": "A",
+      "start": "08:00",
+      "durationHours": 12,
+      "rooms": [
+        {
+          "id": "control_1",
+          "type": "CONTROL",
+          "name": "控制中枢",
+          "target": null,
+          "targetLabel": null,
+          "score": 13.05,
+          "roomLevel": 5,
+          "slots": 5,
+          "productCapacity": 5,
+          "orderLimit": null,
+          "operators": [
+            {
+              "charId": "char_1045_svash2",
+              "name": "凛御银灰",
+              "buffId": "control_tra_limit&spd3[000]",
+              "buffName": "商业版图",
+              "roomType": "CONTROL",
+              "description": "进驻控制中枢时，每个存在3名谢拉格干员的贸易站，订单获取效率+10%",
+              "condition": "未精英化 1级",
+              "unlocked": true,
+              "score": 10.0,
+              "targets": [],
+              "complexCondition": true
+            },
+            {
+              "charId": null,
+              "name": "银灰",
+              "buffId": "none",
+              "buffName": "无匹配基建技能",
+              "roomType": "CONTROL",
+              "description": "用于填补宿舍或空位。",
+              "condition": "精英2 65级",
+              "unlocked": true,
+              "score": 0.0,
+              "targets": [],
+              "complexCondition": false
+            },
+            {
+              "charId": "char_2027_wang",
+              "name": "望",
+              "buffId": "control_prod_tra_spd[000]",
+              "buffName": "权变",
+              "roomType": "CONTROL",
+              "description": "进驻控制中枢时，若外势大于等于实地，所有贸易站订单效率+7%；若实地大于外势，所有制造站生产力+2%（同种效果取最高）",
+              "condition": "未精英化 1级",
+              "unlocked": true,
+              "score": 7.0,
+              "targets": [],
+              "complexCondition": true
+            },
+            {
+              "charId": "char_003_kalts",
+              "name": "凯尔希",
+              "buffId": "control_prod_spd[000]",
+              "buffName": "最高权限",
+              "roomType": "CONTROL",
+              "description": "进驻控制中枢时，所有制造站生产力+2%（同种效果取最高）",
+              "condition": "精英2 1级",
+              "unlocked": true,
+              "score": 2.0,
+              "targets": [],
+              "complexCondition": false
+            },
+            {
+              "charId": null,
+              "name": "普罗旺斯",
+              "buffId": "none",
+              "buffName": "无匹配基建技能",
+              "roomType": "CONTROL",
+              "description": "用于填补宿舍或空位。",
+              "condition": "未精英化 1级",
+              "unlocked": true,
+              "score": 0.0,
+              "targets": [],
+              "complexCondition": false
+            }
+          ]
+        },
+        {
+          "id": "trading_1",
+          "type": "TRADING",
+          "name": "贸易站",
+          "target": "O_GOLD",
+          "targetLabel": "赤金订单",
+          "score": 14.695,
+          "roomLevel": 3,
+          "slots": 3,
+          "productCapacity": 3,
+          "orderLimit": null,
+          "operators": [
+            {
+              "charId": "char_1019_siege2",
+              "name": "维娜·维多利亚",
+              "buffId": "trade_ord_spd&par[000]",
+              "buffName": "外贸决议·α",
+              "roomType": "TRADING",
+              "description": "进驻贸易站时，订单获取效率+30%",
+              "condition": "未精英化 1级",
+              "unlocked": true,
+              "score": 30.0,
+              "targets": [],
+              "complexCondition": false
+            },
+            {
+              "charId": null,
+              "name": "摩根",
+              "buffId": "none",
+              "buffName": "无匹配基建技能",
+              "roomType": "TRADING",
+              "description": "用于填补宿舍或空位。",
+              "condition": "未精英化 1级",
+              "unlocked": true,
+              "score": 0.0,
+              "targets": [],
+              "complexCondition": false
+            },
+            {
+              "charId": null,
+              "name": "可露希尔",
+              "buffId": "guide_special_trade_anchor[croissant_special_order]",
+              "buffName": "Guide special trade anchor",
+              "roomType": "TRADING",
+              "description": "Internal guide-calibrated special Trading Post mechanism anchor; used when official base skill parsing does not expose a usable skill.",
+              "condition": "精英2 60级",
+              "unlocked": true,
+              "score": 0.0,
+              "targets": [],
+              "complexCondition": true
+            }
+          ]
+        },
+        {
+          "id": "trading_2",
+          "type": "TRADING",
+          "name": "贸易站",
+          "target": "O_DIAMOND",
+          "targetLabel": "源石订单",
+          "score": 282.0,
+          "roomLevel": 3,
+          "slots": 3,
+          "productCapacity": null,
+          "orderLimit": null,
+          "operators": [
+            {
+              "charId": "char_102_texas",
+              "name": "德克萨斯",
+              "buffId": "trade_ord_spd&cost_P[000]",
+              "buffName": "恩怨",
+              "roomType": "TRADING",
+              "description": "当与拉普兰德在同一个贸易站时，心情每小时消耗+0.3，订单获取效率+65%",
+              "condition": "未精英化 1级",
+              "unlocked": true,
+              "score": 65.0,
+              "targets": [],
+              "complexCondition": true
+            },
+            {
+              "charId": "char_140_whitew",
+              "name": "拉普兰德",
+              "buffId": "trade_ord_limit&cost_P[000]",
+              "buffName": "醉翁之意·α",
+              "roomType": "TRADING",
+              "description": "当与德克萨斯在同一个贸易站时，心情每小时消耗-0.1，订单上限+2",
+              "condition": "未精英化 1级",
+              "unlocked": true,
+              "score": 0.0,
+              "targets": [],
+              "complexCondition": true
+            },
+            {
+              "charId": "char_252_bibeak",
+              "name": "柏喙",
+              "buffId": "trade_ord_wt&cost[000]",
+              "buffName": "裁缝·α",
+              "roomType": "TRADING",
+              "description": "进驻贸易站时，小幅提升当前贸易站高品质贵金属订单的出现概率（工作时长影响概率），心情每小时消耗-0.25",
+              "condition": "未精英化 1级",
+              "unlocked": true,
+              "score": 0.0,
+              "targets": [],
+              "complexCondition": true
+            }
+          ]
+        },
+        {
+          "id": "manufacture_1",
+          "type": "MANUFACTURE",
+          "name": "制造站",
+          "target": "F_EXP",
+          "targetLabel": "作战记录",
+          "score": 36.64,
+          "roomLevel": 3,
+          "slots": 3,
+          "productCapacity": null,
+          "orderLimit": null,
+          "operators": [
+            {
+              "charId": "char_286_cast3",
+              "name": "Castle-3",
+              "buffId": "manu_formula_spd[010]",
+              "buffName": "作战指导录像",
+              "roomType": "MANUFACTURE",
+              "description": "进驻制造站时，作战记录类配方的生产力+30%",
+              "condition": "未精英化 30级",
+              "unlocked": true,
+              "score": 30.0,
+              "targets": [
+                "F_EXP"
+              ],
+              "complexCondition": false
+            },
+            {
+              "charId": "char_290_vigna",
+              "name": "红豆",
+              "buffId": "manu_formula_spd[010]",
+              "buffName": "作战指导录像",
+              "roomType": "MANUFACTURE",
+              "description": "进驻制造站时，作战记录类配方的生产力+30%",
+              "condition": "未精英化 1级",
+              "unlocked": true,
+              "score": 30.0,
+              "targets": [
+                "F_EXP"
+              ],
+              "complexCondition": false
+            },
+            {
+              "charId": "char_118_yuki",
+              "name": "白雪",
+              "buffId": "manu_formula_spd[010]",
+              "buffName": "作战指导录像",
+              "roomType": "MANUFACTURE",
+              "description": "进驻制造站时，作战记录类配方的生产力+30%",
+              "condition": "精英1 1级",
+              "unlocked": true,
+              "score": 30.0,
+              "targets": [
+                "F_EXP"
+              ],
+              "complexCondition": false
+            }
+          ]
+        },
+        {
+          "id": "manufacture_2",
+          "type": "MANUFACTURE",
+          "name": "制造站",
+          "target": "F_GOLD",
+          "targetLabel": "赤金",
+          "score": 158.4,
+          "roomLevel": 3,
+          "slots": 3,
+          "productCapacity": null,
+          "orderLimit": null,
+          "operators": [
+            {
+              "charId": "char_237_gravel",
+              "name": "砾",
+              "buffId": "manu_formula_spd[110]",
+              "buffName": "金属工艺·β",
+              "roomType": "MANUFACTURE",
+              "description": "进驻制造站时，贵金属类配方的生产力+35%",
+              "condition": "精英1 1级",
+              "unlocked": true,
+              "score": 35.0,
+              "targets": [
+                "F_GOLD"
+              ],
+              "complexCondition": false
+            },
+            {
+              "charId": "char_284_spot",
+              "name": "斑点",
+              "buffId": "manu_formula_spd[100]",
+              "buffName": "金属工艺·α",
+              "roomType": "MANUFACTURE",
+              "description": "进驻制造站时，贵金属类配方的生产力+30%",
+              "condition": "精英1 1级",
+              "unlocked": true,
+              "score": 30.0,
+              "targets": [
+                "F_GOLD"
+              ],
+              "complexCondition": false
+            },
+            {
+              "charId": "char_4062_totter",
+              "name": "铅踝",
+              "buffId": "manu_prod_spd_reduce[000]",
+              "buffName": "模糊视线",
+              "roomType": "MANUFACTURE",
+              "description": "进驻制造站时，生产力+30%，自身每有4点心情落差，生产力-5%",
+              "condition": "未精英化 1级",
+              "unlocked": true,
+              "score": 30.0,
+              "targets": [
+                "F_GOLD",
+                "F_EXP",
+                "F_DIAMOND"
+              ],
+              "complexCondition": true
+            }
+          ]
+        },
+        {
+          "id": "manufacture_3",
+          "type": "MANUFACTURE",
+          "name": "制造站",
+          "target": "F_GOLD",
+          "targetLabel": "赤金",
+          "score": 146.4,
+          "roomLevel": 3,
+          "slots": 3,
+          "productCapacity": null,
+          "orderLimit": null,
+          "operators": [
+            {
+              "charId": "char_141_nights",
+              "name": "夜烟",
+              "buffId": "manu_formula_spd[100]",
+              "buffName": "金属工艺·α",
+              "roomType": "MANUFACTURE",
+              "description": "进驻制造站时，贵金属类配方的生产力+30%",
+              "condition": "未精英化 1级",
+              "unlocked": true,
+              "score": 30.0,
+              "targets": [
+                "F_GOLD"
+              ],
+              "complexCondition": false
+            },
+            {
+              "charId": "char_181_flower",
+              "name": "调香师",
+              "buffId": "manu_prod_spd[010]",
+              "buffName": "标准化·β",
+              "roomType": "MANUFACTURE",
+              "description": "进驻制造站时，生产力+25%",
+              "condition": "精英1 1级",
+              "unlocked": true,
+              "score": 25.0,
+              "targets": [
+                "F_GOLD",
+                "F_EXP",
+                "F_DIAMOND"
+              ],
+              "complexCondition": false
+            },
+            {
+              "charId": "char_235_jesica",
+              "name": "杰西卡",
+              "buffId": "manu_prod_spd[010]",
+              "buffName": "标准化·β",
+              "roomType": "MANUFACTURE",
+              "description": "进驻制造站时，生产力+25%",
+              "condition": "未精英化 1级",
+              "unlocked": true,
+              "score": 25.0,
+              "targets": [
+                "F_GOLD",
+                "F_EXP",
+                "F_DIAMOND"
+              ],
+              "complexCondition": false
+            }
+          ]
+        },
+        {
+          "id": "manufacture_4",
+          "type": "MANUFACTURE",
+          "name": "制造站",
+          "target": "F_DIAMOND",
+          "targetLabel": "源石碎片",
+          "score": 97.44,
+          "roomLevel": 3,
+          "slots": 3,
+          "productCapacity": null,
+          "orderLimit": null,
+          "operators": [
+            {
+              "charId": "char_180_amgoat",
+              "name": "艾雅法拉",
+              "buffId": "manu_formula_spd[213]",
+              "buffName": "火山学家",
+              "roomType": "MANUFACTURE",
+              "description": "进驻制造站时，源石类配方的生产力+35%",
+              "condition": "未精英化 1级",
+              "unlocked": true,
+              "score": 35.0,
+              "targets": [
+                "F_DIAMOND"
+              ],
+              "complexCondition": false
+            },
+            {
+              "charId": "char_121_lava",
+              "name": "炎熔",
+              "buffId": "manu_formula_spd[210]",
+              "buffName": "源石工艺·β",
+              "roomType": "MANUFACTURE",
+              "description": "进驻制造站时，源石类配方的生产力+35%",
+              "condition": "精英1 1级",
+              "unlocked": true,
+              "score": 35.0,
+              "targets": [
+                "F_DIAMOND"
+              ],
+              "complexCondition": false
+            },
+            {
+              "charId": "char_283_midn",
+              "name": "月见夜",
+              "buffId": "manu_formula_spd[200]",
+              "buffName": "源石工艺·α",
+              "roomType": "MANUFACTURE",
+              "description": "进驻制造站时，源石类配方的生产力+30%",
+              "condition": "精英1 1级",
+              "unlocked": true,
+              "score": 30.0,
+              "targets": [
+                "F_DIAMOND"
+              ],
+              "complexCondition": false
+            }
+          ]
+        },
+        {
+          "id": "power_1",
+          "type": "POWER",
+          "name": "发电站",
+          "target": null,
+          "targetLabel": null,
+          "score": 25.0,
+          "roomLevel": 3,
+          "slots": null,
+          "productCapacity": null,
+          "orderLimit": null,
+          "operators": [
+            {
+              "charId": "char_1027_greyy2",
+              "name": "承曦格雷伊",
+              "buffId": "power_rec_drone[000]",
+              "buffName": "巡线框架",
+              "roomType": "POWER",
+              "description": "进驻发电站时，每10架无人机上限+1%无人机充能速度（最多+25%）",
+              "condition": "未精英化 1级",
+              "unlocked": true,
+              "score": 25.0,
+              "targets": [],
+              "complexCondition": false
+            }
+          ]
+        },
+        {
+          "id": "power_2",
+          "type": "POWER",
+          "name": "发电站",
+          "target": null,
+          "targetLabel": null,
+          "score": 20.0,
+          "roomLevel": 3,
+          "slots": null,
+          "productCapacity": null,
+          "orderLimit": null,
+          "operators": [
+            {
+              "charId": "char_253_greyy",
+              "name": "格雷伊",
+              "buffId": "power_rec_spd[020]",
+              "buffName": "静电场",
+              "roomType": "POWER",
+              "description": "进驻发电站时，无人机充能速度+20%",
+              "condition": "未精英化 1级",
+              "unlocked": true,
+              "score": 20.0,
+              "targets": [],
+              "complexCondition": false
+            }
+          ]
+        },
+        {
+          "id": "power_3",
+          "type": "POWER",
+          "name": "发电站",
+          "target": null,
+          "targetLabel": null,
+          "score": 15.0,
+          "roomLevel": 3,
+          "slots": null,
+          "productCapacity": null,
+          "orderLimit": null,
+          "operators": [
+            {
+              "charId": "char_4004_pudd",
+              "name": "布丁",
+              "buffId": "power_rec_spd[010]",
+              "buffName": "设备维护",
+              "roomType": "POWER",
+              "description": "进驻发电站时，无人机充能速度+15%",
+              "condition": "未精英化 1级",
+              "unlocked": true,
+              "score": 15.0,
+              "targets": [],
+              "complexCondition": false
+            }
+          ]
+        },
+        {
+          "id": "meeting_1",
+          "type": "MEETING",
+          "name": "会客室",
+          "target": null,
+          "targetLabel": null,
+          "score": 50.0,
+          "roomLevel": 3,
+          "slots": null,
+          "productCapacity": null,
+          "orderLimit": null,
+          "operators": [
+            {
+              "charId": "char_274_astesi",
+              "name": "星极",
+              "buffId": "meet_spd&team[110]",
+              "buffName": "星象学",
+              "roomType": "MEETING",
+              "description": "进驻会客室时，线索搜集速度提升25%",
+              "condition": "精英2 1级",
+              "unlocked": true,
+              "score": 25.0,
+              "targets": [],
+              "complexCondition": false
+            },
+            {
+              "charId": "char_427_vigil",
+              "name": "伺夜",
+              "buffId": "meet_spd[032]",
+              "buffName": "领袖外交",
+              "roomType": "MEETING",
+              "description": "进驻会客室时，线索搜集速度提升25%",
+              "condition": "未精英化 1级",
+              "unlocked": true,
+              "score": 25.0,
+              "targets": [],
+              "complexCondition": false
+            }
+          ]
+        },
+        {
+          "id": "hire_1",
+          "type": "HIRE",
+          "name": "办公室",
+          "target": null,
+          "targetLabel": null,
+          "score": 22.75,
+          "roomLevel": 3,
+          "slots": null,
+          "productCapacity": null,
+          "orderLimit": null,
+          "operators": [
+            {
+              "charId": "char_1046_sbell2",
+              "name": "圣聆初雪",
+              "buffId": "hire_spd_cost&char[001]",
+              "buffName": "雪境归心",
+              "roomType": "HIRE",
+              "description": "进驻人力办公室时，人脉资源的联络速度+35%，心情每小时消耗-0.25，如果凛御银灰进驻在控制中枢，则人脉资源的联络速度额外+10%",
+              "condition": "精英2 1级",
+              "unlocked": true,
+              "score": 35.0,
+              "targets": [],
+              "complexCondition": true
+            }
+          ]
+        }
+      ],
+      "dormitories": [
+        {
+          "id": "dormitory_1",
+          "type": "DORMITORY",
+          "name": "宿舍",
+          "target": null,
+          "targetLabel": null,
+          "score": 7.8,
+          "roomLevel": 3,
+          "slots": null,
+          "productCapacity": null,
+          "orderLimit": null,
+          "operators": [
+            {
+              "charId": "char_193_frostl",
+              "name": "霜叶",
+              "buffId": "dorm_rec_oneself[000]",
+              "buffName": "独处",
+              "roomType": "DORMITORY",
+              "description": "进驻宿舍时，自身心情每小时恢复+0.7",
+              "condition": "未精英化 1级",
+              "unlocked": true,
+              "score": 7.0,
+              "targets": [],
+              "complexCondition": true
+            },
+            {
+              "charId": "char_174_slbell",
+              "name": "初雪",
+              "buffId": "dorm_rec_single&oneself[021]",
+              "buffName": "喀兰圣女",
+              "roomType": "DORMITORY",
+              "description": "进驻宿舍时，使该宿舍内除自身以外心情未满的某个干员每小时恢复+0.5（同种效果取最高）；同时自身心情每小时恢复+0.25",
+              "condition": "未精英化 1级",
+              "unlocked": true,
+              "score": 5.0,
+              "targets": [],
+              "complexCondition": true
+            },
+            {
+              "charId": null,
+              "name": "伊内丝",
+              "buffId": "none",
+              "buffName": "无匹配基建技能",
+              "roomType": "DORMITORY",
+              "description": "用于填补宿舍或空位。",
+              "condition": "精英2 1级",
+              "unlocked": true,
+              "score": 0.0,
+              "targets": [],
+              "complexCondition": false
+            },
+            {
+              "charId": null,
+              "name": "伊桑",
+              "buffId": "none",
+              "buffName": "无匹配基建技能",
+              "roomType": "DORMITORY",
+              "description": "用于填补宿舍或空位。",
+              "condition": "未精英化 1级",
+              "unlocked": true,
+              "score": 0.0,
+              "targets": [],
+              "complexCondition": false
+            },
+            {
+              "charId": null,
+              "name": "伊芙利特",
+              "buffId": "none",
+              "buffName": "无匹配基建技能",
+              "roomType": "DORMITORY",
+              "description": "用于填补宿舍或空位。",
+              "condition": "精英2 60级",
+              "unlocked": true,
+              "score": 0.0,
+              "targets": [],
+              "complexCondition": false
+            }
+          ]
+        },
+        {
+          "id": "dormitory_2",
+          "type": "DORMITORY",
+          "name": "宿舍",
+          "target": null,
+          "targetLabel": null,
+          "score": 0.0,
+          "roomLevel": 3,
+          "slots": null,
+          "productCapacity": null,
+          "orderLimit": null,
+          "operators": [
+            {
+              "charId": null,
+              "name": "但书",
+              "buffId": "none",
+              "buffName": "无匹配基建技能",
+              "roomType": "DORMITORY",
+              "description": "用于填补宿舍或空位。",
+              "condition": "精英2 1级",
+              "unlocked": true,
+              "score": 0.0,
+              "targets": [],
+              "complexCondition": false
+            },
+            {
+              "charId": null,
+              "name": "刻俄柏",
+              "buffId": "none",
+              "buffName": "无匹配基建技能",
+              "roomType": "DORMITORY",
+              "description": "用于填补宿舍或空位。",
+              "condition": "精英2 60级",
+              "unlocked": true,
+              "score": 0.0,
+              "targets": [],
+              "complexCondition": false
+            },
+            {
+              "charId": null,
+              "name": "怒潮凛冬",
+              "buffId": "none",
+              "buffName": "无匹配基建技能",
+              "roomType": "DORMITORY",
+              "description": "用于填补宿舍或空位。",
+              "condition": "精英2 60级",
+              "unlocked": true,
+              "score": 0.0,
+              "targets": [],
+              "complexCondition": false
+            },
+            {
+              "charId": null,
+              "name": "掠风",
+              "buffId": "none",
+              "buffName": "无匹配基建技能",
+              "roomType": "DORMITORY",
+              "description": "用于填补宿舍或空位。",
+              "condition": "未精英化 1级",
+              "unlocked": true,
+              "score": 0.0,
+              "targets": [],
+              "complexCondition": false
+            },
+            {
+              "charId": null,
+              "name": "星源",
+              "buffId": "none",
+              "buffName": "无匹配基建技能",
+              "roomType": "DORMITORY",
+              "description": "用于填补宿舍或空位。",
+              "condition": "未精英化 1级",
+              "unlocked": true,
+              "score": 0.0,
+              "targets": [],
+              "complexCondition": false
+            }
+          ]
+        },
+        {
+          "id": "dormitory_3",
+          "type": "DORMITORY",
+          "name": "宿舍",
+          "target": null,
+          "targetLabel": null,
+          "score": 0.0,
+          "roomLevel": 3,
+          "slots": null,
+          "productCapacity": null,
+          "orderLimit": null,
+          "operators": [
+            {
+              "charId": null,
+              "name": "暗索",
+              "buffId": "none",
+              "buffName": "无匹配基建技能",
+              "roomType": "DORMITORY",
+              "description": "用于填补宿舍或空位。",
+              "condition": "未精英化 1级",
+              "unlocked": true,
+              "score": 0.0,
+              "targets": [],
+              "complexCondition": false
+            },
+            {
+              "charId": null,
+              "name": "杏仁",
+              "buffId": "none",
+              "buffName": "无匹配基建技能",
+              "roomType": "DORMITORY",
+              "description": "用于填补宿舍或空位。",
+              "condition": "未精英化 1级",
+              "unlocked": true,
+              "score": 0.0,
+              "targets": [],
+              "complexCondition": false
+            },
+            {
+              "charId": null,
+              "name": "流星",
+              "buffId": "none",
+              "buffName": "无匹配基建技能",
+              "roomType": "DORMITORY",
+              "description": "用于填补宿舍或空位。",
+              "condition": "未精英化 1级",
+              "unlocked": true,
+              "score": 0.0,
+              "targets": [],
+              "complexCondition": false
+            },
+            {
+              "charId": null,
+              "name": "清流",
+              "buffId": "none",
+              "buffName": "无匹配基建技能",
+              "roomType": "DORMITORY",
+              "description": "用于填补宿舍或空位。",
+              "condition": "精英1 40级",
+              "unlocked": true,
+              "score": 0.0,
+              "targets": [],
+              "complexCondition": false
+            },
+            {
+              "charId": null,
+              "name": "玫兰莎",
+              "buffId": "none",
+              "buffName": "无匹配基建技能",
+              "roomType": "DORMITORY",
+              "description": "用于填补宿舍或空位。",
+              "condition": "精英1 55级",
+              "unlocked": true,
+              "score": 0.0,
+              "targets": [],
+              "complexCondition": false
+            }
+          ]
+        },
+        {
+          "id": "dormitory_4",
+          "type": "DORMITORY",
+          "name": "宿舍",
+          "target": null,
+          "targetLabel": null,
+          "score": 0.0,
+          "roomLevel": 3,
+          "slots": null,
+          "productCapacity": null,
+          "orderLimit": null,
+          "operators": [
+            {
+              "charId": null,
+              "name": "石棉",
+              "buffId": "none",
+              "buffName": "无匹配基建技能",
+              "roomType": "DORMITORY",
+              "description": "用于填补宿舍或空位。",
+              "condition": "未精英化 1级",
+              "unlocked": true,
+              "score": 0.0,
+              "targets": [],
+              "complexCondition": false
+            },
+            {
+              "charId": null,
+              "name": "维什戴尔",
+              "buffId": "none",
+              "buffName": "无匹配基建技能",
+              "roomType": "DORMITORY",
+              "description": "用于填补宿舍或空位。",
+              "condition": "精英2 65级",
+              "unlocked": true,
+              "score": 0.0,
+              "targets": [],
+              "complexCondition": false
+            },
+            {
+              "charId": null,
+              "name": "能天使",
+              "buffId": "none",
+              "buffName": "无匹配基建技能",
+              "roomType": "DORMITORY",
+              "description": "用于填补宿舍或空位。",
+              "condition": "精英2 65级",
+              "unlocked": true,
+              "score": 0.0,
+              "targets": [],
+              "complexCondition": false
+            },
+            {
+              "charId": null,
+              "name": "芬",
+              "buffId": "none",
+              "buffName": "无匹配基建技能",
+              "roomType": "DORMITORY",
+              "description": "用于填补宿舍或空位。",
+              "condition": "精英1 10级",
+              "unlocked": true,
+              "score": 0.0,
+              "targets": [],
+              "complexCondition": false
+            },
+            {
+              "charId": null,
+              "name": "芳汀",
+              "buffId": "none",
+              "buffName": "无匹配基建技能",
+              "roomType": "DORMITORY",
+              "description": "用于填补宿舍或空位。",
+              "condition": "未精英化 1级",
+              "unlocked": true,
+              "score": 0.0,
+              "targets": [],
+              "complexCondition": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "B",
+      "start": "20:00",
+      "durationHours": 12,
+      "rooms": [
+        {
+          "id": "control_1",
+          "type": "CONTROL",
+          "name": "控制中枢",
+          "target": null,
+          "targetLabel": null,
+          "score": 0.0,
+          "roomLevel": 5,
+          "slots": 5,
+          "productCapacity": 5,
+          "orderLimit": null,
+          "operators": [
+            {
+              "charId": "char_1035_wisdel",
+              "name": "维什戴尔",
+              "buffId": "control_meeting&ord[000]",
+              "buffName": "同谋·α",
+              "roomType": "CONTROL",
+              "description": "进驻控制中枢时，当伊内丝入驻会客室时，会客室线索搜集速度+5%；当赫德雷入驻贸易站时，赫德雷所在贸易站订单上限+1",
+              "condition": "未精英化 1级",
+              "unlocked": true,
+              "score": 0.0,
+              "targets": [],
+              "complexCondition": false
+            },
+            {
+              "charId": "char_4134_cetsyr",
+              "name": "魔王",
+              "buffId": "control_mp_cost_double[000]",
+              "buffName": "魔王传承",
+              "roomType": "CONTROL",
+              "description": "当与阿米娅一起进驻控制中枢时，自身和阿米娅心情每小时恢复+0.05",
+              "condition": "未精英化 1级",
+              "unlocked": true,
+              "score": 0.0,
+              "targets": [],
+              "complexCondition": true
+            },
+            {
+              "charId": null,
+              "name": "芳汀",
+              "buffId": "none",
+              "buffName": "无匹配基建技能",
+              "roomType": "CONTROL",
+              "description": "用于填补宿舍或空位。",
+              "condition": "未精英化 1级",
+              "unlocked": true,
+              "score": 0.0,
+              "targets": [],
+              "complexCondition": false
+            },
+            {
+              "charId": null,
+              "name": "掠风",
+              "buffId": "none",
+              "buffName": "无匹配基建技能",
+              "roomType": "CONTROL",
+              "description": "用于填补宿舍或空位。",
+              "condition": "未精英化 1级",
+              "unlocked": true,
+              "score": 0.0,
+              "targets": [],
+              "complexCondition": false
+            },
+            {
+              "charId": null,
+              "name": "初雪",
+              "buffId": "none",
+              "buffName": "无匹配基建技能",
+              "roomType": "CONTROL",
+              "description": "用于填补宿舍或空位。",
+              "condition": "精英2 30级",
+              "unlocked": true,
+              "score": 0.0,
+              "targets": [],
+              "complexCondition": false
+            }
+          ]
+        },
+        {
+          "id": "trading_1",
+          "type": "TRADING",
+          "name": "贸易站",
+          "target": "O_GOLD",
+          "targetLabel": "赤金订单",
+          "score": 16.246,
+          "roomLevel": 3,
+          "slots": 3,
+          "productCapacity": null,
+          "orderLimit": null,
+          "operators": [
+            {
+              "charId": "char_4193_lemuen",
+              "name": "蕾缪安",
+              "buffId": "trade_ord_spd&multiPar[000]",
+              "buffName": "订单分发·α",
+              "roomType": "TRADING",
+              "description": "进驻贸易站时，订单获取效率+20%",
+              "condition": "未精英化 1级",
+              "unlocked": true,
+              "score": 20.0,
+              "targets": [],
+              "complexCondition": false
+            },
+            {
+              "charId": "char_103_angel",
+              "name": "能天使",
+              "buffId": "trade_ord_spd[020]",
+              "buffName": "物流专家",
+              "roomType": "TRADING",
+              "description": "进驻贸易站时，订单获取效率+35%",
+              "condition": "精英2 1级",
+              "unlocked": true,
+              "score": 35.0,
+              "targets": [],
+              "complexCondition": false
+            },
+            {
+              "charId": "char_4032_provs",
+              "name": "但书",
+              "buffId": "trade_ord_law[000]",
+              "buffName": "合同法",
+              "roomType": "TRADING",
+              "description": "进驻贸易站时，如果下笔赤金订单交付数小于4，则视为违约订单",
+              "condition": "未精英化 1级",
+              "unlocked": true,
+              "score": 0.0,
+              "targets": [],
+              "complexCondition": true
+            }
+          ]
+        },
+        {
+          "id": "trading_2",
+          "type": "TRADING",
+          "name": "贸易站",
+          "target": "O_DIAMOND",
+          "targetLabel": "源石订单",
+          "score": 282.0,
+          "roomLevel": 3,
+          "slots": 3,
+          "productCapacity": null,
+          "orderLimit": null,
+          "operators": [
+            {
+              "charId": "char_123_fang",
+              "name": "芬",
+              "buffId": "trade_ord_spd[001]",
+              "buffName": "订单分发·β",
+              "roomType": "TRADING",
+              "description": "进驻贸易站时，订单获取效率+30%",
+              "condition": "精英1 1级",
+              "unlocked": true,
+              "score": 30.0,
+              "targets": [],
+              "complexCondition": false
+            },
+            {
+              "charId": "char_109_fmout",
+              "name": "远山",
+              "buffId": "trade_ord_spd&limit[010]",
+              "buffName": "供应管理",
+              "roomType": "TRADING",
+              "description": "进驻贸易站时，订单获取效率+25%，且订单上限+1",
+              "condition": "未精英化 1级",
+              "unlocked": true,
+              "score": 25.0,
+              "targets": [],
+              "complexCondition": false
+            },
+            {
+              "charId": "char_208_melan",
+              "name": "玫兰莎",
+              "buffId": "trade_ord_spd&limit[010]",
+              "buffName": "供应管理",
+              "roomType": "TRADING",
+              "description": "进驻贸易站时，订单获取效率+25%，且订单上限+1",
+              "condition": "未精英化 1级",
+              "unlocked": true,
+              "score": 25.0,
+              "targets": [],
+              "complexCondition": false
+            }
+          ]
+        },
+        {
+          "id": "manufacture_1",
+          "type": "MANUFACTURE",
+          "name": "制造站",
+          "target": "F_EXP",
+          "targetLabel": "作战记录",
+          "score": 36.64,
+          "roomLevel": 3,
+          "slots": 3,
+          "productCapacity": null,
+          "orderLimit": null,
+          "operators": [
+            {
+              "charId": "char_193_frostl",
+              "name": "霜叶",
+              "buffId": "manu_formula_spd[010]",
+              "buffName": "作战指导录像",
+              "roomType": "MANUFACTURE",
+              "description": "进驻制造站时，作战记录类配方的生产力+30%",
+              "condition": "精英1 1级",
+              "unlocked": true,
+              "score": 30.0,
+              "targets": [
+                "F_EXP"
+              ],
+              "complexCondition": false
+            },
+            {
+              "charId": "char_1051_headb2",
+              "name": "怒潮凛冬",
+              "buffId": "manu_formula_spd&bd[000]",
+              "buffName": "战阵领袖",
+              "roomType": "MANUFACTURE",
+              "description": "进驻制造站时，作战记录类配方的生产力+30%",
+              "condition": "未精英化 1级",
+              "unlocked": true,
+              "score": 30.0,
+              "targets": [
+                "F_EXP"
+              ],
+              "complexCondition": false
+            },
+            {
+              "charId": "char_241_panda",
+              "name": "食铁兽",
+              "buffId": "manu_formula_spd[010]",
+              "buffName": "作战指导录像",
+              "roomType": "MANUFACTURE",
+              "description": "进驻制造站时，作战记录类配方的生产力+30%",
+              "condition": "未精英化 1级",
+              "unlocked": true,
+              "score": 30.0,
+              "targets": [
+                "F_EXP"
+              ],
+              "complexCondition": false
+            }
+          ]
+        },
+        {
+          "id": "manufacture_2",
+          "type": "MANUFACTURE",
+          "name": "制造站",
+          "target": "F_GOLD",
+          "targetLabel": "赤金",
+          "score": 134.4,
+          "roomLevel": 3,
+          "slots": 3,
+          "productCapacity": null,
+          "orderLimit": null,
+          "operators": [
+            {
+              "charId": "char_240_wyvern",
+              "name": "香草",
+              "buffId": "manu_prod_spd[010]",
+              "buffName": "标准化·β",
+              "roomType": "MANUFACTURE",
+              "description": "进驻制造站时，生产力+25%",
+              "condition": "未精英化 1级",
+              "unlocked": true,
+              "score": 25.0,
+              "targets": [
+                "F_GOLD",
+                "F_EXP",
+                "F_DIAMOND"
+              ],
+              "complexCondition": false
+            },
+            {
+              "charId": "char_2013_cerber",
+              "name": "刻俄柏",
+              "buffId": "manu_prod_spd_addition[031]",
+              "buffName": "“等不及”",
+              "roomType": "MANUFACTURE",
+              "description": "进驻制造站后，生产力首小时+20%，此后每小时+1%，最终达到+25%",
+              "condition": "精英2 1级",
+              "unlocked": true,
+              "score": 20.0,
+              "targets": [
+                "F_GOLD",
+                "F_EXP",
+                "F_DIAMOND"
+              ],
+              "complexCondition": false
+            },
+            {
+              "charId": "char_4171_wulfen",
+              "name": "钼铅",
+              "buffId": "manu_prod_spd&limit&cost[300]",
+              "buffName": "行动派",
+              "roomType": "MANUFACTURE",
+              "description": "进驻制造站时，生产力+20%，仓库容量上限-8",
+              "condition": "未精英化 1级",
+              "unlocked": true,
+              "score": 20.0,
+              "targets": [
+                "F_GOLD",
+                "F_EXP",
+                "F_DIAMOND"
+              ],
+              "complexCondition": true
+            }
+          ]
+        },
+        {
+          "id": "manufacture_3",
+          "type": "MANUFACTURE",
+          "name": "制造站",
+          "target": "F_GOLD",
+          "targetLabel": "赤金",
+          "score": 124.4,
+          "roomLevel": 3,
+          "slots": 3,
+          "productCapacity": null,
+          "orderLimit": null,
+          "operators": [
+            {
+              "charId": "char_4105_almond",
+              "name": "杏仁",
+              "buffId": "manu_formula_spd&cost[000]",
+              "buffName": "小奇思",
+              "roomType": "MANUFACTURE",
+              "description": "进驻制造站时，贵金属类配方的生产力+25%，心情每小时消耗+0.25",
+              "condition": "未精英化 1级",
+              "unlocked": true,
+              "score": 25.0,
+              "targets": [
+                "F_GOLD"
+              ],
+              "complexCondition": true
+            },
+            {
+              "charId": "char_446_aroma",
+              "name": "阿罗玛",
+              "buffId": "manu_formula_spd&cost[001]",
+              "buffName": "净味香氛",
+              "roomType": "MANUFACTURE",
+              "description": "进驻制造站时，贵金属类配方的生产力+25%，心情每小时消耗+0.25",
+              "condition": "未精英化 1级",
+              "unlocked": true,
+              "score": 25.0,
+              "targets": [
+                "F_GOLD"
+              ],
+              "complexCondition": true
+            },
+            {
+              "charId": "char_378_asbest",
+              "name": "石棉",
+              "buffId": "manu_prod_spd&limit&cost[011]",
+              "buffName": "特立独行",
+              "roomType": "MANUFACTURE",
+              "description": "进驻制造站时，生产力+25%，仓库容量上限-12，心情每小时消耗+0.25",
+              "condition": "未精英化 1级",
+              "unlocked": true,
+              "score": 25.0,
+              "targets": [
+                "F_GOLD",
+                "F_EXP",
+                "F_DIAMOND"
+              ],
+              "complexCondition": true
+            }
+          ]
+        },
+        {
+          "id": "manufacture_4",
+          "type": "MANUFACTURE",
+          "name": "制造站",
+          "target": "F_DIAMOND",
+          "targetLabel": "源石碎片",
+          "score": 71.04,
+          "roomLevel": 3,
+          "slots": 3,
+          "productCapacity": null,
+          "orderLimit": null,
+          "operators": [
+            {
+              "charId": "char_135_halo",
+              "name": "星源",
+              "buffId": "manu_prod_spd[001]",
+              "buffName": "莱茵科技·α",
+              "roomType": "MANUFACTURE",
+              "description": "进驻制造站时，生产力+15%",
+              "condition": "未精英化 1级",
+              "unlocked": true,
+              "score": 15.0,
+              "targets": [
+                "F_GOLD",
+                "F_EXP",
+                "F_DIAMOND"
+              ],
+              "complexCondition": false
+            },
+            {
+              "charId": "char_496_wildmn",
+              "name": "野鬃",
+              "buffId": "manu_prod_spd[002]",
+              "buffName": "红松骑士团·α",
+              "roomType": "MANUFACTURE",
+              "description": "进驻制造站时，生产力+15%",
+              "condition": "未精英化 1级",
+              "unlocked": true,
+              "score": 15.0,
+              "targets": [
+                "F_GOLD",
+                "F_EXP",
+                "F_DIAMOND"
+              ],
+              "complexCondition": false
+            },
+            {
+              "charId": "char_126_shotst",
+              "name": "流星",
+              "buffId": "manu_prod_spd[000]",
+              "buffName": "标准化·α",
+              "roomType": "MANUFACTURE",
+              "description": "进驻制造站时，生产力+15%",
+              "condition": "未精英化 1级",
+              "unlocked": true,
+              "score": 15.0,
+              "targets": [
+                "F_GOLD",
+                "F_EXP",
+                "F_DIAMOND"
+              ],
+              "complexCondition": false
+            }
+          ]
+        },
+        {
+          "id": "power_1",
+          "type": "POWER",
+          "name": "发电站",
+          "target": null,
+          "targetLabel": null,
+          "score": 15.0,
+          "roomLevel": 3,
+          "slots": null,
+          "productCapacity": null,
+          "orderLimit": null,
+          "operators": [
+            {
+              "charId": "char_385_finlpp",
+              "name": "清流",
+              "buffId": "power_rec_spd[011]",
+              "buffName": "清洁能源",
+              "roomType": "POWER",
+              "description": "进驻发电站时，无人机充能速度+15%",
+              "condition": "未精英化 1级",
+              "unlocked": true,
+              "score": 15.0,
+              "targets": [],
+              "complexCondition": false
+            }
+          ]
+        },
+        {
+          "id": "power_2",
+          "type": "POWER",
+          "name": "发电站",
+          "target": null,
+          "targetLabel": null,
+          "score": 15.0,
+          "roomLevel": 3,
+          "slots": null,
+          "productCapacity": null,
+          "orderLimit": null,
+          "operators": [
+            {
+              "charId": "char_134_ifrit",
+              "name": "伊芙利特",
+              "buffId": "power_rec_spd[013]",
+              "buffName": "高热充能",
+              "roomType": "POWER",
+              "description": "进驻发电站时，无人机充能速度+15%",
+              "condition": "精英2 1级",
+              "unlocked": true,
+              "score": 15.0,
+              "targets": [],
+              "complexCondition": false
+            }
+          ]
+        },
+        {
+          "id": "power_3",
+          "type": "POWER",
+          "name": "发电站",
+          "target": null,
+          "targetLabel": null,
+          "score": 15.0,
+          "roomLevel": 3,
+          "slots": null,
+          "productCapacity": null,
+          "orderLimit": null,
+          "operators": [
+            {
+              "charId": "char_277_sqrrel",
+              "name": "阿消",
+              "buffId": "power_rec_spd[010]",
+              "buffName": "设备维护",
+              "roomType": "POWER",
+              "description": "进驻发电站时，无人机充能速度+15%",
+              "condition": "精英1 1级",
+              "unlocked": true,
+              "score": 15.0,
+              "targets": [],
+              "complexCondition": false
+            }
+          ]
+        },
+        {
+          "id": "meeting_1",
+          "type": "MEETING",
+          "name": "会客室",
+          "target": null,
+          "targetLabel": null,
+          "score": 40.0,
+          "roomLevel": 3,
+          "slots": null,
+          "productCapacity": null,
+          "orderLimit": null,
+          "operators": [
+            {
+              "charId": "char_4087_ines",
+              "name": "伊内丝",
+              "buffId": "meet_spd_hast[000]",
+              "buffName": "聚影",
+              "roomType": "MEETING",
+              "description": "进驻会客室时，线索搜集速度提升20%，此后每小时提升2%，最终达到30%",
+              "condition": "精英2 1级",
+              "unlocked": true,
+              "score": 20.0,
+              "targets": [],
+              "complexCondition": false
+            },
+            {
+              "charId": "char_236_rope",
+              "name": "暗索",
+              "buffId": "meet_spd[020]",
+              "buffName": "线索搜集·β",
+              "roomType": "MEETING",
+              "description": "进驻会客室时，线索搜集速度提升20%",
+              "condition": "未精英化 1级",
+              "unlocked": true,
+              "score": 20.0,
+              "targets": [],
+              "complexCondition": false
+            }
+          ]
+        },
+        {
+          "id": "hire_1",
+          "type": "HIRE",
+          "name": "办公室",
+          "target": null,
+          "targetLabel": null,
+          "score": 40.0,
+          "roomLevel": 3,
+          "slots": null,
+          "productCapacity": null,
+          "orderLimit": null,
+          "operators": [
+            {
+              "charId": "char_355_ethan",
+              "name": "伊桑",
+              "buffId": "hire_spd[030]",
+              "buffName": "WRITER",
+              "roomType": "HIRE",
+              "description": "进驻人力办公室时，人脉资源的联络速度+40%",
+              "condition": "未精英化 1级",
+              "unlocked": true,
+              "score": 40.0,
+              "targets": [],
+              "complexCondition": false
+            }
+          ]
+        }
+      ],
+      "dormitories": [
+        {
+          "id": "dormitory_1",
+          "type": "DORMITORY",
+          "name": "宿舍",
+          "target": null,
+          "targetLabel": null,
+          "score": 0.0,
+          "roomLevel": 3,
+          "slots": null,
+          "productCapacity": null,
+          "orderLimit": null,
+          "operators": [
+            {
+              "charId": null,
+              "name": "Castle-3",
+              "buffId": "none",
+              "buffName": "无匹配基建技能",
+              "roomType": "DORMITORY",
+              "description": "用于填补宿舍或空位。",
+              "condition": "未精英化 30级",
+              "unlocked": true,
+              "score": 0.0,
+              "targets": [],
+              "complexCondition": false
+            },
+            {
+              "charId": null,
+              "name": "伺夜",
+              "buffId": "none",
+              "buffName": "无匹配基建技能",
+              "roomType": "DORMITORY",
+              "description": "用于填补宿舍或空位。",
+              "condition": "精英2 1级",
+              "unlocked": true,
+              "score": 0.0,
+              "targets": [],
+              "complexCondition": false
+            },
+            {
+              "charId": null,
+              "name": "凛御银灰",
+              "buffId": "none",
+              "buffName": "无匹配基建技能",
+              "roomType": "DORMITORY",
+              "description": "用于填补宿舍或空位。",
+              "condition": "精英2 60级",
+              "unlocked": true,
+              "score": 0.0,
+              "targets": [],
+              "complexCondition": false
+            },
+            {
+              "charId": null,
+              "name": "凯尔希",
+              "buffId": "none",
+              "buffName": "无匹配基建技能",
+              "roomType": "DORMITORY",
+              "description": "用于填补宿舍或空位。",
+              "condition": "精英2 1级",
+              "unlocked": true,
+              "score": 0.0,
+              "targets": [],
+              "complexCondition": false
+            },
+            {
+              "charId": null,
+              "name": "可露希尔",
+              "buffId": "none",
+              "buffName": "无匹配基建技能",
+              "roomType": "DORMITORY",
+              "description": "用于填补宿舍或空位。",
+              "condition": "精英2 60级",
+              "unlocked": true,
+              "score": 0.0,
+              "targets": [],
+              "complexCondition": false
+            }
+          ]
+        },
+        {
+          "id": "dormitory_2",
+          "type": "DORMITORY",
+          "name": "宿舍",
+          "target": null,
+          "targetLabel": null,
+          "score": 0.0,
+          "roomLevel": 3,
+          "slots": null,
+          "productCapacity": null,
+          "orderLimit": null,
+          "operators": [
+            {
+              "charId": null,
+              "name": "圣聆初雪",
+              "buffId": "none",
+              "buffName": "无匹配基建技能",
+              "roomType": "DORMITORY",
+              "description": "用于填补宿舍或空位。",
+              "condition": "精英2 90级",
+              "unlocked": true,
+              "score": 0.0,
+              "targets": [],
+              "complexCondition": false
+            },
+            {
+              "charId": null,
+              "name": "夜烟",
+              "buffId": "none",
+              "buffName": "无匹配基建技能",
+              "roomType": "DORMITORY",
+              "description": "用于填补宿舍或空位。",
+              "condition": "精英1 20级",
+              "unlocked": true,
+              "score": 0.0,
+              "targets": [],
+              "complexCondition": false
+            },
+            {
+              "charId": null,
+              "name": "布丁",
+              "buffId": "none",
+              "buffName": "无匹配基建技能",
+              "roomType": "DORMITORY",
+              "description": "用于填补宿舍或空位。",
+              "condition": "未精英化 1级",
+              "unlocked": true,
+              "score": 0.0,
+              "targets": [],
+              "complexCondition": false
+            },
+            {
+              "charId": null,
+              "name": "德克萨斯",
+              "buffId": "none",
+              "buffName": "无匹配基建技能",
+              "roomType": "DORMITORY",
+              "description": "用于填补宿舍或空位。",
+              "condition": "精英2 40级",
+              "unlocked": true,
+              "score": 0.0,
+              "targets": [],
+              "complexCondition": false
+            },
+            {
+              "charId": null,
+              "name": "承曦格雷伊",
+              "buffId": "none",
+              "buffName": "无匹配基建技能",
+              "roomType": "DORMITORY",
+              "description": "用于填补宿舍或空位。",
+              "condition": "未精英化 1级",
+              "unlocked": true,
+              "score": 0.0,
+              "targets": [],
+              "complexCondition": false
+            }
+          ]
+        },
+        {
+          "id": "dormitory_3",
+          "type": "DORMITORY",
+          "name": "宿舍",
+          "target": null,
+          "targetLabel": null,
+          "score": 0.0,
+          "roomLevel": 3,
+          "slots": null,
+          "productCapacity": null,
+          "orderLimit": null,
+          "operators": [
+            {
+              "charId": null,
+              "name": "拉普兰德",
+              "buffId": "none",
+              "buffName": "无匹配基建技能",
+              "roomType": "DORMITORY",
+              "description": "用于填补宿舍或空位。",
+              "condition": "精英1 70级",
+              "unlocked": true,
+              "score": 0.0,
+              "targets": [],
+              "complexCondition": false
+            },
+            {
+              "charId": "char_154_morgan",
+              "name": "摩根",
+              "buffId": "dorm_rec_toone[000]",
+              "buffName": "头号陪练",
+              "roomType": "DORMITORY",
+              "description": "进驻宿舍时，推进之王对该宿舍中格拉斯哥帮干员恢复效果额外+0.3",
+              "condition": "未精英化 1级",
+              "unlocked": true,
+              "score": 0.0,
+              "targets": [],
+              "complexCondition": false
+            },
+            {
+              "charId": null,
+              "name": "斑点",
+              "buffId": "none",
+              "buffName": "无匹配基建技能",
+              "roomType": "DORMITORY",
+              "description": "用于填补宿舍或空位。",
+              "condition": "精英1 41级",
+              "unlocked": true,
+              "score": 0.0,
+              "targets": [],
+              "complexCondition": false
+            },
+            {
+              "charId": null,
+              "name": "星极",
+              "buffId": "none",
+              "buffName": "无匹配基建技能",
+              "roomType": "DORMITORY",
+              "description": "用于填补宿舍或空位。",
+              "condition": "精英2 20级",
+              "unlocked": true,
+              "score": 0.0,
+              "targets": [],
+              "complexCondition": false
+            },
+            {
+              "charId": null,
+              "name": "普罗旺斯",
+              "buffId": "none",
+              "buffName": "无匹配基建技能",
+              "roomType": "DORMITORY",
+              "description": "用于填补宿舍或空位。",
+              "condition": "未精英化 1级",
+              "unlocked": true,
+              "score": 0.0,
+              "targets": [],
+              "complexCondition": false
+            }
+          ]
+        },
+        {
+          "id": "dormitory_4",
+          "type": "DORMITORY",
+          "name": "宿舍",
+          "target": null,
+          "targetLabel": null,
+          "score": 0.0,
+          "roomLevel": 3,
+          "slots": null,
+          "productCapacity": null,
+          "orderLimit": null,
+          "operators": [
+            {
+              "charId": null,
+              "name": "月见夜",
+              "buffId": "none",
+              "buffName": "无匹配基建技能",
+              "roomType": "DORMITORY",
+              "description": "用于填补宿舍或空位。",
+              "condition": "精英1 1级",
+              "unlocked": true,
+              "score": 0.0,
+              "targets": [],
+              "complexCondition": false
+            },
+            {
+              "charId": null,
+              "name": "望",
+              "buffId": "none",
+              "buffName": "无匹配基建技能",
+              "roomType": "DORMITORY",
+              "description": "用于填补宿舍或空位。",
+              "condition": "精英2 60级",
+              "unlocked": true,
+              "score": 0.0,
+              "targets": [],
+              "complexCondition": false
+            },
+            {
+              "charId": null,
+              "name": "杰西卡",
+              "buffId": "none",
+              "buffName": "无匹配基建技能",
+              "roomType": "DORMITORY",
+              "description": "用于填补宿舍或空位。",
+              "condition": "未精英化 1级",
+              "unlocked": true,
+              "score": 0.0,
+              "targets": [],
+              "complexCondition": false
+            },
+            {
+              "charId": null,
+              "name": "柏喙",
+              "buffId": "none",
+              "buffName": "无匹配基建技能",
+              "roomType": "DORMITORY",
+              "description": "用于填补宿舍或空位。",
+              "condition": "精英1 1级",
+              "unlocked": true,
+              "score": 0.0,
+              "targets": [],
+              "complexCondition": false
+            },
+            {
+              "charId": null,
+              "name": "格雷伊",
+              "buffId": "none",
+              "buffName": "无匹配基建技能",
+              "roomType": "DORMITORY",
+              "description": "用于填补宿舍或空位。",
+              "condition": "未精英化 1级",
+              "unlocked": true,
+              "score": 0.0,
+              "targets": [],
+              "complexCondition": false
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,6 +1,9 @@
 from __future__ import annotations
 
+import hashlib
 import json
+import os
+from concurrent.futures import ProcessPoolExecutor
 from dataclasses import dataclass, replace
 from datetime import datetime, timezone
 from html import escape
@@ -57,6 +60,408 @@ class CandidateEvaluation:
     export_path: Path
 
 
+@dataclass(frozen=True)
+class CandidateSpec:
+    candidate_id: str
+    layout: Layout
+    mode: str
+    count: int
+    hours: int
+    profile: str
+    profile_label: str
+    allow_upgrades: bool
+    profile_weight: float
+    anchor_preference: list[str]
+    forced_targets: tuple[list[str], list[str]] | None = None
+    expected_target_counts: dict[str, int] | None = None
+    forced_insertion_groups: list[ShiftInsertionGroup] | None = None
+    candidate_drone_policy: str | None = None
+    drone_reference_daily: dict[str, Any] | None = None
+    candidate_shift_durations: list[float] | None = None
+    candidate_role: str = "primary"
+
+
+@dataclass(frozen=True)
+class CandidateWorkerConfig:
+    game_data: GameData
+    roster: list[RosterOperator]
+    output_dir: Path
+    candidate_dir: Path
+    baseline_score: float | None
+    shard_formula: str
+    drone_policy: str
+    right_side: str
+    shift_times: list[str] | None
+    min_lmd_gross: float
+    min_exp: float
+    min_orundum: float
+    pure_gold_target: float
+    pure_gold_tolerance: float
+    max_drone_cycle_repeats: int
+    cache_policy: str
+    roster_cache_key: str
+    data_cache_key: str
+    profile_runtime: bool = False
+
+
+_CANDIDATE_WORKER_CONFIG: CandidateWorkerConfig | None = None
+
+
+def init_candidate_worker(config: CandidateWorkerConfig) -> None:
+    global _CANDIDATE_WORKER_CONFIG
+    _CANDIDATE_WORKER_CONFIG = config
+
+
+def evaluate_candidate_spec_from_worker(spec: CandidateSpec) -> dict[str, Any]:
+    if _CANDIDATE_WORKER_CONFIG is None:
+        raise RuntimeError("Candidate worker was not initialized.")
+    return evaluate_candidate_spec(_CANDIDATE_WORKER_CONFIG, spec)
+
+
+def evaluate_candidate_spec(
+    config: CandidateWorkerConfig,
+    spec: CandidateSpec,
+) -> dict[str, Any]:
+    optimizer = ScheduleOptimizer(
+        config.game_data,
+        config.roster,
+        allow_upgrades=spec.allow_upgrades,
+        upgrade_cost_weight=spec.profile_weight,
+        shard_formula=config.shard_formula,
+    )
+    candidate_drone_policy = spec.candidate_drone_policy or config.drone_policy
+    optimize_drone_policy = (
+        reference_fit_seed_drone_policy(spec.drone_reference_daily or {})
+        if candidate_drone_policy == "reference-fit"
+        else candidate_drone_policy
+    )
+    export_path = config.candidate_dir / f"{spec.candidate_id}.json"
+    cache_key = candidate_cache_key(
+        candidate_id=spec.candidate_id,
+        layout=spec.layout,
+        mode=spec.mode,
+        count=spec.count,
+        hours=spec.hours,
+        profile=spec.profile,
+        allow_upgrades=spec.allow_upgrades,
+        anchor_preference=spec.anchor_preference,
+        forced_targets=spec.forced_targets,
+        forced_insertion_groups=spec.forced_insertion_groups,
+        candidate_drone_policy=candidate_drone_policy,
+        optimize_drone_policy=optimize_drone_policy,
+        drone_reference_daily=spec.drone_reference_daily,
+        candidate_shift_durations=spec.candidate_shift_durations,
+        candidate_role=spec.candidate_role,
+        roster_key=config.roster_cache_key,
+        data_key=config.data_cache_key,
+        shard_formula=config.shard_formula,
+        right_side=config.right_side,
+        min_lmd_gross=config.min_lmd_gross,
+        min_exp=config.min_exp,
+        min_orundum=config.min_orundum,
+        pure_gold_target=config.pure_gold_target,
+        pure_gold_tolerance=config.pure_gold_tolerance,
+        max_drone_cycle_repeats=config.max_drone_cycle_repeats,
+        upgrade_cost_weight=spec.profile_weight,
+        shift_times=config.shift_times,
+    )
+    if config.cache_policy == "auto":
+        cached = load_cached_candidate_evaluation(
+            export_path,
+            candidate_id=spec.candidate_id,
+            expected_layout_raw=spec.layout.raw,
+            allow_upgrades=spec.allow_upgrades,
+            profile=spec.profile,
+            profile_label=spec.profile_label,
+            baseline_score=config.baseline_score,
+            output_dir=config.output_dir,
+            expected_max_groups=ScheduleOptimizer.diagnostic_insertion_group_limit(),
+            expected_joint_candidate_limit=ScheduleOptimizer.joint_production_candidate_limit(),
+            expected_optimizer_model_version=ScheduleOptimizer.optimizer_model_version(),
+            expected_anchor_count=len(spec.anchor_preference),
+            expected_target_counts=spec.expected_target_counts,
+            expected_pure_gold_target=config.pure_gold_target,
+            expected_pure_gold_tolerance=config.pure_gold_tolerance,
+            expected_max_drone_cycle_repeats=config.max_drone_cycle_repeats,
+            candidate_role=spec.candidate_role,
+            expected_candidate_cache_key=cache_key,
+        )
+        if cached is not None:
+            return {"candidate": cached, "skipped": None}
+    try:
+        result = optimizer.optimize(
+            spec.layout,
+            mode=spec.mode,
+            shift_count=spec.count,
+            shift_hours=spec.hours,
+            shift_durations=spec.candidate_shift_durations,
+            shift_times=config.shift_times,
+            drone_policy=optimize_drone_policy,
+            min_lmd_gross=config.min_lmd_gross,
+            min_exp=config.min_exp,
+            min_orundum=config.min_orundum,
+            operator_anchor_preference=spec.anchor_preference,
+            forced_targets=spec.forced_targets,
+            forced_insertion_groups=spec.forced_insertion_groups,
+            pure_gold_target=config.pure_gold_target,
+            pure_gold_tolerance=config.pure_gold_tolerance,
+            max_drone_cycle_repeats=config.max_drone_cycle_repeats,
+            profile_runtime=config.profile_runtime,
+        )
+        if candidate_drone_policy == "reference-fit":
+            reference_report = ProductionSimulator(
+                config.game_data,
+                shard_formula=config.shard_formula,
+                drone_policy="reference-fit",
+                calibration_profile="guide",
+                reference_expected_daily=spec.drone_reference_daily or {},
+                pure_gold_target=config.pure_gold_target,
+                pure_gold_tolerance=config.pure_gold_tolerance,
+            ).evaluate(result.shifts)
+            result = replace(
+                result,
+                score=reference_report.score,
+                score_breakdown=reference_report.scoreBreakdown,
+                production_report=reference_report,
+                drone_policy="reference-fit",
+                diagnostic_insertion_search={
+                    **result.diagnostic_insertion_search,
+                    "pureGoldBalancePolicy": replacement_drone_pure_gold_policy(
+                        reference_report,
+                        "reference-fit",
+                        pure_gold_target=config.pure_gold_target,
+                        pure_gold_tolerance=config.pure_gold_tolerance,
+                        max_drone_cycle_repeats=config.max_drone_cycle_repeats,
+                    ),
+                },
+            )
+    except ValueError as exc:
+        return {
+            "candidate": None,
+            "skipped": {
+                "layout": spec.layout.label,
+                "mode": str(spec.mode),
+                "shiftCount": str(spec.count),
+                "profile": spec.profile,
+                "candidateId": spec.candidate_id,
+                "reason": str(exc),
+            },
+        }
+    result.diagnostic_insertion_search.setdefault("cacheValidation", {})[
+        "candidateCacheKey"
+    ] = cache_key
+    write_result_json(export_path, result, config.game_data)
+    summary = result_summary(
+        spec.candidate_id,
+        result,
+        allow_upgrades=spec.allow_upgrades,
+        profile=spec.profile,
+        profile_label=spec.profile_label,
+        baseline_score=config.baseline_score,
+        export_path=export_path,
+        output_dir=config.output_dir,
+        candidate_role=spec.candidate_role,
+    )
+    return {
+        "candidate": CandidateEvaluation(
+            id=spec.candidate_id,
+            result=result,
+            allow_upgrades=spec.allow_upgrades,
+            profile=spec.profile,
+            profile_label=spec.profile_label,
+            summary=summary,
+            export_path=export_path,
+        ),
+        "skipped": None,
+    }
+
+
+def replacement_drone_pure_gold_policy(
+    report: ProductionReport,
+    candidate_drone_policy: str,
+    *,
+    pure_gold_target: float,
+    pure_gold_tolerance: float,
+    max_drone_cycle_repeats: int,
+) -> dict[str, Any]:
+    quality = pure_gold_balance_quality(
+        report.dailyExpected,
+        target=pure_gold_target,
+        tolerance=pure_gold_tolerance,
+    )
+    normalized_policy = str(candidate_drone_policy).lower().replace("_", "-")
+    if normalized_policy != "auto":
+        status = "not_applicable_drone_policy"
+        reason = "Pure Gold balancing is applied only by --drone-policy auto."
+    else:
+        status = str(quality["status"])
+        reason = ""
+    return {
+        "version": 1,
+        "scope": "drone_allocation_only",
+        "targetPerDay": quality["targetPerDay"],
+        "tolerancePerDay": quality["tolerancePerDay"],
+        "externalPureGoldAssumptionPerDay": quality["externalPureGoldAssumptionPerDay"],
+        "status": status,
+        "reason": reason,
+        "repeatCount": 1,
+        "cycleRepeated": False,
+        "maxDroneCycleRepeats": max(1, int(max_drone_cycle_repeats)),
+        "finalPureGoldDelta": quality["pureGoldDelta"],
+        "finalDeltaFromTarget": quality["deltaFromTarget"],
+        "finalAbsDeltaFromTarget": quality["absDeltaFromTarget"],
+        "withinTolerance": quality["withinTolerance"],
+    }
+
+
+def roster_fingerprint(roster: Iterable[RosterOperator]) -> str:
+    rows = []
+    for operator in sorted(roster, key=lambda item: item.name):
+        rows.append(
+            {
+                "name": operator.name,
+                "recruited": operator.recruited,
+                "rarity": operator.rarity,
+                "level": operator.level,
+                "elite": operator.elite,
+                "potential": operator.potential,
+                "skillLevel": operator.skill_level,
+                "masteries": list(operator.masteries),
+                "modules": dict(sorted(operator.modules.items())),
+            }
+        )
+    return stable_hash(rows)
+
+
+def data_cache_fingerprint(game_data: GameData) -> str:
+    building = game_data.building or {}
+    return stable_hash(
+        {
+            "dataVersion": game_data.data_version,
+            "buildingBuffCount": len(building.get("buffs") or {}),
+            "buildingCharCount": len(building.get("chars") or {}),
+            "characterCount": len(game_data.characters),
+            "itemCount": len(game_data.items),
+        }
+    )
+
+
+def candidate_cache_key(
+    *,
+    candidate_id: str,
+    layout: Layout,
+    mode: str,
+    count: int,
+    hours: int,
+    profile: str,
+    allow_upgrades: bool,
+    anchor_preference: list[str],
+    forced_targets: tuple[list[str], list[str]] | None,
+    forced_insertion_groups: list[ShiftInsertionGroup] | None,
+    candidate_drone_policy: str,
+    optimize_drone_policy: str,
+    drone_reference_daily: dict[str, Any] | None,
+    candidate_shift_durations: list[float] | None,
+    candidate_role: str,
+    roster_key: str,
+    data_key: str,
+    shard_formula: str,
+    right_side: str,
+    min_lmd_gross: float,
+    min_exp: float,
+    min_orundum: float,
+    pure_gold_target: float,
+    pure_gold_tolerance: float,
+    max_drone_cycle_repeats: int,
+    upgrade_cost_weight: float,
+    shift_times: list[str] | None,
+) -> str:
+    return stable_hash(
+        {
+            "version": 2,
+            "candidateId": candidate_id,
+            "layout": layout.raw,
+            "layoutLabel": layout.label,
+            "rightSidePreset": layout.right_side_preset,
+            "mode": str(mode),
+            "shiftCount": int(count),
+            "shiftHours": int(hours),
+            "shiftDurations": candidate_shift_durations,
+            "shiftTimes": shift_times,
+            "profile": profile,
+            "candidateRole": candidate_role,
+            "allowUpgrades": bool(allow_upgrades),
+            "upgradeCostWeight": round(float(upgrade_cost_weight), 8),
+            "anchorPreference": list(anchor_preference),
+            "forcedTargets": forced_targets,
+            "forcedInsertionGroups": [
+                insertion_group_fingerprint(group)
+                for group in (forced_insertion_groups or [])
+            ],
+            "candidateDronePolicy": candidate_drone_policy,
+            "optimizeDronePolicy": optimize_drone_policy,
+            "droneReferenceDaily": drone_reference_daily or {},
+            "roster": roster_key,
+            "gameData": data_key,
+            "shardFormula": shard_formula,
+            "rightSide": right_side,
+            "minimums": {
+                "lmdGross": round(float(min_lmd_gross), 6),
+                "exp": round(float(min_exp), 6),
+                "orundum": round(float(min_orundum), 6),
+            },
+            "pureGold": {
+                "target": round(float(pure_gold_target), 6),
+                "tolerance": round(float(pure_gold_tolerance), 6),
+                "maxDroneCycleRepeats": max(1, int(max_drone_cycle_repeats)),
+            },
+            "optimizer": {
+                "modelVersion": ScheduleOptimizer.optimizer_model_version(),
+                "maxGroups": ScheduleOptimizer.diagnostic_insertion_group_limit(),
+                "jointCandidateLimit": ScheduleOptimizer.joint_production_candidate_limit(),
+            },
+        }
+    )
+
+
+def insertion_group_fingerprint(group: ShiftInsertionGroup) -> dict[str, Any]:
+    return {
+        "id": group.id,
+        "specs": [
+            {
+                "roomType": spec.room_type,
+                "target": spec.target,
+                "operatorName": spec.operator_name,
+                "allowNoSkill": spec.allow_no_skill,
+                "roomGroup": spec.room_group,
+            }
+            for spec in group.specs
+        ],
+    }
+
+
+def stable_hash(data: Any) -> str:
+    encoded = json.dumps(data, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+    return hashlib.sha256(encoded.encode("utf-8")).hexdigest()
+
+
+def normalize_cache_policy(value: str) -> str:
+    normalized = str(value or "auto").lower().replace("_", "-")
+    if normalized not in {"auto", "refresh", "off"}:
+        raise ValueError("cache_policy must be auto, refresh, or off.")
+    return normalized
+
+
+def normalize_jobs(value: str | int) -> int:
+    if isinstance(value, int):
+        return max(1, value)
+    text = str(value or "1").strip().lower()
+    if text == "auto":
+        cpu = os.cpu_count() or 1
+        return max(1, min(cpu - 1, 8))
+    return max(1, int(text))
+
+
 def recommend_schedules(
     game_data: GameData,
     roster: Iterable[RosterOperator],
@@ -81,6 +486,9 @@ def recommend_schedules(
     pure_gold_target: float = DEFAULT_PURE_GOLD_TARGET_PER_DAY,
     pure_gold_tolerance: float = DEFAULT_PURE_GOLD_TOLERANCE,
     max_drone_cycle_repeats: int = DEFAULT_MAX_DRONE_CYCLE_REPEATS,
+    jobs: str | int = 1,
+    cache_policy: str = "auto",
+    profile_runtime: bool = False,
 ) -> dict[str, Any]:
     output_dir.mkdir(parents=True, exist_ok=True)
     candidate_dir = output_dir / "candidate_schedules"
@@ -96,6 +504,10 @@ def recommend_schedules(
         shift_count=shift_count,
         shift_hours=shift_hours,
     )
+    cache_policy = normalize_cache_policy(cache_policy)
+    worker_count = normalize_jobs(jobs)
+    roster_cache_key = roster_fingerprint(roster_list)
+    data_cache_key = data_cache_fingerprint(game_data)
 
     baseline = score_baseline(
         baseline_schedule,
@@ -181,7 +593,37 @@ def recommend_schedules(
             else candidate_drone_policy
         )
         export_path = candidate_dir / f"{candidate_id}.json"
-        if maxed_roster:
+        profile_weight = 0.0 if profile != "upgrades_cost_adjusted" else upgrade_cost_weight
+        cache_key = candidate_cache_key(
+            candidate_id=candidate_id,
+            layout=layout,
+            mode=mode,
+            count=count,
+            hours=hours,
+            profile=profile,
+            allow_upgrades=allow_upgrades,
+            anchor_preference=anchor_preference,
+            forced_targets=forced_targets,
+            forced_insertion_groups=forced_insertion_groups,
+            candidate_drone_policy=candidate_drone_policy,
+            optimize_drone_policy=optimize_drone_policy,
+            drone_reference_daily=drone_reference_daily,
+            candidate_shift_durations=candidate_shift_durations,
+            candidate_role=candidate_role,
+            roster_key=roster_cache_key,
+            data_key=data_cache_key,
+            shard_formula=shard_formula,
+            right_side=right_side,
+            min_lmd_gross=min_lmd_gross,
+            min_exp=min_exp,
+            min_orundum=min_orundum,
+            pure_gold_target=pure_gold_target,
+            pure_gold_tolerance=pure_gold_tolerance,
+            max_drone_cycle_repeats=max_drone_cycle_repeats,
+            upgrade_cost_weight=profile_weight,
+            shift_times=shift_times,
+        )
+        if cache_policy == "auto":
             cached = load_cached_candidate_evaluation(
                 export_path,
                 candidate_id=candidate_id,
@@ -200,6 +642,7 @@ def recommend_schedules(
                 expected_pure_gold_tolerance=pure_gold_tolerance,
                 expected_max_drone_cycle_repeats=max_drone_cycle_repeats,
                 candidate_role=candidate_role,
+                expected_candidate_cache_key=cache_key,
             )
             if cached is not None:
                 candidates.append(cached)
@@ -222,6 +665,7 @@ def recommend_schedules(
                 pure_gold_target=pure_gold_target,
                 pure_gold_tolerance=pure_gold_tolerance,
                 max_drone_cycle_repeats=max_drone_cycle_repeats,
+                profile_runtime=profile_runtime,
             )
             if candidate_drone_policy == "reference-fit":
                 reference_report = ProductionSimulator(
@@ -259,6 +703,9 @@ def recommend_schedules(
                 }
             )
             return None
+        result.diagnostic_insertion_search.setdefault("cacheValidation", {})[
+            "candidateCacheKey"
+        ] = cache_key
         write_result_json(export_path, result, game_data)
         summary = result_summary(
             candidate_id,
@@ -316,6 +763,22 @@ def recommend_schedules(
                 ),
             },
         )
+        result.diagnostic_insertion_search.setdefault("cacheValidation", {})[
+            "candidateCacheKey"
+        ] = stable_hash(
+            {
+                "version": 1,
+                "sourceCandidateId": source.id,
+                "derivedCandidateId": candidate_id,
+                "candidateDronePolicy": candidate_drone_policy,
+                "droneReferenceDaily": drone_reference_daily or {},
+                "sourceCandidateCacheKey": (
+                    (source.result.diagnostic_insertion_search.get("cacheValidation") or {}).get(
+                        "candidateCacheKey"
+                    )
+                ),
+            }
+        )
         write_result_json(export_path, result, game_data)
         summary = result_summary(
             candidate_id,
@@ -339,6 +802,185 @@ def recommend_schedules(
         )
         candidates.append(candidate)
         return candidate
+
+    if worker_count > 1:
+        parallel_specs: list[CandidateSpec] = []
+        drone_derivations: list[dict[str, Any]] = []
+        for profile, profile_label, allow_upgrades, profile_weight in profiles_to_optimize:
+            for raw_layout in search_layout_list:
+                try:
+                    layout_base, layout_variant = split_layout_token(raw_layout)
+                    layout = apply_right_side_preset(
+                        apply_layout_variant(parse_layout(layout_base), layout_variant),
+                        right_side,
+                    )
+                except ValueError as exc:
+                    skipped.append(
+                        {
+                            "layout": str(raw_layout),
+                            "profile": profile,
+                            "reason": str(exc),
+                        }
+                    )
+                    continue
+                for mode in mode_list:
+                    if layout.raw == "342-guide-orundum" and safe_normalize_mode(mode) != "max_orundum":
+                        continue
+                    for count, hours in pattern_list:
+                        if layout.raw == "342-guide-orundum" and (count, hours) != (2, 12):
+                            skipped.append(
+                                {
+                                    "layout": layout.raw,
+                                    "mode": str(mode),
+                                    "shiftCount": str(count),
+                                    "profile": profile,
+                                    "reason": "342 guide Orundum variant is scoped to the 2x12 reference image.",
+                                }
+                            )
+                            continue
+                        candidate_mode = safe_normalize_mode(mode)
+                        candidate_id = (
+                            f"{safe_layout_token(layout.raw)}_{candidate_mode}_{count}x{hours}_{profile}"
+                        )
+                        anchor_preference = guide_operator_anchor_preference(
+                            layout.label,
+                            mode,
+                            count,
+                            hours,
+                        )
+                        parallel_specs.append(
+                            CandidateSpec(
+                                candidate_id=candidate_id,
+                                layout=layout,
+                                mode=mode,
+                                count=count,
+                                hours=hours,
+                                profile=profile,
+                                profile_label=profile_label,
+                                allow_upgrades=allow_upgrades,
+                                profile_weight=profile_weight,
+                                anchor_preference=anchor_preference,
+                            )
+                        )
+                        for reference in reference_target_variants(
+                            yituliu_checks,
+                            layout=layout,
+                            mode=candidate_mode,
+                            shift_count=count,
+                            shift_hours=hours,
+                        ):
+                            forced_targets = reference["targets"]
+                            ref_candidate_id = (
+                                f"{safe_layout_token(layout.raw)}_{candidate_mode}_{count}x{hours}_"
+                                f"{profile}_ref_{safe_layout_token(str(reference['id']))}"
+                            )
+                            parallel_specs.append(
+                                CandidateSpec(
+                                    candidate_id=ref_candidate_id,
+                                    layout=layout,
+                                    mode=mode,
+                                    count=count,
+                                    hours=hours,
+                                    profile=profile,
+                                    profile_label=profile_label,
+                                    allow_upgrades=allow_upgrades,
+                                    profile_weight=profile_weight,
+                                    anchor_preference=reference["operatorAnchors"],
+                                    forced_targets=forced_targets,
+                                    expected_target_counts=reference["targetCounts"],
+                                    forced_insertion_groups=reference["insertionGroups"],
+                                    candidate_shift_durations=reference.get("shiftHours"),
+                                    candidate_role="reference_target",
+                                )
+                            )
+                            reference_policies = (
+                                []
+                                if str(drone_policy).lower().replace("_", "-") == "auto"
+                                else reference_drone_policies(reference.get("expectedDaily") or {})
+                            )
+                            for reference_drone_policy in reference_policies:
+                                ref_drone_candidate_id = (
+                                    f"{ref_candidate_id}_drone_"
+                                    f"{safe_layout_token(reference_drone_policy)}"
+                                )
+                                if reference_drone_policy == "reference-fit":
+                                    parallel_specs.append(
+                                        CandidateSpec(
+                                            candidate_id=ref_drone_candidate_id,
+                                            layout=layout,
+                                            mode=mode,
+                                            count=count,
+                                            hours=hours,
+                                            profile=profile,
+                                            profile_label=profile_label,
+                                            allow_upgrades=allow_upgrades,
+                                            profile_weight=profile_weight,
+                                            anchor_preference=reference["operatorAnchors"],
+                                            forced_targets=forced_targets,
+                                            expected_target_counts=reference["targetCounts"],
+                                            forced_insertion_groups=reference["insertionGroups"],
+                                            candidate_drone_policy=reference_drone_policy,
+                                            drone_reference_daily=reference["expectedDaily"],
+                                            candidate_shift_durations=reference.get("shiftHours"),
+                                            candidate_role="reference_drone_variant",
+                                        )
+                                    )
+                                    continue
+                                drone_derivations.append(
+                                    {
+                                        "sourceId": ref_candidate_id,
+                                        "candidateId": ref_drone_candidate_id,
+                                        "policy": reference_drone_policy,
+                                        "expectedDaily": reference.get("expectedDaily") or {},
+                                    }
+                                )
+        worker_config = CandidateWorkerConfig(
+            game_data=game_data,
+            roster=roster_list,
+            output_dir=output_dir,
+            candidate_dir=candidate_dir,
+            baseline_score=baseline_score,
+            shard_formula=shard_formula,
+            drone_policy=drone_policy,
+            right_side=right_side,
+            shift_times=shift_times,
+            min_lmd_gross=min_lmd_gross,
+            min_exp=min_exp,
+            min_orundum=min_orundum,
+            pure_gold_target=pure_gold_target,
+            pure_gold_tolerance=pure_gold_tolerance,
+            max_drone_cycle_repeats=max_drone_cycle_repeats,
+            cache_policy=cache_policy,
+            roster_cache_key=roster_cache_key,
+            data_cache_key=data_cache_key,
+            profile_runtime=profile_runtime,
+        )
+        if parallel_specs:
+            with ProcessPoolExecutor(
+                max_workers=worker_count,
+                initializer=init_candidate_worker,
+                initargs=(worker_config,),
+            ) as executor:
+                for item in executor.map(evaluate_candidate_spec_from_worker, parallel_specs):
+                    candidate = item.get("candidate")
+                    if candidate is not None:
+                        candidates.append(candidate)
+                    skipped_item = item.get("skipped")
+                    if skipped_item is not None:
+                        skipped.append(skipped_item)
+        candidates_by_id = {candidate.id: candidate for candidate in candidates}
+        for derivation in drone_derivations:
+            source = candidates_by_id.get(str(derivation["sourceId"]))
+            if source is None:
+                continue
+            derived = derive_drone_candidate(
+                source,
+                candidate_id=str(derivation["candidateId"]),
+                candidate_drone_policy=str(derivation["policy"]),
+                drone_reference_daily=dict(derivation.get("expectedDaily") or {}),
+            )
+            candidates_by_id[derived.id] = derived
+        profiles_to_optimize = []
 
     for profile, profile_label, allow_upgrades, profile_weight in profiles_to_optimize:
         optimizer = ScheduleOptimizer(
@@ -586,6 +1228,9 @@ def recommend_schedules(
             "upgradeCostWeight": upgrade_cost_weight,
             "includeUpgrades": include_upgrades,
             "rightSide": right_side,
+            "jobs": worker_count,
+            "cachePolicy": cache_policy,
+            "profileRuntime": profile_runtime,
             "minimums": {
                 "lmdGross": min_lmd_gross,
                 "exp": min_exp,
@@ -810,6 +1455,7 @@ def load_cached_candidate_evaluation(
     expected_pure_gold_tolerance: float = DEFAULT_PURE_GOLD_TOLERANCE,
     expected_max_drone_cycle_repeats: int = DEFAULT_MAX_DRONE_CYCLE_REPEATS,
     candidate_role: str = "primary",
+    expected_candidate_cache_key: str | None = None,
 ) -> CandidateEvaluation | None:
     if not export_path.exists():
         return None
@@ -829,6 +1475,9 @@ def load_cached_candidate_evaluation(
         if int(search.get("operatorAnchorPreferenceCount") or 0) != expected_anchor_count:
             return None
         cache_validation = search.get("cacheValidation") or {}
+        cached_candidate_key = cache_validation.get("candidateCacheKey")
+        if expected_candidate_cache_key is not None and cached_candidate_key != expected_candidate_cache_key:
+            return None
         cached_pure_gold_target = search.get(
             "pureGoldTarget",
             cache_validation.get("pureGoldTarget"),
@@ -941,6 +1590,7 @@ def optimizer_result_from_export(
         metric_profile=str(analysis.get("calibrationProfile") or "guide"),
         power_status=None,
         diagnostic_insertion_search=dict(analysis.get("diagnosticInsertionSearch") or {}),
+        runtime_profile=dict(analysis.get("runtimeProfile") or {}),
     )
 
 

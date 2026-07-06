@@ -46,7 +46,8 @@ conda run -n arknights-schedule-generator python -m arknights_schedule_generator
 
 - 每次完成一轮文件修改、测试、生成输出或其他关键操作后，都要运行 `git status --short --branch`，确认当前分支和变更范围。
 - 默认远端为 `origin`，地址为 `https://github.com/ChineseCricket/arknights_scheduel_generator.git`；默认主线分支为 `main`，后续提交和 push 都基于 `main` / `origin/main`，除非用户明确要求临时分支。
-- 需要交付代码时，先完整检查并 stage 预期变更，再 commit；用户明确要求 push 时，commit 成功后立即 push 当前分支。
+- 需要交付代码时，先完整检查并 stage 预期变更，再在本地 commit，并在回复中明确告知 commit 哈希和提交信息。
+- push 是单独的发布动作：只有用户明确要求 push 时才推送。push 前必须先列出 `git log origin/main..HEAD --oneline` 和 `git status --short --branch`，让用户知道将被推送的本地提交范围；同一分支上的 push 会推送所有尚未推送的本地 commit，若存在不希望进入远端的中间提交，先 squash/rebase 或按用户要求整理历史后再推送。
 - 不要回滚或覆盖用户/其他 agent 的未说明变更；若必须处理冲突，先说明具体文件和风险。
 
 ## 项目目的

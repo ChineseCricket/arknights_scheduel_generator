@@ -4,8 +4,9 @@ import json
 import re
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
-from urllib.request import urlopen
+from typing import Any, Sequence
+from urllib.error import HTTPError, URLError
+from urllib.request import Request, urlopen
 
 from .models import (
     BaseSkill,
@@ -20,12 +21,36 @@ RAW_BASE_URL = (
     "https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/"
     "master/zh_CN/gamedata/excel"
 )
+JSDELIVR_BASE_URL = (
+    "https://cdn.jsdelivr.net/gh/Kengxxiao/ArknightsGameData@"
+    "master/zh_CN/gamedata/excel"
+)
 REQUIRED_FILES = (
     "building_data.json",
     "character_table.json",
     "item_table.json",
     "data_version.txt",
 )
+DOWNLOAD_USER_AGENT = (
+    "arknights-schedule-generator/0.1 "
+    "(+https://github.com/ChineseCricket/arknights_scheduel_generator)"
+)
+
+
+@dataclass(frozen=True)
+class DataSource:
+    name: str
+    base_url: str
+
+
+DEFAULT_DATA_SOURCES = (
+    DataSource("jsDelivr GitHub CDN", JSDELIVR_BASE_URL),
+    DataSource("GitHub raw", RAW_BASE_URL),
+)
+
+
+class DataDownloadError(RuntimeError):
+    pass
 
 COMPLEX_MARKERS = (
     "当与",
@@ -74,18 +99,58 @@ SPECIAL_FACTION_TAGS_BY_CHAR_ID = {
 }
 
 
-def download_data(data_dir: Path, force: bool = False) -> list[Path]:
+def download_data(
+    data_dir: Path,
+    force: bool = False,
+    sources: Sequence[DataSource] = DEFAULT_DATA_SOURCES,
+) -> list[Path]:
     data_dir.mkdir(parents=True, exist_ok=True)
     written: list[Path] = []
+    source_index = 0
     for file_name in REQUIRED_FILES:
         target = data_dir / file_name
         if target.exists() and not force:
             written.append(target)
             continue
-        with urlopen(f"{RAW_BASE_URL}/{file_name}", timeout=60) as response:
-            target.write_bytes(response.read())
+        data, source_index = download_file_bytes(file_name, sources, source_index)
+        target.write_bytes(data)
         written.append(target)
     return written
+
+
+def download_file_bytes(
+    file_name: str,
+    sources: Sequence[DataSource] = DEFAULT_DATA_SOURCES,
+    preferred_index: int = 0,
+) -> tuple[bytes, int]:
+    if not sources:
+        raise DataDownloadError("No game data download sources configured.")
+
+    errors: list[str] = []
+    source_count = len(sources)
+    for offset in range(source_count):
+        index = (preferred_index + offset) % source_count
+        source = sources[index]
+        url = f"{source.base_url.rstrip('/')}/{file_name}"
+        request = Request(
+            url,
+            headers={
+                "Accept": "application/json,text/plain,*/*",
+                "User-Agent": DOWNLOAD_USER_AGENT,
+            },
+        )
+        try:
+            with urlopen(request, timeout=60) as response:
+                return response.read(), index
+        except HTTPError as exc:
+            errors.append(f"{source.name} returned HTTP {exc.code} for {url}")
+        except URLError as exc:
+            errors.append(f"{source.name} failed for {url}: {exc.reason}")
+        except OSError as exc:
+            errors.append(f"{source.name} failed for {url}: {exc}")
+
+    detail = "; ".join(errors)
+    raise DataDownloadError(f"Failed to download {file_name}. {detail}")
 
 
 @dataclass

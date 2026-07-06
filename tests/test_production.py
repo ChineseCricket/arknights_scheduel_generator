@@ -980,6 +980,10 @@ class ProductionModelTest(unittest.TestCase):
             upgrade_cost_adjusted_list_exists = (
                 output_dir / "upgrade_requirements_cost_adjusted.json"
             ).exists()
+            upgrade_xlsx_exists = (output_dir / "upgrade_requirements.xlsx").exists()
+            upgrade_cost_adjusted_xlsx_exists = (
+                output_dir / "upgrade_requirements_cost_adjusted.xlsx"
+            ).exists()
             payload = json.loads(
                 (output_dir / "best_current_schedule.json").read_text(encoding="utf-8")
             )
@@ -1000,7 +1004,10 @@ class ProductionModelTest(unittest.TestCase):
         self.assertTrue(target_current_exists)
         self.assertTrue(upgrade_list_exists)
         self.assertTrue(upgrade_cost_adjusted_list_exists)
+        self.assertTrue(upgrade_xlsx_exists)
+        self.assertTrue(upgrade_cost_adjusted_xlsx_exists)
         self.assertIn("htmlReport", report["writtenFiles"])
+        self.assertIn("upgradeRequirementsXlsx", report["writtenFiles"])
         self.assertIn("bestTargetCompatibleCurrentSchedule", report["writtenFiles"])
         self.assertIn("bestWithUpgradesCostAdjusted", report)
         self.assertIn("presetContracts", report)

@@ -40,6 +40,7 @@ Issues = "https://github.com/ChineseCricket/arknights_scheduel_generator/issues"
 
 [project.scripts]
 ak-schedule = "arknights_schedule_generator.cli:main"
+ak-schedule-ui = "arknights_schedule_generator.web_app:main"
 
 [tool.setuptools.packages.find]
 include = ["arknights_schedule_generator*"]

@@ -10,6 +10,8 @@ from html import escape
 from pathlib import Path
 from typing import Any, Iterable
 
+from openpyxl import Workbook
+
 from .calibration import (
     latest_yituliu_orundum_targets,
     production_economics_summary,
@@ -1175,8 +1177,12 @@ def recommend_schedules(
     ]
     upgrade_path = output_dir / "upgrade_requirements.json"
     upgrade_cost_path = output_dir / "upgrade_requirements_cost_adjusted.json"
+    upgrade_xlsx_path = output_dir / "upgrade_requirements.xlsx"
+    upgrade_cost_xlsx_path = output_dir / "upgrade_requirements_cost_adjusted.xlsx"
     write_json(upgrade_path, upgrade_requirements)
     write_json(upgrade_cost_path, upgrade_requirements_cost_adjusted)
+    write_upgrade_requirements_xlsx(upgrade_xlsx_path, upgrade_requirements)
+    write_upgrade_requirements_xlsx(upgrade_cost_xlsx_path, upgrade_requirements_cost_adjusted)
 
     manual_check = dict(baseline, source=str(baseline_schedule)) if baseline and baseline_schedule else None
     diagnostic_candidates = (
@@ -1339,6 +1345,8 @@ def recommend_schedules(
             ),
             "upgradeRequirements": str(upgrade_path),
             "upgradeRequirementsCostAdjusted": str(upgrade_cost_path),
+            "upgradeRequirementsXlsx": str(upgrade_xlsx_path),
+            "upgradeRequirementsCostAdjustedXlsx": str(upgrade_cost_xlsx_path),
         },
     }
 
@@ -3754,6 +3762,49 @@ def comparison_entry(candidate: CandidateEvaluation, baseline_score: float) -> d
     }
 
 
+def write_upgrade_requirements_xlsx(path: Path, upgrades: list[dict[str, Any]]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    workbook = Workbook()
+    sheet = workbook.active
+    sheet.title = "upgrade_requirements"
+    headers = [
+        "Operator",
+        "From elite",
+        "From level",
+        "To elite",
+        "To level",
+        "Target",
+        "Cost score",
+        "Materials",
+        "Note",
+    ]
+    sheet.append(headers)
+    for upgrade in upgrades:
+        current = upgrade.get("from") or {}
+        target = upgrade.get("to") or {}
+        materials = upgrade.get("materials") or {}
+        sheet.append(
+            [
+                upgrade.get("name"),
+                current.get("elite"),
+                current.get("level"),
+                target.get("elite"),
+                target.get("level"),
+                target.get("label"),
+                upgrade.get("costScore"),
+                json.dumps(materials, ensure_ascii=False, sort_keys=True),
+                upgrade.get("note"),
+            ]
+        )
+    sheet.freeze_panes = "A2"
+    sheet.auto_filter.ref = sheet.dimensions
+    widths = [22, 11, 11, 10, 10, 18, 12, 42, 36]
+    for index, width in enumerate(widths, 1):
+        sheet.column_dimensions[sheet.cell(row=1, column=index).column_letter].width = width
+    workbook.save(path)
+    workbook.close()
+
+
 def write_json(path: Path, data: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -3843,6 +3894,8 @@ def render_html_report(report: dict[str, Any], output_dir: Path) -> str:
   {render_drone_plan(report)}
   <h2>补练影响</h2>
   {render_impact_table(report)}
+  <h2>Download Tables</h2>
+  {render_downloads_section(report, output_dir)}
   {manual}
   <h2>一图流案例验算</h2>
   {render_yituliu_table(report.get("yituliuCaseChecks", []))}
@@ -3862,6 +3915,41 @@ def render_html_report(report: dict[str, Any], output_dir: Path) -> str:
 </body>
 </html>
 """
+
+
+def render_downloads_section(report: dict[str, Any], output_dir: Path) -> str:
+    files = report.get("writtenFiles") or {}
+    rows = []
+    for key, label in [
+        ("upgradeRequirementsXlsx", "Upgrade requirements XLSX"),
+        ("upgradeRequirementsCostAdjustedXlsx", "Cost-adjusted upgrade requirements XLSX"),
+        ("upgradeRequirements", "Upgrade requirements JSON"),
+        ("upgradeRequirementsCostAdjusted", "Cost-adjusted upgrade requirements JSON"),
+        ("report", "Recommendation report JSON"),
+        ("bestCurrentSchedule", "Best current schedule JSON"),
+        ("bestUpgradesSchedule", "Best upgrade schedule JSON"),
+        ("bestUpgradesCostAdjustedSchedule", "Best cost-adjusted upgrade schedule JSON"),
+    ]:
+        raw_path = files.get(key)
+        if not raw_path:
+            continue
+        href = escape(relative_path(Path(raw_path), output_dir))
+        rows.append(
+            "<tr>"
+            f"<td>{escape(label)}</td>"
+            f"<td><a class=\"download\" href=\"{href}\" download>Download</a></td>"
+            f"<td>{escape(str(raw_path))}</td>"
+            "</tr>"
+        )
+    if not rows:
+        return "<p class=\"note\">No downloadable tables are available.</p>"
+    return (
+        "<div class=\"scroll\"><table><thead><tr>"
+        "<th>File</th><th>Download</th><th>Path</th>"
+        "</tr></thead><tbody>"
+        + "".join(rows)
+        + "</tbody></table></div>"
+    )
 
 
 def render_drone_plan(report: dict[str, Any]) -> str:

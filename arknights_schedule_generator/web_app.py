@@ -16,7 +16,7 @@ from pathlib import Path
 from typing import Any
 
 from .cli import parse_csv, parse_int_csv, parse_shift_patterns, parse_shift_times
-from .data import GameData, download_data
+from .data import REQUIRED_FILES, GameData, download_data
 from .power import RIGHT_SIDE_PRESETS
 from .production import (
     DEFAULT_MAX_DRONE_CYCLE_REPEATS,
@@ -30,6 +30,7 @@ from .roster import load_roster_xlsx
 DRONE_POLICIES = ("none", "lmd-trade", "gold-factory", "shard-factory", "exp-factory", "auto")
 SHARD_FORMULAS = ("rock", "device")
 CACHE_POLICIES = ("auto", "refresh", "off")
+APP_DEFAULTS_MARKER = "arknights-schedule-generator-ui"
 
 
 @dataclass(frozen=True)
@@ -317,6 +318,17 @@ def default_roster_path(root_dir: Path) -> str:
     return str(fixture.relative_to(root_dir)) if fixture.exists() else ""
 
 
+def data_cache_status(root_dir: Path) -> dict[str, Any]:
+    data_dir = root_dir / "data" / "cache"
+    missing = [name for name in REQUIRED_FILES if not (data_dir / name).is_file()]
+    return {
+        "path": "data/cache",
+        "ready": not missing,
+        "requiredFiles": list(REQUIRED_FILES),
+        "missingFiles": missing,
+    }
+
+
 def int_field(form: ParsedForm, name: str, default: int) -> int:
     text = form.text(name)
     return int(text) if text else default
@@ -405,12 +417,14 @@ def link_for_path(root_dir: Path, raw_path: str | Path) -> dict[str, str | None]
 
 def default_payload(root_dir: Path) -> dict[str, Any]:
     return {
+        "application": APP_DEFAULTS_MARKER,
         "root": str(root_dir),
         "paths": {
             "roster": default_roster_path(root_dir),
             "dataDir": "data/cache",
             "outputDir": "outputs/ui_recommendation",
         },
+        "dataCache": data_cache_status(root_dir),
         "layouts": list(DEFAULT_LAYOUTS),
         "modes": list(DEFAULT_MODES),
         "rightSidePresets": list(RIGHT_SIDE_PRESETS),
@@ -879,7 +893,7 @@ INDEX_HTML = """<!doctype html>
       form.min_lmd_gross.value = defaults.values.minLmdGross;
       form.min_exp.value = defaults.values.minExp;
       form.min_orundum.value = defaults.values.minOrundum;
-      form.auto_update.checked = false;
+      form.auto_update.checked = !(defaults.dataCache && defaults.dataCache.ready);
       form.allow_upgrades.checked = false;
       form.profile_runtime.checked = false;
       form.no_enforce_baseline.checked = false;

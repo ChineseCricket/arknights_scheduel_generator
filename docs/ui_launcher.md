@@ -5,7 +5,17 @@ Windows users can start and stop the local web UI from the repository root:
 - `start_ui.bat`: starts the local service and opens `http://127.0.0.1:8765/`.
 - `stop_ui.bat`: closes the browser window opened by `start_ui.bat` and stops the local service.
 
+Packaged Windows builds use the portable app folder produced by:
+
+```powershell
+.\tools\build_windows_app.ps1
+```
+
+The build output is `dist/ArknightsScheduleUI/`. Users can unzip or copy that folder and double-click
+`ArknightsScheduleUI.exe`; no local Python installation is required.
+
 The launcher records runtime state under `outputs/ui_runtime/`, including the server PID and the browser PID.
+It also writes `launcher.log` and `server.port` for startup diagnostics and port fallback.
 
 Notes:
 

@@ -8,9 +8,7 @@ $ErrorActionPreference = "Stop"
 
 $Root = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot "..")).Path
 $StateDir = Join-Path $Root "outputs\ui_runtime"
-$ServerPidFile = Join-Path $StateDir "server.pid"
-$BrowserPidFile = Join-Path $StateDir "browser.pid"
-$Url = "http://${HostName}:${Port}/"
+$LogFile = Join-Path $StateDir "launcher.log"
 
 New-Item -ItemType Directory -Force -Path $StateDir | Out-Null
 
@@ -30,115 +28,41 @@ function Get-PythonExe {
             return $candidate
         }
     }
-    throw "Could not find Python. Install the project environment or activate a Python with this package installed."
+    throw "Could not find Python. Use the packaged ArknightsScheduleUI.exe, or install the project environment."
 }
 
-function Get-ListeningPid {
-    param([int]$Port)
+function Test-PythonEnvironment {
+    param([string]$PythonExe)
 
-    $lines = netstat -ano | Select-String ":$Port"
-    foreach ($line in $lines) {
-        $parts = ($line.Line -split "\s+") | Where-Object { $_ }
-        if ($parts.Count -ge 5 -and $parts[0] -eq "TCP" -and $parts[3] -eq "LISTENING") {
-            return [int]$parts[4]
-        }
-    }
-    return $null
-}
-
-function Test-UiServer {
-    param([string]$Url)
-
-    try {
-        $response = Invoke-WebRequest -UseBasicParsing -Uri "${Url}api/defaults" -TimeoutSec 2
-        return $response.StatusCode -eq 200
-    } catch {
-        return $false
+    $check = "import arknights_schedule_generator, openpyxl; print('OK')"
+    $output = & $PythonExe -c $check 2>&1
+    if ($LASTEXITCODE -ne 0) {
+        $detail = ($output | Out-String).Trim()
+        throw "Python environment is not ready: $PythonExe`n$detail`nInstall dependencies with: python -m pip install -e ."
     }
 }
 
-function Wait-UiServer {
-    param([string]$Url)
+$pythonExe = Get-PythonExe
+Write-Host "Using Python: $pythonExe"
 
-    for ($attempt = 0; $attempt -lt 60; $attempt++) {
-        if (Test-UiServer -Url $Url) {
-            return $true
-        }
-        Start-Sleep -Milliseconds 500
-    }
-    return $false
-}
+Push-Location $Root
+try {
+    Test-PythonEnvironment -PythonExe $pythonExe
 
-function Find-Browser {
-    foreach ($name in @("msedge.exe", "chrome.exe")) {
-        $command = Get-Command $name -ErrorAction SilentlyContinue
-        if ($command) {
-            return $command.Source
-        }
-    }
-
-    foreach ($path in @(
-        "$env:ProgramFiles\Microsoft\Edge\Application\msedge.exe",
-        "${env:ProgramFiles(x86)}\Microsoft\Edge\Application\msedge.exe",
-        "$env:ProgramFiles\Google\Chrome\Application\chrome.exe",
-        "${env:ProgramFiles(x86)}\Google\Chrome\Application\chrome.exe"
-    )) {
-        if ($path -and (Test-Path -LiteralPath $path)) {
-            return $path
-        }
-    }
-    return $null
-}
-
-if (Test-UiServer -Url $Url) {
-    $listeningPid = Get-ListeningPid -Port $Port
-    if ($listeningPid) {
-        Set-Content -LiteralPath $ServerPidFile -Value $listeningPid -Encoding ascii
-    }
-    Write-Host "UI server is already running: $Url"
-} else {
-    $pythonExe = Get-PythonExe
-    $serverArgs = @(
-        "-m", "arknights_schedule_generator.web_app",
+    $launcherArgs = @(
+        "-m", "arknights_schedule_generator.desktop_launcher",
         "--host", $HostName,
         "--port", $Port,
         "--root", $Root
     )
-    $serverProcess = Start-Process `
-        -FilePath $pythonExe `
-        -ArgumentList $serverArgs `
-        -WorkingDirectory $Root `
-        -WindowStyle Hidden `
-        -PassThru
-    Set-Content -LiteralPath $ServerPidFile -Value $serverProcess.Id -Encoding ascii
-
-    if (-not (Wait-UiServer -Url $Url)) {
-        throw "UI server did not become ready on $Url."
+    if ($NoBrowser) {
+        $launcherArgs += "--no-browser"
     }
-    Write-Host "UI server started: $Url"
-}
 
-if (-not $NoBrowser) {
-    $browser = Find-Browser
-    if ($browser) {
-        $profileDir = Join-Path $StateDir "browser_profile"
-        New-Item -ItemType Directory -Force -Path $profileDir | Out-Null
-        $browserArgs = @(
-            "--app=$Url",
-            "--user-data-dir=""$profileDir""",
-            "--no-first-run",
-            "--new-window"
-        )
-        $browserProcess = Start-Process -FilePath $browser -ArgumentList $browserArgs -PassThru
-        Set-Content -LiteralPath $BrowserPidFile -Value $browserProcess.Id -Encoding ascii
-        Write-Host "Browser window opened."
-    } else {
-        Start-Process $Url
-        if (Test-Path -LiteralPath $BrowserPidFile) {
-            Remove-Item -LiteralPath $BrowserPidFile -Force
-        }
-        Write-Host "Opened with the default browser. The stop script can stop the server, but may not close that browser tab."
+    & $pythonExe @launcherArgs
+    if ($LASTEXITCODE -ne 0) {
+        throw "UI launcher failed. See log: $LogFile"
     }
+} finally {
+    Pop-Location
 }
-
-Write-Host "Ready: $Url"

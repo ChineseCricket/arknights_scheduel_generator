@@ -15,6 +15,7 @@ from arknights_schedule_generator.diagnostics import (
     force_specs_into_shift,
 )
 from arknights_schedule_generator.exporter import result_to_dict
+from arknights_schedule_generator.full_roster import write_full_roster_xlsx
 from arknights_schedule_generator.models import (
     BaseSkill,
     RoomAssignment,
@@ -66,6 +67,7 @@ from arknights_schedule_generator.skill_rules import (
     evaluate_room_effect,
     fatigue_delta_from_text,
 )
+from arknights_schedule_generator.web_app import ParsedForm, run_recommendation
 
 
 class ProductionModelTest(unittest.TestCase):
@@ -1779,6 +1781,99 @@ class ProductionModelTest(unittest.TestCase):
                 {"shiftCount": 3, "shiftHours": 8},
                 {"shiftCount": 3, "shiftHours": 12},
             ],
+        )
+
+    def test_recommendation_honors_explicit_shift_count_and_hours(self) -> None:
+        with TemporaryDirectory() as temp_dir:
+            data_dir = Path(temp_dir) / "data"
+            output_dir = Path(temp_dir) / "recommendation"
+            data_dir.mkdir()
+            write_data(data_dir)
+            game_data = GameData.load(data_dir)
+            roster = [
+                RosterOperator(name, True, 3, 30, 0)
+                for name in game_data.char_id_by_name
+            ]
+
+            report = recommend_schedules(
+                game_data,
+                roster,
+                output_dir=output_dir,
+                layouts=["243"],
+                modes=["normal"],
+                shift_count=3,
+                shift_hours=8,
+                drone_policy="none",
+            )
+
+        candidate_patterns = {
+            (candidate["shiftCount"], candidate["shiftHours"])
+            for candidate in report["candidates"]
+        }
+        self.assertEqual(candidate_patterns, {(3, 8)})
+        self.assertEqual(report["bestCurrent"]["shiftCount"], 3)
+        self.assertEqual(report["bestCurrent"]["shiftDurations"], [8.0, 8.0, 8.0])
+        self.assertEqual(
+            report["inputs"]["shiftPatterns"],
+            [{"shiftCount": 3, "shiftHours": 8}],
+        )
+
+    def test_ui_recommendation_honors_explicit_shift_count_and_hours(self) -> None:
+        with TemporaryDirectory() as temp_dir:
+            root_dir = Path(temp_dir)
+            data_dir = root_dir / "data"
+            output_dir = root_dir / "ui_out"
+            data_dir.mkdir()
+            write_data(data_dir)
+            game_data = GameData.load(data_dir)
+            roster_path = root_dir / "roster.xlsx"
+            write_full_roster_xlsx(roster_path, game_data)
+
+            payload = run_recommendation(
+                ParsedForm(
+                    fields={
+                        "roster_path": ["roster.xlsx"],
+                        "data_dir": ["data"],
+                        "output_dir": ["ui_out"],
+                        "layouts": ["243"],
+                        "modes": ["normal"],
+                        "shift_count": ["3"],
+                        "shift_hours": ["8"],
+                        "drone_policy": ["none"],
+                        "right_side": ["full"],
+                        "shard_formula": ["rock"],
+                        "cache_policy": ["off"],
+                        "jobs": ["1"],
+                    },
+                    files={},
+                ),
+                root_dir,
+            )
+            report = json.loads(
+                Path(payload["files"]["report"]["path"]).read_text(encoding="utf-8")
+            )
+            best_schedule = json.loads(
+                Path(payload["files"]["bestCurrentSchedule"]["path"]).read_text(
+                    encoding="utf-8"
+                )
+            )
+
+        candidate_patterns = {
+            (candidate["shiftCount"], candidate["shiftHours"])
+            for candidate in report["candidates"]
+        }
+        self.assertTrue(payload["ok"])
+        self.assertEqual(candidate_patterns, {(3, 8)})
+        self.assertEqual(report["bestCurrent"]["shiftCount"], 3)
+        self.assertEqual(report["bestCurrent"]["shiftDurations"], [8.0, 8.0, 8.0])
+        self.assertEqual(
+            report["inputs"]["shiftPatterns"],
+            [{"shiftCount": 3, "shiftHours": 8}],
+        )
+        self.assertEqual(len(best_schedule["shifts"]), 3)
+        self.assertEqual(
+            [shift["durationHours"] for shift in best_schedule["shifts"]],
+            [8.0, 8.0, 8.0],
         )
 
     def test_diagnostic_insertion_coverage_deduplicates_same_search_record(self) -> None:

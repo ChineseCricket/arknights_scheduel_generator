@@ -1689,6 +1689,8 @@ def normalize_shift_patterns(
         raw_patterns = [(int(count), int(hours)) for count, hours in shift_patterns]
     elif shift_counts is not None:
         raw_patterns = [(int(count), int(shift_hours)) for count in shift_counts]
+    elif (int(shift_count), int(shift_hours)) != (2, 12):
+        raw_patterns = [(int(shift_count), int(shift_hours))]
     else:
         raw_patterns = [(1, 24), (2, 12), (3, 8), (3, 12)]
     patterns: list[tuple[int, int]] = []

@@ -32,6 +32,9 @@ dependencies = [
 dev = [
     "pytest>=8",
 ]
+package = [
+    "pyinstaller>=6",
+]
 
 [project.urls]
 Homepage = "https://github.com/ChineseCricket/arknights_scheduel_generator"
@@ -41,6 +44,7 @@ Issues = "https://github.com/ChineseCricket/arknights_scheduel_generator/issues"
 [project.scripts]
 ak-schedule = "arknights_schedule_generator.cli:main"
 ak-schedule-ui = "arknights_schedule_generator.web_app:main"
+ak-schedule-ui-launcher = "arknights_schedule_generator.desktop_launcher:main"
 
 [tool.setuptools.packages.find]
 include = ["arknights_schedule_generator*"]

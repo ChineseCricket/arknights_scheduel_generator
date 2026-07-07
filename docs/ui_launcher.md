@@ -14,6 +14,10 @@ Packaged Windows builds use the portable app folder produced by:
 The build output is `dist/ArknightsScheduleUI/`. Users can unzip or copy that folder and double-click
 `ArknightsScheduleUI.exe`; no local Python installation is required.
 
+Release builds bundle the current `data/cache` game data. The build script refreshes that cache before
+packaging unless `-SkipDataRefresh` is passed, so first use does not need network access just to load
+game data. Users still need network access if they choose to refresh game data later.
+
 The launcher records runtime state under `outputs/ui_runtime/`, including the server PID and the browser PID.
 It also writes `launcher.log` and `server.port` for startup diagnostics and port fallback.
 

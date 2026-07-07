@@ -19,6 +19,7 @@ from pathlib import Path
 from typing import Any
 
 from arknights_schedule_generator import web_app
+from arknights_schedule_generator.data import REQUIRED_FILES
 
 
 APP_DEFAULTS_MARKER = "arknights-schedule-generator-ui"
@@ -123,13 +124,13 @@ def prepare_runtime_root(root_dir: Path) -> None:
     (root_dir / "outputs" / "ui_runtime").mkdir(parents=True, exist_ok=True)
     (root_dir / "data").mkdir(parents=True, exist_ok=True)
     copy_bundled_fixture(root_dir)
+    copy_bundled_data_cache(root_dir)
 
 
 def copy_bundled_fixture(root_dir: Path) -> None:
-    raw_meipass = getattr(sys, "_MEIPASS", None)
-    if not raw_meipass:
+    bundled_root = bundled_resource_root()
+    if not bundled_root:
         return
-    bundled_root = Path(raw_meipass)
     source = bundled_root / "examples" / "fixtures" / "yituliu_full_roster_maxed.xlsx"
     if not source.is_file():
         return
@@ -138,6 +139,30 @@ def copy_bundled_fixture(root_dir: Path) -> None:
         return
     target.parent.mkdir(parents=True, exist_ok=True)
     shutil.copy2(source, target)
+
+
+def copy_bundled_data_cache(root_dir: Path) -> None:
+    bundled_root = bundled_resource_root()
+    if not bundled_root:
+        return
+    source_dir = bundled_root / "data" / "cache"
+    if not source_dir.is_dir():
+        return
+    target_dir = root_dir / "data" / "cache"
+    target_dir.mkdir(parents=True, exist_ok=True)
+    for file_name in REQUIRED_FILES:
+        source = source_dir / file_name
+        target = target_dir / file_name
+        if target.exists() or not source.is_file():
+            continue
+        shutil.copy2(source, target)
+
+
+def bundled_resource_root() -> Path | None:
+    raw_meipass = getattr(sys, "_MEIPASS", None)
+    if not raw_meipass:
+        return None
+    return Path(raw_meipass)
 
 
 def choose_port(host: str, start_port: int, end_port: int) -> PortChoice:

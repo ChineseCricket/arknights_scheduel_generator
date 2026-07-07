@@ -16,7 +16,7 @@ from pathlib import Path
 from typing import Any
 
 from .cli import parse_csv, parse_int_csv, parse_shift_patterns, parse_shift_times
-from .data import REQUIRED_FILES, GameData, download_data
+from .data import REQUIRED_FILES, DataDownloadError, GameData, download_data
 from .power import RIGHT_SIDE_PRESETS
 from .production import (
     DEFAULT_MAX_DRONE_CYCLE_REPEATS,
@@ -192,6 +192,7 @@ def parse_multipart_form(content_type: str, body: bytes) -> ParsedForm:
 def run_recommendation(form: ParsedForm, root_dir: Path) -> dict[str, Any]:
     output_dir = resolve_user_path(root_dir, form.text("output_dir"), "outputs/ui_recommendation")
     output_dir.mkdir(parents=True, exist_ok=True)
+    warnings: list[str] = []
 
     roster_path = uploaded_or_path(
         form,
@@ -215,7 +216,13 @@ def run_recommendation(form: ParsedForm, root_dir: Path) -> dict[str, Any]:
     )
     data_dir = resolve_user_path(root_dir, form.text("data_dir"), "data/cache")
     if form.checked("auto_update"):
-        download_data(data_dir, force=False)
+        had_cache = data_cache_ready(data_dir)
+        try:
+            download_data(data_dir, force=had_cache)
+        except DataDownloadError as exc:
+            if not data_cache_ready(data_dir):
+                raise ValueError(f"游戏数据下载失败，且没有可用本地缓存: {exc}") from exc
+            warnings.append(f"游戏数据刷新失败，已继续使用本地缓存: {exc}")
 
     layouts = selected_layouts(form)
     modes = form.values("modes") or list(DEFAULT_MODES)
@@ -251,7 +258,11 @@ def run_recommendation(form: ParsedForm, root_dir: Path) -> dict[str, Any]:
         cache_policy=choice_field(form, "cache_policy", CACHE_POLICIES, "auto"),
         profile_runtime=form.checked("profile_runtime"),
     )
-    return response_payload(report, root_dir, form.checked("no_enforce_baseline"))
+    payload = response_payload(report, root_dir, form.checked("no_enforce_baseline"))
+    if warnings:
+        payload["warnings"] = warnings
+        payload["message"] = "；".join(warnings)
+    return payload
 
 
 def selected_layouts(form: ParsedForm) -> list[str]:
@@ -327,6 +338,10 @@ def data_cache_status(root_dir: Path) -> dict[str, Any]:
         "requiredFiles": list(REQUIRED_FILES),
         "missingFiles": missing,
     }
+
+
+def data_cache_ready(data_dir: Path) -> bool:
+    return all((data_dir / name).is_file() for name in REQUIRED_FILES)
 
 
 def int_field(form: ParsedForm, name: str, default: int) -> int:
@@ -745,7 +760,7 @@ INDEX_HTML = """<!doctype html>
         </label>
         <label class="check">
           <input name="auto_update" type="checkbox" value="1">
-          缺失时自动更新游戏数据
+          运行前刷新/补齐游戏数据
         </label>
         <label>输出目录
           <input name="output_dir" type="text">

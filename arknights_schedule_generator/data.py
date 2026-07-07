@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import re
+import tempfile
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Sequence
@@ -105,17 +106,20 @@ def download_data(
     sources: Sequence[DataSource] = DEFAULT_DATA_SOURCES,
 ) -> list[Path]:
     data_dir.mkdir(parents=True, exist_ok=True)
-    written: list[Path] = []
+    targets = [data_dir / file_name for file_name in REQUIRED_FILES]
+    if not force and all(target.exists() for target in targets):
+        return targets
+
     source_index = 0
-    for file_name in REQUIRED_FILES:
-        target = data_dir / file_name
-        if target.exists() and not force:
-            written.append(target)
-            continue
-        data, source_index = download_file_bytes(file_name, sources, source_index)
-        target.write_bytes(data)
-        written.append(target)
-    return written
+    with tempfile.TemporaryDirectory(prefix=".download-", dir=data_dir) as temp_dir:
+        staging_dir = Path(temp_dir)
+        for file_name in REQUIRED_FILES:
+            data, source_index = download_file_bytes(file_name, sources, source_index)
+            validate_downloaded_file(file_name, data)
+            (staging_dir / file_name).write_bytes(data)
+        for file_name, target in zip(REQUIRED_FILES, targets):
+            (staging_dir / file_name).replace(target)
+    return targets
 
 
 def download_file_bytes(
@@ -151,6 +155,20 @@ def download_file_bytes(
 
     detail = "; ".join(errors)
     raise DataDownloadError(f"Failed to download {file_name}. {detail}")
+
+
+def validate_downloaded_file(file_name: str, data: bytes) -> None:
+    try:
+        text = data.decode("utf-8-sig")
+    except UnicodeDecodeError as exc:
+        raise DataDownloadError(f"Downloaded {file_name} is not valid UTF-8.") from exc
+    if file_name.endswith(".json"):
+        try:
+            json.loads(text)
+        except json.JSONDecodeError as exc:
+            raise DataDownloadError(f"Downloaded {file_name} is not valid JSON.") from exc
+    elif file_name == "data_version.txt" and not text.strip():
+        raise DataDownloadError("Downloaded data_version.txt is empty.")
 
 
 @dataclass

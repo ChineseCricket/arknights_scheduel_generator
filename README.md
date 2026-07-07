@@ -34,13 +34,20 @@ python -m pytest -q
 
 ## 更新游戏数据
 
-首次运行前需要下载国服游戏数据缓存：
+源码安装首次运行前需要下载国服游戏数据缓存；Windows release 包会自带构建时的缓存：
 
 ```powershell
 python -m arknights_schedule_generator update-data --data-dir .\data\cache
 ```
 
-缓存目录 `data/cache/` 默认不会进入 Git。需要刷新时可加 `--force`。
+缓存目录 `data/cache/` 默认不会进入 Git。需要以后主动刷新时可加 `--force`：
+
+```powershell
+python -m arknights_schedule_generator update-data --data-dir .\data\cache --force
+```
+
+刷新会先下载并校验完整数据到临时目录，全部成功后才替换现有缓存；如果下载失败，已有缓存会保留。
+Windows UI 用户也可以在页面勾选 `运行前刷新/补齐游戏数据`；如果刷新失败但本地缓存完整，会继续使用本地缓存并显示警告。
 
 ## 生成排班
 

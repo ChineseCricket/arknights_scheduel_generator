@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import ctypes
+import http.client
 import json
 import os
 import shutil
@@ -10,6 +11,7 @@ import subprocess
 import sys
 import time
 import traceback
+import ssl
 import urllib.error
 import urllib.request
 import webbrowser
@@ -49,6 +51,8 @@ class PortChoice:
 def main(argv: list[str] | None = None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
+    if args.runtime_check:
+        return write_runtime_check(resolve_root(args.root))
     root_dir = resolve_root(args.root)
     state = runtime_state(root_dir)
     prepare_runtime_root(root_dir)
@@ -63,6 +67,35 @@ def main(argv: list[str] | None = None) -> int:
         return 1
 
 
+def runtime_check() -> dict[str, Any]:
+    if not ssl.OPENSSL_VERSION:
+        raise RuntimeError("This Python runtime does not expose OpenSSL.")
+    if not hasattr(http.client, "HTTPSConnection") or not hasattr(urllib.request, "HTTPSHandler"):
+        raise RuntimeError("This Python runtime does not support HTTPS downloads.")
+    return {
+        "ok": True,
+        "openssl": ssl.OPENSSL_VERSION,
+        "httpsConnection": True,
+        "httpsHandler": True,
+    }
+
+
+def write_runtime_check(root_dir: Path) -> int:
+    state_dir = runtime_state(root_dir).state_dir
+    state_dir.mkdir(parents=True, exist_ok=True)
+    output_path = state_dir / "runtime_check.json"
+    try:
+        payload = runtime_check()
+        output_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+        return 0
+    except Exception as exc:
+        output_path.write_text(
+            json.dumps({"ok": False, "error": str(exc)}, ensure_ascii=False, indent=2),
+            encoding="utf-8",
+        )
+        return 1
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="ak-schedule-ui-launcher",
@@ -74,6 +107,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--port-end", type=int, default=None)
     parser.add_argument("--root", default=None, help="Workspace root for data, outputs, and served files.")
     parser.add_argument("--no-browser", action="store_true", help="Start only the local server.")
+    parser.add_argument("--runtime-check", action="store_true", help=argparse.SUPPRESS)
     return parser
 
 

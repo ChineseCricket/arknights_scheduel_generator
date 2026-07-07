@@ -8,6 +8,7 @@ from arknights_schedule_generator.desktop_launcher import (
     APP_DEFAULTS_MARKER,
     is_app_server,
     prepare_runtime_root,
+    runtime_check,
     server_command,
 )
 from arknights_schedule_generator.web_app import ParsedForm, default_payload, run_recommendation
@@ -80,6 +81,13 @@ class WebAppDataUpdateTest(unittest.TestCase):
 
 
 class DesktopLauncherTest(unittest.TestCase):
+    def test_runtime_check_confirms_https_support(self) -> None:
+        payload = runtime_check()
+
+        self.assertTrue(payload["ok"])
+        self.assertTrue(payload["httpsConnection"])
+        self.assertTrue(payload["httpsHandler"])
+
     def test_recognizes_marked_app_server(self) -> None:
         with patch(
             "arknights_schedule_generator.desktop_launcher.request_defaults",

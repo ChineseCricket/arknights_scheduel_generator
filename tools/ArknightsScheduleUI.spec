@@ -1,6 +1,7 @@
 # -*- mode: python ; coding: utf-8 -*-
 
 from pathlib import Path
+import sys
 
 from PyInstaller.utils.hooks import collect_submodules
 
@@ -16,19 +17,33 @@ required_data_files = (
 )
 
 datas = []
+binaries = []
 if fixture.is_file():
     datas.append((str(fixture), "examples/fixtures"))
 for file_name in required_data_files:
     data_file = data_cache / file_name
     if data_file.is_file():
         datas.append((str(data_file), "data/cache"))
+python_library_bin = Path(sys.prefix) / "Library" / "bin"
+for dll_name in ("libssl-3-x64.dll", "libcrypto-3-x64.dll"):
+    dll_path = python_library_bin / dll_name
+    if dll_path.is_file():
+        binaries.append((str(dll_path), "."))
+
+hiddenimports = [
+    "http.client",
+    "ssl",
+    "urllib.error",
+    "urllib.request",
+]
+hiddenimports.extend(collect_submodules("openpyxl"))
 
 a = Analysis(
     [str(project_root / "tools" / "pyinstaller_entry.py")],
     pathex=[str(project_root)],
-    binaries=[],
+    binaries=binaries,
     datas=datas,
-    hiddenimports=collect_submodules("openpyxl"),
+    hiddenimports=hiddenimports,
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],

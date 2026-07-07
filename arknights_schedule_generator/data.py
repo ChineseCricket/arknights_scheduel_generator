@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import re
+import ssl
 import tempfile
 from dataclasses import dataclass
 from pathlib import Path
@@ -36,6 +37,10 @@ DOWNLOAD_USER_AGENT = (
     "arknights-schedule-generator/0.1 "
     "(+https://github.com/ChineseCricket/arknights_scheduel_generator)"
 )
+
+# Keep an explicit ssl module reference so frozen builds include urllib's HTTPS
+# support, not only the _ssl binary extension.
+_HTTPS_SSL_CONTEXT_FACTORY = ssl.create_default_context
 
 
 @dataclass(frozen=True)

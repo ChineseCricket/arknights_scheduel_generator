@@ -18,6 +18,15 @@ $RequiredDataFiles = @(
     "data_version.txt"
 )
 
+$PythonExe = (Get-Command $Python -ErrorAction Stop).Source
+$PythonRoot = Split-Path -Parent $PythonExe
+$PythonDllDirs = @(
+    $PythonRoot,
+    (Join-Path $PythonRoot "DLLs"),
+    (Join-Path $PythonRoot "Library\bin")
+) | Where-Object { Test-Path -LiteralPath $_ }
+$env:PATH = (($PythonDllDirs + $env:PATH) -join [System.IO.Path]::PathSeparator)
+
 function Assert-DataCacheReady {
     $missing = @()
     foreach ($fileName in $RequiredDataFiles) {
@@ -28,6 +37,27 @@ function Assert-DataCacheReady {
     }
     if ($missing.Count -gt 0) {
         throw "Missing game data cache files for packaging: $($missing -join ', '). Run update-data or omit -SkipDataRefresh."
+    }
+}
+
+function Remove-BuildOutputDirectory {
+    if (-not (Test-Path -LiteralPath $OutputDir)) {
+        return
+    }
+
+    $resolvedOutput = (Resolve-Path -LiteralPath $OutputDir).Path
+    $expectedRoot = [System.IO.Path]::GetFullPath((Join-Path $Root "dist"))
+    if (-not $resolvedOutput.StartsWith($expectedRoot, [System.StringComparison]::OrdinalIgnoreCase)) {
+        throw "Refusing to remove unexpected build output path: $resolvedOutput"
+    }
+
+    Write-Host "Removing stale build output: $resolvedOutput"
+    $longPath = "Microsoft.PowerShell.Core\FileSystem::\\?\$resolvedOutput"
+    try {
+        Remove-Item -LiteralPath $longPath -Recurse -Force
+    }
+    catch {
+        throw "Failed to remove stale build output. Close any running ArknightsScheduleUI or browser app windows and try again. $($_.Exception.Message)"
     }
 }
 
@@ -53,6 +83,8 @@ if (-not $SkipDataRefresh) {
     }
 }
 Assert-DataCacheReady
+
+Remove-BuildOutputDirectory
 
 & $Python -c "import PyInstaller; print(PyInstaller.__version__)"
 if ($LASTEXITCODE -ne 0) {

@@ -25,6 +25,6 @@ It also writes `launcher.log` and `server.port` for startup diagnostics and port
 
 Notes:
 
-- If Edge or Chrome is available, the UI opens in a dedicated app-style browser window so `stop_ui.bat` can close it.
+- If Edge or Chrome is available, the UI opens in a dedicated app-style browser window. Closing that window stops the local service automatically; `stop_ui.bat` is still available as a manual fallback.
 - If neither Edge nor Chrome is found, the launcher falls back to the default browser. In that case `stop_ui.bat` stops the service, but the browser tab may need to be closed manually.
 - If backend Python code changes while the UI is running, run `stop_ui.bat` and then `start_ui.bat` again.

@@ -5,6 +5,7 @@ import ctypes
 import http.client
 import json
 import os
+import signal
 import shutil
 import socket
 import subprocess
@@ -29,6 +30,7 @@ DEFAULT_HOST = "127.0.0.1"
 DEFAULT_PORT = 8765
 DEFAULT_PORT_END = 8799
 STARTUP_TIMEOUT_SECONDS = 30.0
+SERVER_STOP_WAIT_SECONDS = 5.0
 
 
 @dataclass(frozen=True)
@@ -46,6 +48,12 @@ class PortChoice:
     port: int
     url: str
     reuse_existing: bool
+
+
+@dataclass(frozen=True)
+class BrowserSession:
+    process: subprocess.Popen[bytes]
+    profile_dir: Path | None = None
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -116,20 +124,36 @@ def launch_desktop_ui(args: argparse.Namespace, state: RuntimeState) -> int:
     port_end = args.port_end if args.port_end is not None else max(args.port, DEFAULT_PORT_END)
     port_choice = choose_port(args.host, args.port, port_end)
     state.server_port_path.write_text(str(port_choice.port), encoding="ascii")
+    server_pid: int | None = None
+    server_process: subprocess.Popen[bytes] | None = None
 
     if port_choice.reuse_existing:
         listening_pid = get_listening_pid(port_choice.port)
         if listening_pid:
+            server_pid = listening_pid
             state.server_pid_path.write_text(str(listening_pid), encoding="ascii")
         write_log(state.log_path, f"Reusing existing UI server at {port_choice.url}")
     else:
         server_process = start_server(args.host, port_choice.port, state)
+        server_pid = server_process.pid
         state.server_pid_path.write_text(str(server_process.pid), encoding="ascii")
         wait_for_server(port_choice.url, server_process, state.log_path)
         write_log(state.log_path, f"Started UI server pid={server_process.pid} url={port_choice.url}")
 
     if not args.no_browser:
-        open_browser_window(port_choice.url, state)
+        browser_session = open_browser_window(port_choice.url, state)
+        if browser_session is not None and server_pid is not None:
+            wait_for_browser_then_stop_server(
+                browser_session,
+                server_pid,
+                state,
+                server_process=server_process,
+            )
+        elif browser_session is None:
+            write_log(
+                state.log_path,
+                "Browser process is not monitorable; UI server will keep running until stop_ui is used.",
+            )
     return 0
 
 
@@ -313,10 +337,10 @@ def wait_for_server(base_url: str, process: subprocess.Popen[bytes], log_path: P
     raise RuntimeError(f"UI server did not become ready at {base_url}.\nSee log: {log_path}\n{detail}")
 
 
-def open_browser_window(url: str, state: RuntimeState) -> None:
+def open_browser_window(url: str, state: RuntimeState) -> BrowserSession | None:
     browser = find_browser()
     if browser:
-        profile_dir = state.state_dir / "browser_profile"
+        profile_dir = new_browser_profile_dir(state)
         profile_dir.mkdir(parents=True, exist_ok=True)
         process = subprocess.Popen(
             [
@@ -325,12 +349,13 @@ def open_browser_window(url: str, state: RuntimeState) -> None:
                 f"--user-data-dir={profile_dir}",
                 "--no-first-run",
                 "--new-window",
+                "--disable-background-mode",
             ],
             creationflags=subprocess_creationflags(detach=True),
         )
         state.browser_pid_path.write_text(str(process.pid), encoding="ascii")
         write_log(state.log_path, f"Opened browser app window pid={process.pid}")
-        return
+        return BrowserSession(process=process, profile_dir=profile_dir)
 
     remove_file(state.browser_pid_path)
     if sys.platform == "win32":
@@ -338,6 +363,130 @@ def open_browser_window(url: str, state: RuntimeState) -> None:
     else:
         webbrowser.open(url)
     write_log(state.log_path, "Opened UI with the default browser.")
+    return None
+
+
+def new_browser_profile_dir(state: RuntimeState) -> Path:
+    stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    return state.state_dir / "browser_profiles" / f"{stamp}_{os.getpid()}"
+
+
+def wait_for_browser_then_stop_server(
+    browser_session: BrowserSession,
+    server_pid: int,
+    state: RuntimeState,
+    *,
+    server_process: subprocess.Popen[bytes] | None = None,
+) -> None:
+    write_log(
+        state.log_path,
+        f"Monitoring browser pid={browser_session.process.pid}; UI server pid={server_pid}.",
+    )
+    browser_session.process.wait()
+    write_log(state.log_path, f"Browser pid={browser_session.process.pid} exited; stopping UI server.")
+    stop_server_pid(server_pid, state, process=server_process)
+    remove_file(state.browser_pid_path)
+    cleanup_browser_profile(browser_session.profile_dir, state)
+
+
+def stop_server_pid(
+    server_pid: int,
+    state: RuntimeState,
+    *,
+    process: subprocess.Popen[bytes] | None = None,
+) -> None:
+    if server_pid <= 0:
+        return
+    if process is not None:
+        stop_popen_server(process, server_pid, state)
+        return
+    if sys.platform == "win32":
+        result = subprocess.run(
+            ["taskkill", "/PID", str(server_pid), "/T", "/F"],
+            capture_output=True,
+            text=True,
+            check=False,
+            creationflags=subprocess_creationflags(),
+        )
+        if result.returncode != 0:
+            if not is_process_running(server_pid):
+                remove_file(state.server_pid_path)
+                remove_file(state.server_port_path)
+                write_log(state.log_path, f"UI server pid={server_pid} already stopped.")
+                return
+            detail = (result.stderr or result.stdout or "").strip()
+            write_log(state.log_path, f"Failed to stop UI server pid={server_pid}: {detail}")
+            return
+    else:
+        try:
+            os.kill(server_pid, signal.SIGTERM)
+        except ProcessLookupError:
+            pass
+        except OSError as exc:
+            write_log(state.log_path, f"Failed to stop UI server pid={server_pid}: {exc}")
+            return
+    deadline = time.monotonic() + SERVER_STOP_WAIT_SECONDS
+    while is_process_running(server_pid) and time.monotonic() < deadline:
+        time.sleep(0.2)
+    if is_process_running(server_pid):
+        write_log(state.log_path, f"UI server pid={server_pid} did not exit before timeout.")
+        return
+    remove_file(state.server_pid_path)
+    remove_file(state.server_port_path)
+    write_log(state.log_path, f"Stopped UI server pid={server_pid}.")
+
+
+def stop_popen_server(
+    process: subprocess.Popen[bytes],
+    server_pid: int,
+    state: RuntimeState,
+) -> None:
+    if process.poll() is None:
+        try:
+            process.terminate()
+            process.wait(timeout=SERVER_STOP_WAIT_SECONDS)
+        except subprocess.TimeoutExpired:
+            process.kill()
+            process.wait(timeout=SERVER_STOP_WAIT_SECONDS)
+        except OSError as exc:
+            write_log(state.log_path, f"Failed to stop UI server pid={server_pid}: {exc}")
+            return
+    remove_file(state.server_pid_path)
+    remove_file(state.server_port_path)
+    write_log(state.log_path, f"Stopped UI server pid={server_pid}.")
+
+
+def is_process_running(pid: int) -> bool:
+    if pid <= 0:
+        return False
+    if sys.platform == "win32":
+        kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+        process_query_limited_information = 0x1000
+        handle = kernel32.OpenProcess(process_query_limited_information, False, int(pid))
+        if handle:
+            kernel32.CloseHandle(handle)
+            return True
+        return ctypes.get_last_error() == 5
+    try:
+        os.kill(pid, 0)
+        return True
+    except ProcessLookupError:
+        return False
+    except PermissionError:
+        return True
+
+
+def cleanup_browser_profile(profile_dir: Path | None, state: RuntimeState) -> None:
+    if profile_dir is None:
+        return
+    try:
+        resolved_profile = profile_dir.resolve()
+        resolved_state = state.state_dir.resolve()
+        if not resolved_profile.is_relative_to(resolved_state):
+            return
+        shutil.rmtree(resolved_profile, ignore_errors=True)
+    except OSError as exc:
+        write_log(state.log_path, f"Failed to clean browser profile {profile_dir}: {exc}")
 
 
 def find_browser() -> Path | None:

@@ -28,14 +28,25 @@ def show_crash_message(message: str, log_path: Path) -> None:
     print(full_message, file=sys.stderr)
 
 
-try:
-    from arknights_schedule_generator.desktop_launcher import main
+def run_launcher() -> int:
+    try:
+        from arknights_schedule_generator.desktop_launcher import main
 
-    raise SystemExit(main())
-except SystemExit:
-    raise
-except BaseException as exc:
-    details = traceback.format_exc()
-    path = write_crash_log(details)
-    show_crash_message(str(exc), path)
-    raise
+        return main()
+    except SystemExit:
+        raise
+    except BaseException as exc:
+        details = traceback.format_exc()
+        path = write_crash_log(details)
+        show_crash_message(str(exc), path)
+        raise
+
+
+if __name__ == "__main__":
+    # Required for ProcessPoolExecutor workers in the frozen Windows build.
+    # Keep this before importing the launcher, otherwise multiprocessing child
+    # processes re-enter the desktop UI instead of running the worker payload.
+    import multiprocessing
+
+    multiprocessing.freeze_support()
+    raise SystemExit(run_launcher())

@@ -73,7 +73,7 @@ if (Test-Path -LiteralPath $StateDir) {
             $Port = [int]$rawPort
         }
     }
-    $browserProfilePattern = [regex]::Escape((Join-Path $StateDir "browser_profile"))
+    $browserProfilePattern = [regex]::Escape($StateDir) + ".*browser_profile"
     Stop-TrackedProcess -PidFile $BrowserPidFile -Label "browser" -CommandLinePattern $browserProfilePattern | Out-Null
     Stop-TrackedProcess -PidFile $ServerPidFile -Label "server" -CommandLinePattern "arknights_schedule_generator|ArknightsScheduleUI" | Out-Null
     if (Test-Path -LiteralPath $ServerPortFile) {

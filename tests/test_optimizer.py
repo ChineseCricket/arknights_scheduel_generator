@@ -200,7 +200,7 @@ class OptimizerTest(unittest.TestCase):
             insertion_objective_score("normal", lower_lmd_higher_generic_score),
         )
 
-    def test_dormitory_fill_prefers_operator_anchor_names(self) -> None:
+    def test_dormitory_fill_keeps_rest_priority_ahead_of_operator_anchors(self) -> None:
         roster = [
             RosterOperator("普通休息甲", True, 5, 1, 0),
             RosterOperator("普通休息乙", True, 5, 1, 0),
@@ -217,7 +217,7 @@ class OptimizerTest(unittest.TestCase):
             rest_priority=["普通休息甲"],
         )
 
-        self.assertEqual(dormitories[0].operators[0].operator_name, "参考锚点")
+        self.assertEqual(dormitories[0].operators[0].operator_name, "普通休息甲")
 
         visible_anchor_names = {"参考锚点"}
         next_dormitories = optimizer._assign_dormitories(
@@ -227,7 +227,58 @@ class OptimizerTest(unittest.TestCase):
             visible_anchor_names=visible_anchor_names,
         )
 
-        self.assertEqual(next_dormitories[0].operators[0].operator_name, "参考锚点靠后")
+        self.assertEqual(next_dormitories[0].operators[0].operator_name, "普通休息甲")
+
+    def test_dormitory_anchor_coverage_does_not_replace_required_rest(self) -> None:
+        roster = [
+            RosterOperator("工作干员", True, 5, 1, 0),
+            RosterOperator("参考锚点", True, 5, 1, 0),
+        ]
+        optimizer = ScheduleOptimizer(GameData({"rooms": {}}, {}, {}), roster)
+        optimizer.operator_anchor_preference = {"参考锚点"}
+        optimizer.operator_anchor_rank = {"参考锚点": 0}
+        working_skill = optimizer._dorm_candidate("工作干员").skill
+        shifts = [
+            ShiftPlan(
+                "A",
+                "08:00",
+                12,
+                [],
+                [
+                    RoomAssignment(
+                        "dormitory_1",
+                        "DORMITORY",
+                        "宿舍",
+                        None,
+                        [working_skill],
+                        0,
+                    )
+                ],
+            ),
+            ShiftPlan(
+                "B",
+                "20:00",
+                12,
+                [
+                    RoomAssignment(
+                        "factory_1",
+                        "MANUFACTURE",
+                        "制造站",
+                        "EXP",
+                        [working_skill],
+                        0,
+                    )
+                ],
+                [],
+            ),
+        ]
+
+        improved = optimizer._improve_dormitory_anchor_coverage(shifts)
+
+        self.assertEqual(
+            [skill.operator_name for skill in improved[0].dormitories[0].operators],
+            ["工作干员"],
+        )
 
     def test_dormitory_anchor_coverage_replaces_duplicate_anchor(self) -> None:
         roster = [

@@ -48,7 +48,7 @@ DIAGNOSTIC_INSERTION_GROUP_LIMIT = 64
 JOINT_PRODUCTION_CANDIDATE_LIMIT = 64
 COMBO_CANDIDATE_TOP_LIMIT = 14
 COMBO_CANDIDATE_POOL_LIMIT = 32
-OPTIMIZER_MODEL_VERSION = 20
+OPTIMIZER_MODEL_VERSION = 21
 LAYOUT_ROOM_COUNT_LIMITS = {
     "TRADING": 5,
     "MANUFACTURE": 5,
@@ -2373,6 +2373,7 @@ class ScheduleOptimizer:
         shifts: list[ShiftPlan],
         candidate: Candidate,
     ) -> list[ShiftPlan] | None:
+        active_by_shift = [self._active_names(shift) for shift in shifts]
         anchor_counts: dict[str, int] = {}
         for shift in shifts:
             for room in [*shift.rooms, *shift.dormitories]:
@@ -2386,6 +2387,7 @@ class ScheduleOptimizer:
             for shift_index, shift in enumerate(shifts):
                 if candidate.skill.operator_name in self._active_names(shift):
                     continue
+                required_rest_names = set(self._rest_priority(active_by_shift, shift_index))
                 selected_names = {
                     skill.operator_name
                     for dormitory in shift.dormitories
@@ -2395,6 +2397,8 @@ class ScheduleOptimizer:
                     continue
                 for dormitory_index, dormitory in enumerate(shift.dormitories):
                     for operator_index, existing in enumerate(dormitory.operators):
+                        if existing.operator_name in required_rest_names:
+                            continue
                         existing_is_anchor = (
                             existing.operator_name in self.operator_anchor_preference
                         )
@@ -2572,10 +2576,10 @@ class ScheduleOptimizer:
         visible_anchor_names = visible_anchor_names or set()
         is_anchor = candidate.skill.operator_name in self.operator_anchor_preference
         return (
+            int(candidate.skill.operator_name in rest_priority_names),
             int(is_anchor),
             int(is_anchor and candidate.skill.operator_name not in visible_anchor_names),
             -self.operator_anchor_rank.get(candidate.skill.operator_name, 1_000_000),
-            int(candidate.skill.operator_name in rest_priority_names),
             candidate.score,
             candidate.skill.unlocked,
             -float(candidate.skill.upgrade.cost_score if candidate.skill.upgrade else 0.0),

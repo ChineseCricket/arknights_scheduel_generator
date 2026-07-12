@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "arknights-schedule-generator"
-version = "0.1.1"
+version = "0.1.2"
 description = "Arknights base schedule generator and scorer for Yituliu roster exports."
 readme = "README.md"
 requires-python = ">=3.10"

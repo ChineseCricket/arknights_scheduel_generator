@@ -11,13 +11,17 @@ from arknights_schedule_generator.desktop_launcher import (
     APP_DEFAULTS_MARKER,
     BrowserSession,
     PortChoice,
+    ServerSession,
     is_app_server,
     launch_desktop_ui,
+    make_base_url,
     prepare_runtime_root,
     runtime_check,
     runtime_state,
     server_command,
-    stop_server_pid,
+    start_embedded_server,
+    stop_embedded_server,
+    wait_for_server,
 )
 from arknights_schedule_generator.web_app import ParsedForm, default_payload, run_recommendation
 
@@ -152,81 +156,78 @@ class DesktopLauncherTest(unittest.TestCase):
                     f"bundled:{file_name}",
                 )
 
-    def test_launcher_stops_started_server_when_browser_exits(self) -> None:
+    def test_embedded_server_is_ready_before_browser_launch(self) -> None:
+        with TemporaryDirectory() as temp_dir:
+            state = runtime_state(Path(temp_dir))
+            state.state_dir.mkdir(parents=True)
+            session = start_embedded_server("127.0.0.1", 0, state)
+            port = session.server.server_address[1]
+            try:
+                wait_for_server(make_base_url("127.0.0.1", port), session, state.log_path)
+                self.assertTrue(session.thread.is_alive())
+            finally:
+                stop_embedded_server(session, state)
+
+    def test_launcher_stops_embedded_server_when_browser_exits(self) -> None:
         with TemporaryDirectory() as temp_dir:
             root_dir = Path(temp_dir)
             state = runtime_state(root_dir)
             state.state_dir.mkdir(parents=True)
             args = argparse.Namespace(host="127.0.0.1", port=8765, port_end=None, no_browser=False)
-            server = FakeProcess(111)
+            server = FakeServer()
+            server_session = ServerSession(server, FakeThread())
             browser = FakeProcess(222)
 
             with patch(
                 "arknights_schedule_generator.desktop_launcher.choose_port",
-                return_value=PortChoice(8765, "http://127.0.0.1:8765/", False),
+                return_value=PortChoice(8765, "http://127.0.0.1:8765/"),
             ), patch(
-                "arknights_schedule_generator.desktop_launcher.start_server",
-                return_value=server,
+                "arknights_schedule_generator.desktop_launcher.start_embedded_server",
+                return_value=server_session,
             ), patch(
                 "arknights_schedule_generator.desktop_launcher.wait_for_server",
             ), patch(
                 "arknights_schedule_generator.desktop_launcher.open_browser_window",
                 return_value=BrowserSession(browser, None),
             ), patch(
-                "arknights_schedule_generator.desktop_launcher.stop_server_pid",
+                "arknights_schedule_generator.desktop_launcher.stop_embedded_server",
             ) as stop_server:
                 result = launch_desktop_ui(args, state)
 
         self.assertEqual(result, 0)
         self.assertTrue(browser.waited)
-        stop_server.assert_called_once_with(server.pid, state, process=server)
+        stop_server.assert_called_with(server_session, state)
 
-    def test_launcher_keeps_server_running_when_browser_is_not_monitorable(self) -> None:
+    def test_launcher_waits_for_manual_stop_when_browser_is_not_monitorable(self) -> None:
         with TemporaryDirectory() as temp_dir:
             root_dir = Path(temp_dir)
             state = runtime_state(root_dir)
             state.state_dir.mkdir(parents=True)
             args = argparse.Namespace(host="127.0.0.1", port=8765, port_end=None, no_browser=False)
-            server = FakeProcess(111)
+            server = FakeServer()
+            server_session = ServerSession(server, FakeThread())
 
             with patch(
                 "arknights_schedule_generator.desktop_launcher.choose_port",
-                return_value=PortChoice(8765, "http://127.0.0.1:8765/", False),
+                return_value=PortChoice(8765, "http://127.0.0.1:8765/"),
             ), patch(
-                "arknights_schedule_generator.desktop_launcher.start_server",
-                return_value=server,
+                "arknights_schedule_generator.desktop_launcher.start_embedded_server",
+                return_value=server_session,
             ), patch(
                 "arknights_schedule_generator.desktop_launcher.wait_for_server",
             ), patch(
                 "arknights_schedule_generator.desktop_launcher.open_browser_window",
                 return_value=None,
             ), patch(
-                "arknights_schedule_generator.desktop_launcher.stop_server_pid",
+                "arknights_schedule_generator.desktop_launcher.wait_for_manual_stop",
+            ) as wait_for_manual_stop, patch(
+                "arknights_schedule_generator.desktop_launcher.stop_embedded_server",
             ) as stop_server:
                 result = launch_desktop_ui(args, state)
 
         self.assertEqual(result, 0)
-        stop_server.assert_not_called()
-
-    def test_stop_server_treats_missing_process_as_stopped(self) -> None:
-        with TemporaryDirectory() as temp_dir:
-            state = runtime_state(Path(temp_dir))
-            state.state_dir.mkdir(parents=True)
-            state.server_pid_path.write_text("111", encoding="ascii")
-            state.server_port_path.write_text("8765", encoding="ascii")
-
-            with patch("arknights_schedule_generator.desktop_launcher.sys.platform", "win32"), patch(
-                "arknights_schedule_generator.desktop_launcher.subprocess.run",
-                return_value=FakeCompletedProcess(returncode=128),
-            ), patch(
-                "arknights_schedule_generator.desktop_launcher.is_process_running",
-                return_value=False,
-            ):
-                stop_server_pid(111, state)
-
-        self.assertFalse(state.server_pid_path.exists())
-        self.assertFalse(state.server_port_path.exists())
-
+        wait_for_manual_stop.assert_called_once_with(server_session)
+        stop_server.assert_called_once_with(server_session, state)
 
 class PyInstallerEntryTest(unittest.TestCase):
     def test_importing_entry_does_not_start_launcher(self) -> None:
@@ -276,11 +277,20 @@ class FakeProcess:
         pass
 
 
-class FakeCompletedProcess:
-    def __init__(self, returncode: int):
-        self.returncode = returncode
-        self.stdout = ""
-        self.stderr = ""
+class FakeServer:
+    def shutdown(self):
+        pass
+
+    def server_close(self):
+        pass
+
+
+class FakeThread:
+    def is_alive(self):
+        return True
+
+    def join(self, timeout=None):
+        pass
 
 
 def recommendation_form(*, auto_update: bool) -> ParsedForm:

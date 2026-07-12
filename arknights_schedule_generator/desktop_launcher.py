@@ -1,15 +1,14 @@
 from __future__ import annotations
 
 import argparse
-import ctypes
 import http.client
 import json
 import os
-import signal
 import shutil
 import socket
 import subprocess
 import sys
+import threading
 import time
 import traceback
 import ssl
@@ -47,13 +46,18 @@ class RuntimeState:
 class PortChoice:
     port: int
     url: str
-    reuse_existing: bool
 
 
 @dataclass(frozen=True)
 class BrowserSession:
     process: subprocess.Popen[bytes]
     profile_dir: Path | None = None
+
+
+@dataclass(frozen=True)
+class ServerSession:
+    server: web_app.ScheduleUIServer
+    thread: threading.Thread
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -124,36 +128,25 @@ def launch_desktop_ui(args: argparse.Namespace, state: RuntimeState) -> int:
     port_end = args.port_end if args.port_end is not None else max(args.port, DEFAULT_PORT_END)
     port_choice = choose_port(args.host, args.port, port_end)
     state.server_port_path.write_text(str(port_choice.port), encoding="ascii")
-    server_pid: int | None = None
-    server_process: subprocess.Popen[bytes] | None = None
+    server_session = start_embedded_server(args.host, port_choice.port, state)
+    state.server_pid_path.write_text(str(os.getpid()), encoding="ascii")
+    try:
+        wait_for_server(port_choice.url, server_session, state.log_path)
+        write_log(state.log_path, f"Started embedded UI server pid={os.getpid()} url={port_choice.url}")
 
-    if port_choice.reuse_existing:
-        listening_pid = get_listening_pid(port_choice.port)
-        if listening_pid:
-            server_pid = listening_pid
-            state.server_pid_path.write_text(str(listening_pid), encoding="ascii")
-        write_log(state.log_path, f"Reusing existing UI server at {port_choice.url}")
-    else:
-        server_process = start_server(args.host, port_choice.port, state)
-        server_pid = server_process.pid
-        state.server_pid_path.write_text(str(server_process.pid), encoding="ascii")
-        wait_for_server(port_choice.url, server_process, state.log_path)
-        write_log(state.log_path, f"Started UI server pid={server_process.pid} url={port_choice.url}")
-
-    if not args.no_browser:
-        browser_session = open_browser_window(port_choice.url, state)
-        if browser_session is not None and server_pid is not None:
-            wait_for_browser_then_stop_server(
-                browser_session,
-                server_pid,
-                state,
-                server_process=server_process,
-            )
-        elif browser_session is None:
-            write_log(
-                state.log_path,
-                "Browser process is not monitorable; UI server will keep running until stop_ui is used.",
-            )
+        if not args.no_browser:
+            browser_session = open_browser_window(port_choice.url, state)
+            if browser_session is not None:
+                wait_for_browser_then_stop_server(browser_session, server_session, state)
+            else:
+                write_log(
+                    state.log_path,
+                    "Browser process is not monitorable; UI server will keep running until stop_ui is used.",
+                )
+                wait_for_manual_stop(server_session)
+    finally:
+        if server_session.thread.is_alive():
+            stop_embedded_server(server_session, state)
     return 0
 
 
@@ -228,10 +221,8 @@ def choose_port(host: str, start_port: int, end_port: int) -> PortChoice:
         raise ValueError("--port must be less than or equal to --port-end.")
     for port in range(start_port, end_port + 1):
         url = make_base_url(host, port)
-        if is_app_server(url):
-            return PortChoice(port=port, url=url, reuse_existing=True)
         if is_port_available(host, port):
-            return PortChoice(port=port, url=url, reuse_existing=False)
+            return PortChoice(port=port, url=url)
     raise RuntimeError(f"No available port found from {start_port} to {end_port}.")
 
 
@@ -269,26 +260,15 @@ def is_port_available(host: str, port: int) -> bool:
     return True
 
 
-def start_server(host: str, port: int, state: RuntimeState) -> subprocess.Popen[bytes]:
-    command = server_command(host, port, state.root_dir)
-    write_log(state.log_path, "Starting server: " + subprocess.list2cmdline(command))
-    last_error: OSError | None = None
-    for flags in server_creationflag_candidates():
-        log_handle = state.log_path.open("ab")
-        try:
-            return subprocess.Popen(
-                command,
-                cwd=state.root_dir,
-                stdout=log_handle,
-                stderr=subprocess.STDOUT,
-                creationflags=flags,
-            )
-        except OSError as exc:
-            last_error = exc
-            write_log(state.log_path, f"Server start failed with creationflags={flags}: {exc}")
-        finally:
-            log_handle.close()
-    raise RuntimeError(f"Failed to start UI server: {last_error}")
+def start_embedded_server(host: str, port: int, state: RuntimeState) -> ServerSession:
+    """Bind the local service before opening the browser, in the UI process itself."""
+    try:
+        server = web_app.ScheduleUIServer((host, port), state.root_dir)
+    except OSError as exc:
+        raise RuntimeError(f"Failed to bind UI server on {host}:{port}: {exc}") from exc
+    thread = threading.Thread(target=server.serve_forever, name="ui-server", daemon=True)
+    thread.start()
+    return ServerSession(server=server, thread=thread)
 
 
 def server_command(host: str, port: int, root_dir: Path) -> list[str]:
@@ -317,22 +297,19 @@ def server_command(host: str, port: int, root_dir: Path) -> list[str]:
     ]
 
 
-def wait_for_server(base_url: str, process: subprocess.Popen[bytes], log_path: Path) -> None:
+def wait_for_server(base_url: str, session: ServerSession, log_path: Path) -> None:
     deadline = time.monotonic() + STARTUP_TIMEOUT_SECONDS
     while time.monotonic() < deadline:
         if is_app_server(base_url):
             return
-        return_code = process.poll()
-        if return_code is not None:
+        if not session.thread.is_alive():
             detail = read_log_tail(log_path)
             raise RuntimeError(
-                f"UI server exited during startup with code {return_code}.\n"
+                "UI server exited during startup.\n"
                 f"See log: {log_path}\n{detail}"
             )
         time.sleep(0.5)
 
-    if process.poll() is None:
-        process.terminate()
     detail = read_log_tail(log_path)
     raise RuntimeError(f"UI server did not become ready at {base_url}.\nSee log: {log_path}\n{detail}")
 
@@ -351,7 +328,7 @@ def open_browser_window(url: str, state: RuntimeState) -> BrowserSession | None:
                 "--new-window",
                 "--disable-background-mode",
             ],
-            creationflags=subprocess_creationflags(detach=True),
+            creationflags=subprocess_creationflags(),
         )
         state.browser_pid_path.write_text(str(process.pid), encoding="ascii")
         write_log(state.log_path, f"Opened browser app window pid={process.pid}")
@@ -373,107 +350,33 @@ def new_browser_profile_dir(state: RuntimeState) -> Path:
 
 def wait_for_browser_then_stop_server(
     browser_session: BrowserSession,
-    server_pid: int,
+    server_session: ServerSession,
     state: RuntimeState,
-    *,
-    server_process: subprocess.Popen[bytes] | None = None,
 ) -> None:
     write_log(
         state.log_path,
-        f"Monitoring browser pid={browser_session.process.pid}; UI server pid={server_pid}.",
+        f"Monitoring browser pid={browser_session.process.pid}; UI server pid={os.getpid()}.",
     )
     browser_session.process.wait()
     write_log(state.log_path, f"Browser pid={browser_session.process.pid} exited; stopping UI server.")
-    stop_server_pid(server_pid, state, process=server_process)
+    stop_embedded_server(server_session, state)
     remove_file(state.browser_pid_path)
     cleanup_browser_profile(browser_session.profile_dir, state)
 
 
-def stop_server_pid(
-    server_pid: int,
-    state: RuntimeState,
-    *,
-    process: subprocess.Popen[bytes] | None = None,
-) -> None:
-    if server_pid <= 0:
-        return
-    if process is not None:
-        stop_popen_server(process, server_pid, state)
-        return
-    if sys.platform == "win32":
-        result = subprocess.run(
-            ["taskkill", "/PID", str(server_pid), "/T", "/F"],
-            capture_output=True,
-            text=True,
-            check=False,
-            creationflags=subprocess_creationflags(),
-        )
-        if result.returncode != 0:
-            if not is_process_running(server_pid):
-                remove_file(state.server_pid_path)
-                remove_file(state.server_port_path)
-                write_log(state.log_path, f"UI server pid={server_pid} already stopped.")
-                return
-            detail = (result.stderr or result.stdout or "").strip()
-            write_log(state.log_path, f"Failed to stop UI server pid={server_pid}: {detail}")
-            return
-    else:
-        try:
-            os.kill(server_pid, signal.SIGTERM)
-        except ProcessLookupError:
-            pass
-        except OSError as exc:
-            write_log(state.log_path, f"Failed to stop UI server pid={server_pid}: {exc}")
-            return
-    deadline = time.monotonic() + SERVER_STOP_WAIT_SECONDS
-    while is_process_running(server_pid) and time.monotonic() < deadline:
-        time.sleep(0.2)
-    if is_process_running(server_pid):
-        write_log(state.log_path, f"UI server pid={server_pid} did not exit before timeout.")
-        return
+def stop_embedded_server(session: ServerSession, state: RuntimeState) -> None:
+    session.server.shutdown()
+    session.thread.join(timeout=SERVER_STOP_WAIT_SECONDS)
+    session.server.server_close()
     remove_file(state.server_pid_path)
     remove_file(state.server_port_path)
-    write_log(state.log_path, f"Stopped UI server pid={server_pid}.")
+    write_log(state.log_path, "Stopped embedded UI server.")
 
 
-def stop_popen_server(
-    process: subprocess.Popen[bytes],
-    server_pid: int,
-    state: RuntimeState,
-) -> None:
-    if process.poll() is None:
-        try:
-            process.terminate()
-            process.wait(timeout=SERVER_STOP_WAIT_SECONDS)
-        except subprocess.TimeoutExpired:
-            process.kill()
-            process.wait(timeout=SERVER_STOP_WAIT_SECONDS)
-        except OSError as exc:
-            write_log(state.log_path, f"Failed to stop UI server pid={server_pid}: {exc}")
-            return
-    remove_file(state.server_pid_path)
-    remove_file(state.server_port_path)
-    write_log(state.log_path, f"Stopped UI server pid={server_pid}.")
-
-
-def is_process_running(pid: int) -> bool:
-    if pid <= 0:
-        return False
-    if sys.platform == "win32":
-        kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
-        process_query_limited_information = 0x1000
-        handle = kernel32.OpenProcess(process_query_limited_information, False, int(pid))
-        if handle:
-            kernel32.CloseHandle(handle)
-            return True
-        return ctypes.get_last_error() == 5
-    try:
-        os.kill(pid, 0)
-        return True
-    except ProcessLookupError:
-        return False
-    except PermissionError:
-        return True
+def wait_for_manual_stop(session: ServerSession) -> None:
+    """Keep the UI process alive when the platform cannot expose a browser PID."""
+    while session.thread.is_alive():
+        time.sleep(1.0)
 
 
 def cleanup_browser_profile(profile_dir: Path | None, state: RuntimeState) -> None:
@@ -507,50 +410,10 @@ def find_browser() -> Path | None:
     return None
 
 
-def get_listening_pid(port: int) -> int | None:
-    try:
-        result = subprocess.run(
-            ["netstat", "-ano", "-p", "tcp"],
-            capture_output=True,
-            text=True,
-            check=False,
-            creationflags=subprocess_creationflags(),
-        )
-    except OSError:
-        return None
-
-    needle = f":{port}"
-    for line in result.stdout.splitlines():
-        parts = line.split()
-        if len(parts) >= 5 and parts[0].upper() == "TCP" and parts[3].upper() == "LISTENING":
-            if needle in parts[1]:
-                try:
-                    return int(parts[4])
-                except ValueError:
-                    return None
-    return None
-
-
-def server_creationflag_candidates() -> tuple[int, ...]:
-    if sys.platform != "win32":
-        return (0,)
-    return (
-        subprocess_creationflags(detach=True, breakaway=True),
-        subprocess_creationflags(detach=True, breakaway=False),
-        subprocess_creationflags(detach=False, breakaway=False),
-    )
-
-
-def subprocess_creationflags(*, detach: bool = False, breakaway: bool = False) -> int:
+def subprocess_creationflags() -> int:
     if sys.platform != "win32":
         return 0
-    flags = getattr(subprocess, "CREATE_NO_WINDOW", 0)
-    if detach:
-        flags |= getattr(subprocess, "CREATE_NEW_PROCESS_GROUP", 0)
-        flags |= getattr(subprocess, "DETACHED_PROCESS", 0x00000008)
-    if breakaway:
-        flags |= getattr(subprocess, "CREATE_BREAKAWAY_FROM_JOB", 0x01000000)
-    return flags
+    return getattr(subprocess, "CREATE_NO_WINDOW", 0)
 
 
 def write_log(log_path: Path, message: str) -> None:

@@ -20,7 +20,7 @@ game data. Users still need network access if they choose to refresh game data l
 the data update option refreshes the cache when one already exists; if that refresh fails but the existing
 cache is complete, the run continues with the local cache and reports a warning instead of blocking use.
 
-The launcher records runtime state under `outputs/ui_runtime/`, including the server PID and the browser PID.
+The launcher starts the local service inside the UI process, then waits for its readiness check before opening the browser window. It records runtime state under `outputs/ui_runtime/`, including the UI/server PID and the browser PID.
 It also writes `launcher.log` and `server.port` for startup diagnostics and port fallback.
 
 Notes:

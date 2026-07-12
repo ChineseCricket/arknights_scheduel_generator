@@ -1,14 +1,21 @@
 param(
     [string]$Python = "python",
     [switch]$InstallPackageDeps,
-    [switch]$SkipDataRefresh
+    [switch]$SkipDataRefresh,
+    [string]$OutputDir = ""
 )
 
 $ErrorActionPreference = "Stop"
 
 $Root = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot "..")).Path
 $SpecFile = Join-Path $Root "tools\ArknightsScheduleUI.spec"
-$OutputDir = Join-Path $Root "dist\ArknightsScheduleUI"
+if (-not $OutputDir) {
+    $OutputDir = Join-Path $Root "dist\ArknightsScheduleUI"
+}
+elseif (-not [System.IO.Path]::IsPathRooted($OutputDir)) {
+    $OutputDir = Join-Path $Root $OutputDir
+}
+$OutputDir = [System.IO.Path]::GetFullPath($OutputDir)
 $PackageSpec = "$Root`[package`]"
 $DataDir = Join-Path $Root "data\cache"
 $RequiredDataFiles = @(
@@ -92,7 +99,8 @@ if ($LASTEXITCODE -ne 0) {
 }
 
 Write-Host "Building Windows portable app..."
-& $Python -m PyInstaller --noconfirm --clean $SpecFile
+$DistRoot = Split-Path -Parent $OutputDir
+& $Python -m PyInstaller --noconfirm --clean --distpath $DistRoot $SpecFile
 if ($LASTEXITCODE -ne 0) {
     throw "PyInstaller build failed."
 }

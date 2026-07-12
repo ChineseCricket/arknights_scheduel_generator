@@ -35,6 +35,7 @@ def render_schedule_html(data: dict[str, Any], source_path: Path) -> str:
     local = analysis.get("localOptimalityAudit") or {}
     pool = analysis.get("candidatePoolAudit") or {}
     conflict = analysis.get("objectiveConflictAudit") or {}
+    morale = analysis.get("moraleCycleAudit") or {}
     search = analysis.get("diagnosticInsertionSearch") or {}
     reminders = analysis.get("reminders") or []
     score_breakdown = data.get("scoreBreakdown") or {}
@@ -72,6 +73,8 @@ def render_schedule_html(data: dict[str, Any], source_path: Path) -> str:
                 ("Pure Gold", fmt(daily.get("pureGoldDelta"))),
                 ("Shard", fmt(daily.get("shardDelta"))),
                 ("Drones Used", f"{fmt(daily.get('droneUsed'))} / {fmt(daily.get('droneCount'))}"),
+                ("Rest Cycle", "PASS" if morale.get("hardGatePassed") else "FAIL"),
+                ("Cycle Days", fmt(morale.get("cycleDays"))),
             ]
         ),
         section(
@@ -100,6 +103,10 @@ def render_schedule_html(data: dict[str, Any], source_path: Path) -> str:
                     ("Accepted local replacements", local.get("acceptedCount")),
                     ("LMD-positive rejected", conflict.get("lmdPositiveRejectedCount")),
                     ("Candidate pool checks", len(pool.get("comboPoolChecks") or [])),
+                    ("Rest hard gate", morale.get("hardGatePassed")),
+                    ("Minimum morale", morale.get("minimumMorale")),
+                    ("Unrested operators", len(morale.get("unrestedOperators") or [])),
+                    ("Rest failure reasons", ", ".join(morale.get("failureReasons") or [])),
                 ]
             ),
         ),

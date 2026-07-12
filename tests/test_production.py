@@ -679,6 +679,29 @@ class ProductionModelTest(unittest.TestCase):
                     [],
                 )
             ]
+            resting_operators = [
+                operator
+                for work_room in shifts[0].rooms
+                for operator in work_room.operators
+            ]
+            shifts.append(
+                ShiftPlan(
+                    "B",
+                    "20:00",
+                    12,
+                    [],
+                    [
+                        RoomAssignment(
+                            "dormitory_1",
+                            "DORMITORY",
+                            "DORMITORY",
+                            None,
+                            resting_operators,
+                            0,
+                        )
+                    ],
+                )
+            )
             production_report = ProductionSimulator(game_data, drone_policy="auto").evaluate(shifts)
             result = OptimizerResult(
                 layout=parse_layout("243"),
@@ -1137,14 +1160,14 @@ class ProductionModelTest(unittest.TestCase):
             plain = ScheduleOptimizer(game_data, roster).optimize(
                 parse_layout("333"),
                 mode="normal",
-                shift_count=1,
-                shift_hours=24,
+                shift_count=2,
+                shift_hours=12,
             )
             profiled = ScheduleOptimizer(game_data, roster).optimize(
                 parse_layout("333"),
                 mode="normal",
-                shift_count=1,
-                shift_hours=24,
+                shift_count=2,
+                shift_hours=12,
                 profile_runtime=True,
             )
             plain_payload = result_to_dict(plain, game_data)
@@ -1174,7 +1197,7 @@ class ProductionModelTest(unittest.TestCase):
                 output_dir=output_dir,
                 layouts=["333"],
                 modes=["normal"],
-                shift_patterns=[(1, 24)],
+                shift_patterns=[(2, 12)],
                 drone_policy="none",
                 include_upgrades=False,
                 cache_policy="refresh",
@@ -1201,7 +1224,7 @@ class ProductionModelTest(unittest.TestCase):
                 output_dir=output_dir,
                 layouts=["333"],
                 modes=["normal"],
-                shift_patterns=[(1, 24)],
+                shift_patterns=[(2, 12)],
                 drone_policy="none",
                 include_upgrades=False,
                 cache_policy="auto",
@@ -1234,7 +1257,7 @@ class ProductionModelTest(unittest.TestCase):
                 output_dir=serial_dir,
                 layouts=["333"],
                 modes=["normal"],
-                shift_patterns=[(1, 24)],
+                shift_patterns=[(2, 12)],
                 drone_policy="none",
                 include_upgrades=False,
                 cache_policy="refresh",
@@ -1246,7 +1269,7 @@ class ProductionModelTest(unittest.TestCase):
                 output_dir=parallel_dir,
                 layouts=["333"],
                 modes=["normal"],
-                shift_patterns=[(1, 24)],
+                shift_patterns=[(2, 12)],
                 drone_policy="none",
                 include_upgrades=False,
                 cache_policy="refresh",
@@ -1769,10 +1792,17 @@ class ProductionModelTest(unittest.TestCase):
             (candidate["shiftCount"], candidate["shiftHours"])
             for candidate in report["candidates"]
         }
-        self.assertIn((1, 24), candidate_patterns)
+        self.assertNotIn((1, 24), candidate_patterns)
         self.assertIn((2, 12), candidate_patterns)
         self.assertIn((3, 8), candidate_patterns)
         self.assertIn((3, 12), candidate_patterns)
+        self.assertTrue(
+            any(
+                item.get("shiftCount") == "1"
+                and "No sustainable morale cycle" in item.get("reason", "")
+                for item in report["skipped"]
+            )
+        )
         self.assertEqual(
             report["inputs"]["shiftPatterns"],
             [

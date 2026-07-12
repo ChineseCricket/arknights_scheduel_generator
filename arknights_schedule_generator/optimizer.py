@@ -8,6 +8,7 @@ from typing import Any, Iterable
 from . import dependency_parser
 from .data import GameData
 from .models import BaseSkill, Layout, RoomAssignment, RosterOperator, ShiftPlan
+from .morale import MAX_CYCLE_HOURS, audit_morale_cycle
 from .power import PowerStatus, levels_or_default, resolve_power_layout
 from .presets import (
     manufacture_targets,
@@ -31,7 +32,7 @@ from .production import (
     resource_balance_quality,
 )
 from .room_limits import clamp_station_count
-from .skill_rules import evaluate_room_effect
+from .skill_rules import evaluate_room_effect, fatigue_delta_from_text
 
 
 ROOM_NAMES = {
@@ -48,7 +49,7 @@ DIAGNOSTIC_INSERTION_GROUP_LIMIT = 64
 JOINT_PRODUCTION_CANDIDATE_LIMIT = 64
 COMBO_CANDIDATE_TOP_LIMIT = 14
 COMBO_CANDIDATE_POOL_LIMIT = 32
-OPTIMIZER_MODEL_VERSION = 21
+OPTIMIZER_MODEL_VERSION = 22
 LAYOUT_ROOM_COUNT_LIMITS = {
     "TRADING": 5,
     "MANUFACTURE": 5,
@@ -360,6 +361,9 @@ class ScheduleOptimizer:
             current_report=production_report,
         )
         insertion_search["localOptimalityAudit"] = local_audit
+        shifts, morale_audit = self._ensure_sustainable_morale_cycle(layout, shifts)
+        production_report = simulator.evaluate(shifts)
+        insertion_search["moraleCycleAudit"] = morale_audit
         shifts, production_report, pure_gold_policy = self._apply_pure_gold_drone_cycle_repeats(
             shifts,
             simulator,
@@ -370,6 +374,21 @@ class ScheduleOptimizer:
             max_drone_cycle_repeats=max_drone_cycle_repeats,
         )
         insertion_search["pureGoldBalancePolicy"] = pure_gold_policy
+        final_morale_audit = audit_morale_cycle(layout, shifts)
+        for key in (
+            "rotationGroups",
+            "fastRotationRooms",
+            "basePlanCount",
+            "expandedPlanCount",
+        ):
+            if key in morale_audit:
+                final_morale_audit[key] = morale_audit[key]
+        if not final_morale_audit["hardGatePassed"]:
+            raise ValueError(
+                "No sustainable morale cycle: "
+                + ", ".join(final_morale_audit["failureReasons"])
+            )
+        insertion_search["moraleCycleAudit"] = final_morale_audit
         insertion_search["candidatePoolAudit"] = self._candidate_pool_audit(shifts)
         insertion_search["objectiveConflictAudit"] = objective_conflict_audit(
             insertion_search,
@@ -2341,6 +2360,230 @@ class ScheduleOptimizer:
                 )
             )
         return self._improve_dormitory_anchor_coverage(rebuilt)
+
+    def _ensure_sustainable_morale_cycle(
+        self,
+        layout: Layout,
+        shifts: list[ShiftPlan],
+    ) -> tuple[list[ShiftPlan], dict[str, Any]]:
+        audit = audit_morale_cycle(layout, shifts)
+        if audit["hardGatePassed"]:
+            return shifts, audit
+        if len(shifts) < 2:
+            raise ValueError(
+                "No sustainable morale cycle within seven days: a one-change-per-day "
+                "schedule cannot rotate a fully staffed base through the available dormitories."
+            )
+
+        dorm_specs = self._dorm_specs(layout)
+        dorm_capacity = sum(spec[3] for spec in dorm_specs)
+        room_order = [room.room_id for room in shifts[0].rooms]
+        room_weights = {
+            room_id: max(
+                len(next(room for room in shift.rooms if room.room_id == room_id).operators)
+                for shift in shifts
+            )
+            for room_id in room_order
+        }
+        total_active = sum(room_weights.values())
+        fast_rotation_rooms = {
+            room_id
+            for room_id in room_order
+            if any(
+                max(0.0, fatigue_delta_from_text(skill.description)) > 0.0001
+                for shift in shifts
+                for room in shift.rooms
+                if room.room_id == room_id
+                for skill in room.operators
+            )
+        }
+        fast_rotation_weight = sum(room_weights[room_id] for room_id in fast_rotation_rooms)
+        stagger_capacity = dorm_capacity - fast_rotation_weight
+        stagger_weight = total_active - fast_rotation_weight
+        if stagger_capacity <= 0 and stagger_weight > 0:
+            raise ValueError(
+                "No sustainable morale cycle: high-consumption operators exhaust dormitory capacity."
+            )
+        group_count = max(
+            1,
+            (stagger_weight + stagger_capacity - 1) // stagger_capacity
+            if stagger_weight
+            else 1,
+        )
+        cycle_hours = sum(shift.duration_hours for shift in shifts) * group_count
+        if cycle_hours > MAX_CYCLE_HOURS + 0.0001:
+            raise ValueError(
+                "No sustainable morale cycle within seven days: required staggered cycle "
+                f"is {cycle_hours / 24.0:.2f} days."
+            )
+
+        groups: list[list[str]] = [[] for _ in range(group_count)]
+        group_weights = [0] * group_count
+        for room_id in sorted(
+            (item for item in room_order if item not in fast_rotation_rooms),
+            key=lambda item: room_weights[item],
+            reverse=True,
+        ):
+            group_index = min(range(group_count), key=lambda index: group_weights[index])
+            groups[group_index].append(room_id)
+            group_weights[group_index] += room_weights[room_id]
+        if max(group_weights, default=0) + fast_rotation_weight > dorm_capacity:
+            raise ValueError(
+                "No sustainable morale cycle: a staggered room group exceeds dormitory capacity."
+            )
+
+        source_rooms = [
+            {room.room_id: room for room in shift.rooms}
+            for shift in shifts
+        ]
+        room_group = {
+            room_id: group_index
+            for group_index, group in enumerate(groups)
+            for room_id in group
+        }
+        expanded_rooms: list[list[RoomAssignment]] = []
+        plan_count = len(shifts) * group_count
+        for plan_index in range(plan_count):
+            rooms: list[RoomAssignment] = []
+            for room_id in room_order:
+                if room_id in fast_rotation_rooms:
+                    rooms.append(source_rooms[plan_index % len(shifts)][room_id])
+                    continue
+                group_index = room_group[room_id]
+                source_index = (
+                    (plan_index + group_count - 1 - group_index) // group_count
+                ) % len(shifts)
+                rooms.append(source_rooms[source_index][room_id])
+            names = [skill.operator_name for room in rooms for skill in room.operators]
+            if len(names) != len(set(names)):
+                raise ValueError(
+                    "No sustainable morale cycle: staggered room rotations create a same-shift operator conflict."
+                )
+            expanded_rooms.append(rooms)
+
+        expanded: list[ShiftPlan] = []
+        active_by_plan = [
+            {skill.operator_name for room in rooms for skill in room.operators}
+            for rooms in expanded_rooms
+        ]
+        for plan_index, rooms in enumerate(expanded_rooms):
+            template = shifts[plan_index % len(shifts)]
+            active_names = active_by_plan[plan_index]
+            outgoing = active_by_plan[plan_index - 1] - active_names
+            dormitories = self._assign_required_rest_dormitories(
+                dorm_specs,
+                active_names,
+                outgoing,
+            )
+            resting = {
+                skill.operator_name
+                for room in dormitories
+                for skill in room.operators
+            }
+            if not outgoing <= resting:
+                raise ValueError(
+                    "No sustainable morale cycle: required outgoing operators exceed dormitory capacity."
+                )
+            expanded.append(
+                ShiftPlan(
+                    name=shift_label(plan_index),
+                    start=template.start,
+                    duration_hours=template.duration_hours,
+                    rooms=rooms,
+                    dormitories=dormitories,
+                )
+            )
+
+        audit = audit_morale_cycle(layout, expanded)
+        audit["rotationGroups"] = [list(group) for group in groups]
+        audit["fastRotationRooms"] = sorted(fast_rotation_rooms)
+        audit["basePlanCount"] = len(shifts)
+        audit["expandedPlanCount"] = len(expanded)
+        if not audit["hardGatePassed"]:
+            raise ValueError(
+                "No sustainable morale cycle within seven days: "
+                + ", ".join(audit["failureReasons"])
+                + "; operators="
+                + ", ".join(audit["unrestedOperators"][:12])
+                + "; minimum="
+                + ", ".join(
+                    f"{name}:{audit['minimumMoraleByOperator'].get(name)}"
+                    for name in audit["unrestedOperators"][:12]
+                )
+            )
+        return expanded, audit
+
+    def _assign_required_rest_dormitories(
+        self,
+        dorm_specs: list[tuple[str, str, None, int]],
+        active_names: set[str],
+        required_rest: set[str],
+    ) -> list[RoomAssignment]:
+        total_capacity = sum(spec[3] for spec in dorm_specs)
+        if len(required_rest) > total_capacity:
+            return []
+        helper_limit = min(len(dorm_specs), total_capacity - len(required_rest))
+        helper_candidates = [
+            candidate
+            for candidate in self._candidates(
+                "DORMITORY",
+                None,
+                active_names | required_rest,
+                allow_no_skill=False,
+            )
+            if "所有干员" in candidate.skill.description
+            or "某一名" in candidate.skill.description
+        ][:helper_limit]
+
+        selected_by_room: list[list[Candidate]] = [[] for _ in dorm_specs]
+        for room_index, helper in enumerate(helper_candidates):
+            selected_by_room[room_index].append(helper)
+        for name in sorted(required_rest):
+            candidate = self._dorm_candidate(name)
+            if candidate is None:
+                continue
+            available_rooms = [
+                index
+                for index, spec in enumerate(dorm_specs)
+                if len(selected_by_room[index]) < spec[3]
+            ]
+            if not available_rooms:
+                break
+            room_index = min(available_rooms, key=lambda index: len(selected_by_room[index]))
+            selected_by_room[room_index].append(candidate)
+
+        selected_names = {
+            candidate.skill.operator_name
+            for room_candidates in selected_by_room
+            for candidate in room_candidates
+        }
+        fillers = self._candidates(
+            "DORMITORY",
+            None,
+            active_names | selected_names,
+            allow_no_skill=True,
+        )
+        filler_index = 0
+        for room_index, spec in enumerate(dorm_specs):
+            while len(selected_by_room[room_index]) < spec[3] and filler_index < len(fillers):
+                candidate = fillers[filler_index]
+                filler_index += 1
+                if candidate.skill.operator_name in selected_names:
+                    continue
+                selected_by_room[room_index].append(candidate)
+                selected_names.add(candidate.skill.operator_name)
+
+        return [
+            RoomAssignment(
+                room_id=room_id,
+                room_type=room_type,
+                room_name=ROOM_NAMES.get(room_type, room_type),
+                target=target,
+                operators=[candidate.skill for candidate in selected_by_room[index]],
+                score=round(sum(candidate.score for candidate in selected_by_room[index]), 3),
+            )
+            for index, (room_id, room_type, target, _) in enumerate(dorm_specs)
+        ]
 
     def _improve_dormitory_anchor_coverage(self, shifts: list[ShiftPlan]) -> list[ShiftPlan]:
         if not self.operator_anchor_preference:

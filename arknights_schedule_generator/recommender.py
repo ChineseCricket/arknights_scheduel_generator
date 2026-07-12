@@ -24,6 +24,7 @@ from .data import GameData
 from .diagnostics import build_recommendation_diagnostics, force_specs_from_explanation
 from .exporter import collect_upgrades, find_conflicts, upgrade_to_dict, write_result_json
 from .models import BaseSkill, Layout, RoomAssignment, RosterOperator, ShiftPlan
+from .morale import audit_morale_cycle
 from .optimizer import (
     OptimizerResult,
     ScheduleOptimizer,
@@ -1518,6 +1519,10 @@ def load_cached_candidate_evaluation(
         if not exported_schedule_capacity_valid(data):
             return None
         result = optimizer_result_from_export(data, expected_layout_raw=expected_layout_raw)
+        morale_audit = audit_morale_cycle(result.layout, result.shifts)
+        if not morale_audit["hardGatePassed"]:
+            return None
+        result.diagnostic_insertion_search["moraleCycleAudit"] = morale_audit
         if expected_target_counts is not None and target_counts(result) != expected_target_counts:
             return None
         if expected_target_counts is not None and (
@@ -1578,6 +1583,7 @@ def optimizer_result_from_export(
         manufacture=int(base.get("manufacture") or 0),
         power=int(base.get("power") or 0),
         dormitory=int(base.get("dormitory") or 4),
+        dormitory_levels=tuple(int(level) for level in base.get("dormitoryLevels") or ()),
         control=int(base.get("control") or 1),
         meeting=int(base.get("meeting") or 1),
         hire=int(base.get("hire") or 1),
@@ -3519,6 +3525,8 @@ def result_summary(
     daily = report_dict["dailyExpected"]
     upgrades = [upgrade_to_dict(upgrade) for upgrade in collect_upgrades(result)]
     baseline_margin = None if baseline_score is None else round(result.score - baseline_score, 3)
+    morale_audit = result.diagnostic_insertion_search.get("moraleCycleAudit", {})
+    base_plan_count = int(morale_audit.get("basePlanCount") or len(result.shifts))
     return {
         "id": candidate_id,
         "profile": profile,
@@ -3530,9 +3538,15 @@ def result_summary(
         "mode": result.mode,
         "presetContract": preset_contract(result.mode),
         "allowUpgrades": allow_upgrades,
-        "shiftCount": len(result.shifts),
+        "shiftCount": base_plan_count,
         "shiftHours": result.shift_hours,
-        "shiftDurations": [shift.duration_hours for shift in result.shifts],
+        "shiftDurations": [
+            shift.duration_hours for shift in result.shifts[:base_plan_count]
+        ],
+        "cyclePlanCount": len(result.shifts),
+        "cycleHours": morale_audit.get("cycleHours"),
+        "cycleDays": morale_audit.get("cycleDays"),
+        "moraleCycleAudit": morale_audit,
         "targetCounts": target_counts(result),
         "score": result.score,
         "baselineMargin": baseline_margin,

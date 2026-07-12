@@ -7,6 +7,7 @@ from typing import Any
 
 from .data import RAW_BASE_URL, GameData
 from .models import BaseSkill, RoomAssignment, ShiftPlan, UpgradeRequirement
+from .morale import audit_morale_cycle
 from .optimizer import OptimizerResult
 from .presets import PRESETS, preset_contract, target_label
 from .production import ProductionSimulator
@@ -33,6 +34,12 @@ TARGET_TO_YITULIU_PRODUCT = {
 
 
 def result_to_dict(result: OptimizerResult, game_data: GameData) -> dict[str, Any]:
+    morale_audit = audit_morale_cycle(result.layout, result.shifts)
+    if not morale_audit["hardGatePassed"]:
+        raise ValueError(
+            "Refusing to export an unsustainable morale cycle: "
+            + ", ".join(morale_audit["failureReasons"])
+        )
     upgrades = collect_upgrades(result)
     conflicts = find_conflicts(result)
     warnings = list(result.warnings)
@@ -61,6 +68,7 @@ def result_to_dict(result: OptimizerResult, game_data: GameData) -> dict[str, An
         "objectiveConflictAudit": result.diagnostic_insertion_search.get(
             "objectiveConflictAudit", {}
         ),
+        "moraleCycleAudit": morale_audit,
         "unsupportedSkillEffects": production_dict["unsupportedSkillEffects"],
         "assumptions": production_dict["assumptions"],
         "calibrationProfile": production_dict.get("calibrationProfile", "guide"),
@@ -79,7 +87,10 @@ def result_to_dict(result: OptimizerResult, game_data: GameData) -> dict[str, An
             f"自动推荐；保留一图流 plans[].rooms 导入结构。"
         ),
         "id": int(datetime.now(timezone.utc).timestamp() * 1000),
-        "title": f"{result.layout.label} {result.mode} {plan_times}班推荐排班",
+        "title": (
+            f"{result.layout.label} {result.mode} {plan_times}班推荐排班 "
+            f"({sum(shift.duration_hours for shift in result.shifts) / 24.0:g}天循环)"
+        ),
         "planTimes": f"{plan_times}班",
         "plans": [
             shift_to_yituliu_plan(
@@ -97,6 +108,7 @@ def result_to_dict(result: OptimizerResult, game_data: GameData) -> dict[str, An
             "manufacture": result.layout.manufacture,
             "power": result.layout.power,
             "dormitory": result.layout.dormitory,
+            "dormitoryLevels": list(result.layout.dormitory_levels),
         },
         "format": "yituliu-base-schedule-json",
         "formatVersion": 2,

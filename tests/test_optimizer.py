@@ -13,6 +13,7 @@ from arknights_schedule_generator.models import (
     ShiftPlan,
     UpgradeRequirement,
 )
+from arknights_schedule_generator.morale import audit_morale_cycle
 from arknights_schedule_generator.optimizer import (
     COMBO_CANDIDATE_POOL_LIMIT,
     RoomCombo,
@@ -337,6 +338,57 @@ class OptimizerTest(unittest.TestCase):
 
         self.assertEqual(visible, {"参考锚点A", "参考锚点B", "参考锚点C"})
 
+    def test_full_base_rotation_expands_to_sustainable_staggered_cycle(self) -> None:
+        names = [f"A{i}" for i in range(29)] + [f"B{i}" for i in range(29)]
+        roster = [RosterOperator(name, True, 5, 1, 0) for name in names]
+        optimizer = ScheduleOptimizer(GameData({"rooms": {}}, {}, {}), roster)
+
+        def rooms(prefix: str) -> list[RoomAssignment]:
+            result: list[RoomAssignment] = []
+            offset = 0
+            for room_index, size in enumerate([3] * 9 + [2], 1):
+                operators = [
+                    optimizer_skill(
+                        f"{prefix}{operator_index}",
+                        "MANUFACTURE",
+                        "fixture",
+                        10,
+                    )
+                    for operator_index in range(offset, offset + size)
+                ]
+                offset += size
+                result.append(
+                    RoomAssignment(
+                        f"manufacture_{room_index}",
+                        "MANUFACTURE",
+                        "制造站",
+                        "F_EXP",
+                        operators,
+                        30,
+                        slots=size,
+                    )
+                )
+            return result
+
+        base_shifts = [
+            ShiftPlan("A", "08:00", 12, rooms("A"), []),
+            ShiftPlan("B", "20:00", 12, rooms("B"), []),
+        ]
+
+        expanded, audit = optimizer._ensure_sustainable_morale_cycle(
+            parse_layout("243"),
+            base_shifts,
+        )
+
+        self.assertEqual(len(expanded), 4)
+        self.assertTrue(audit["hardGatePassed"])
+        self.assertEqual(audit["cycleHours"], 48.0)
+        self.assertLessEqual(
+            max(item["outgoingCount"] for item in audit["transitions"]),
+            20,
+        )
+        self.assertTrue(audit_morale_cycle(parse_layout("243"), expanded)["hardGatePassed"])
+
     def test_generates_conflict_free_schedule_and_upgrades(self) -> None:
         with TemporaryDirectory() as temp_dir:
             data_dir = Path(temp_dir)
@@ -468,7 +520,7 @@ class OptimizerTest(unittest.TestCase):
         self.assertEqual([shift.start for shift in result.shifts], ["08:00", "20:00", "02:00"])
         self.assertFalse(find_conflicts(result))
 
-    def test_optimizer_supports_single_daily_shift(self) -> None:
+    def test_optimizer_rejects_unsustainable_single_daily_shift(self) -> None:
         with TemporaryDirectory() as temp_dir:
             data_dir = Path(temp_dir)
             write_minimal_data(data_dir)
@@ -493,12 +545,8 @@ class OptimizerTest(unittest.TestCase):
                 RosterOperator("玫兰莎", True, 3, 30, 0),
             ]
             optimizer = ScheduleOptimizer(game_data, roster, allow_upgrades=True, upgrade_cost_weight=0)
-            result = optimizer.optimize(parse_layout("333"), shift_count=1, shift_hours=24)
-
-        self.assertEqual(len(result.shifts), 1)
-        self.assertEqual(result.shifts[0].duration_hours, 24.0)
-        self.assertEqual(result.shifts[0].start, "08:00")
-        self.assertFalse(find_conflicts(result))
+            with self.assertRaisesRegex(ValueError, "No sustainable morale cycle"):
+                optimizer.optimize(parse_layout("333"), shift_count=1, shift_hours=24)
 
     def test_trade_room_selection_uses_combo_true_production(self) -> None:
         with TemporaryDirectory() as temp_dir:
